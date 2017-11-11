@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>fa780655-380a-4c71-9501-43381b534700</ProjectGuid>
+    <ProjectGuid>{FA780655-380A-4C71-9501-43381B534700}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DLib</RootNamespace>
@@ -29,25 +29,100 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="FsMpir.NET, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mpir.NET.0.4.0\lib\net40\FsMpir.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Mpir.NET, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mpir.NET.0.4.0\lib\net40\Mpir.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Collection\Array.cs" />
+    <Compile Include="Collection\BitArray.cs" />
+    <Compile Include="Collection\List.cs" />
+    <Compile Include="Coordinates.cs" />
+    <Compile Include="Extra.cs" />
+    <Compile Include="Math\Mod.cs" />
+    <Compile Include="Pathfinding\AStar.cs" />
+    <Compile Include="Benchmark.cs" />
+    <Compile Include="Collection\Bits.cs" />
+    <Compile Include="Math\Calculator.cs" />
+    <Compile Include="Math\CFrac.cs" />
+    <Compile Include="Math\Factor.cs" />
+    <Compile Include="Math\GCD.cs" />
+    <Compile Include="Math\Integer.cs" />
+    <Compile Include="Math\LCM.cs" />
+    <Compile Include="Math\Matrix.cs" />
+    <Compile Include="Math\Mul.cs" />
+    <Compile Include="Math\Natural.cs" />
+    <Compile Include="Math\Polynomial.cs" />
+    <Compile Include="Math\Power.cs" />
+    <Compile Include="Math\Prime\Factorise.cs" />
+    <Compile Include="Math\Prime\Mersenne.cs" />
+    <Compile Include="Math\Prime\Problably.cs" />
+    <Compile Include="Math\Prime\Sieve.cs" />
+    <Compile Include="Math\Prime\Test\Deterministic.cs" />
+    <Compile Include="Math\Prime\Test\Heuristic.cs" />
+    <Compile Include="Math\Prime\Test\Probabilistic.cs" />
+    <Compile Include="Math\Rational.cs" />
+    <Compile Include="Math\Seeker\MersennePrime.cs" />
+    <Compile Include="Math\Seeker\MersennePrimeNetworkMember.cs" />
+    <Compile Include="Math\Seeker\MersennePrimeNetworkServer.cs" />
+    <Compile Include="Math\Sequence\Catalan.cs" />
+    <Compile Include="Math\Sequence\Fib.cs" />
+    <Compile Include="Math\Sequence\Lucas.cs" />
+    <Compile Include="Math\Sequence\Perrin.cs" />
+    <Compile Include="Math\Sqrt.cs" />
+    <Compile Include="Math\Symbol.cs" />
+    <Compile Include="Math\Vector.cs" />
+    <Compile Include="Networking\Client.cs" />
+    <Compile Include="Networking\Member.cs" />
+    <Compile Include="Networking\Server.cs" />
+    <Compile Include="ParallelExecutionObject.cs" />
+    <Compile Include="Pathfinding\Map.cs" />
+    <Compile Include="Pathfinding\Vertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sort.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="xmpir32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xmpir64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+</Project>
