@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DLib.Collection
+﻿namespace DLib.Collection
 {
     public class BitArray
     {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DLib.Pathfinding
+﻿namespace DLib.Pathfinding
 {
     public class Map
     {

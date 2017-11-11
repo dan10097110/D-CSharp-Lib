@@ -1,5 +1,4 @@
 ﻿using Mpir.NET;
-using System;
 using System.Collections.Generic;
 
 namespace DLib.Math.Prime

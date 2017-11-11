@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DLib.Math.Prime
+﻿namespace DLib.Math.Prime
 {
     public static class Problably
     {
