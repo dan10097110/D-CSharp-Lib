@@ -7,7 +7,7 @@ namespace DLib.Bot.RoemischPokern
         readonly bool joker;
         readonly int cardAction;
         public readonly int dice, diceCount, points, index;
-        readonly Player situation;
+        readonly Player player;
 
         public int Card
         {
@@ -38,7 +38,7 @@ namespace DLib.Bot.RoemischPokern
 
         public Action(Player situation)
         {
-            this.situation = situation;
+            this.player = situation;
             cardAction = -1;
             joker = false;
             dice = -1;
@@ -49,7 +49,7 @@ namespace DLib.Bot.RoemischPokern
 
         public Action(Player situation, int diceCount)
         {
-            this.situation = situation;
+            this.player = situation;
             cardAction = -1;
             joker = false;
             dice = -1;
@@ -60,7 +60,7 @@ namespace DLib.Bot.RoemischPokern
 
         public Action(Player situation, int cardAction, bool joker, int dice, int diceCount)
         {
-            this.situation = situation;
+            this.player = situation;
             this.cardAction = cardAction;
             this.joker = joker;
             this.dice = dice;
@@ -71,7 +71,7 @@ namespace DLib.Bot.RoemischPokern
 
         public Action(Player situation, bool joker, int points, int index)
         {
-            this.situation = situation;
+            this.player = situation;
             cardAction = 3;
             this.joker = joker;
             dice = -1;
@@ -82,7 +82,7 @@ namespace DLib.Bot.RoemischPokern
 
         public Action(Player situation, int points, int index)
         {
-            this.situation = situation;
+            this.player = situation;
             cardAction = -1;
             joker = false;
             dice = -1;
@@ -93,9 +93,9 @@ namespace DLib.Bot.RoemischPokern
 
         public double ExpectedValue()
         {
-            var dices = situation.Dices.ToArray();
-            var cards = situation.Cards.ToArray();
-            var table = situation.Table.ToArray();
+            var dices = player.Dices.ToArray();
+            var cards = player.Cards.ToArray();
+            var table = player.Table.ToArray();
             if (UseCard)
                 cards[Card] = false;
             if (KeepUp)
@@ -105,14 +105,14 @@ namespace DLib.Bot.RoemischPokern
                 double expected = 0;
                 for (int i = 0; i <= diceCount; i++)
                     for (int v = 0; i + v <= diceCount; v++)
-                        expected += new Player(situation.game, new int[] { dices[0] + i, dices[1] + v, dices[2] + diceCount - i - v }, cards, table, false).GetBestAction().ExpectedValue() * System.Math.Pow(1 / 2f, i) * System.Math.Pow(1 / 6f, v) * System.Math.Pow(1 / 3f, diceCount - i - v);
+                        expected += new Player(player.game, new int[] { dices[0] + i, dices[1] + v, dices[2] + diceCount - i - v }, cards, table).GetBestAction().ExpectedValue() * System.Math.Pow(1 / 2f, i) * System.Math.Pow(1 / 6f, v) * System.Math.Pow(1 / 3f, diceCount - i - v);
                 return expected;
             }
             else
             {
                 if (WriteDown)
                     table[index] = points;
-                return new Player(situation.game, new int[3], cards, table, true).Points;
+                return new Player(player.game, new int[3], cards, table).Points;
             }
         }
     }

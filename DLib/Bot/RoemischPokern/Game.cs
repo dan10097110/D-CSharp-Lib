@@ -11,7 +11,7 @@
                 maxFilledFields = System.Math.Max(maxFilledFields, value);
                 if (value >= 7)
                     Finished = true;
-            } 
+            }
         }
         public bool Finished { get; set; }
 
