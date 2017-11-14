@@ -33,28 +33,12 @@ namespace DLib
             return max;
         }
 
-        public static void Swap<T>(ref T lhs, ref T rhs)
-        {
-            T temp = lhs;
-            lhs = rhs;
-            rhs = temp;
-        }
-
-        public static IEnumerable<T> SplitString<T>(string s, char splitChar, Func<string, T> parse)
-        {
-            for (int i; (i = s.IndexOf(splitChar)) != -1; s = s.Remove(0, i + 1))
-                yield return parse(s.Substring(0, i));
-            yield return parse(s);
-        }
-
         public static ulong GetDigitSum(ulong n)
         {
             ulong sum = 0;
             for (; n != 0; n /= 10) sum += n % 10;
             return sum;
         }
-
-        public static ulong GetDigitSum2(ulong n) => (ulong)n.ToString().ToCharArray().Select(chr => (int)chr).Sum();
 
         public static bool IsPerfectPower(ulong n)
         {
@@ -89,6 +73,22 @@ namespace DLib
                     return true;
             }
             return false;
+        }
+
+        public static ulong GetDigitSum2(ulong n) => (ulong)n.ToString().ToCharArray().Select(chr => (int)chr).Sum();
+
+        public static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            T temp = lhs;
+            lhs = rhs;
+            rhs = temp;
+        }
+
+        public static IEnumerable<T> SplitString<T>(string s, char splitChar, Func<string, T> parse)
+        {
+            for (int i; (i = s.IndexOf(splitChar)) != -1; s = s.Remove(0, i + 1))
+                yield return parse(s.Substring(0, i));
+            yield return parse(s);
         }
 
         public static bool[] ToBinaryBoolArray(long n) => Convert.ToString(n, 2).ToCharArray().Select(c => c == 49 ? true : false).ToArray();

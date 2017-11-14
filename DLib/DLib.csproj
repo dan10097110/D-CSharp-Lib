@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bot\RoemischPokern\Action.cs" />
+    <Compile Include="Bot\RoemischPokern\Game.cs" />
+    <Compile Include="Bot\RoemischPokern\Player.cs" />
     <Compile Include="Collection\Array.cs" />
     <Compile Include="Collection\BitArray.cs" />
     <Compile Include="Collection\List.cs" />
