@@ -7,9 +7,9 @@
             return new T[1];
         }
 
-        public static T[] TrialDivision<T>(T n)
+        public static ulong[] TrialDivision(ulong n)
         {
-            return new T[1];
+            return null;
         }
 
         public static T[] GCD<T>(T n)

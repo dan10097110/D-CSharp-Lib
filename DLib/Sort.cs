@@ -6,7 +6,7 @@ namespace DLib
     {
         public static class Swap
         {
-            public static int[] BubbleSort(int[] a)
+            public static int[] Bubble(int[] a)
             {
                 bool b = true;
                 for (int i = 0; b; i++)
@@ -22,7 +22,7 @@ namespace DLib
                 return a;
             }
 
-            public static int[] CocktailSort(int[] a)
+            public static int[] Cocktail(int[] a)
             {
                 for (int i = 0; ; i++)
                 {
@@ -47,7 +47,7 @@ namespace DLib
                 }
             }
 
-            public static int[] GnomeSort(int[] a)
+            public static int[] Gnome(int[] a)
             {
                 for (int i = 0, j = 0; i < a.Length;)
                     if (i == 0 || a[i] >= a[i - 1])
@@ -61,7 +61,7 @@ namespace DLib
                 return a;
             }
 
-            public static int[] ShellSort(int[] a)
+            public static int[] Shell(int[] a)
             {
                 int[] gapps = new int[(int)System.Math.Log(a.Length + 1, 2)];
                 gapps[gapps.Length - 1] = 1;
@@ -77,7 +77,7 @@ namespace DLib
                 return a;
             }
 
-            public static int[] CombSort(int[] a)
+            public static int[] Comb(int[] a)
             {
                 for (int gap = a.Length - 1; gap > 1; gap = (int)(gap / 1.3))
                     for (int i = 0; i + gap < a.Length; i++)
@@ -342,7 +342,7 @@ namespace DLib
                             Combine2Sections(a, start, count);
                         }
                         else if (count > 1)
-                            CombSort(a, start, count);
+                            Comb(a, start, count);
                     }
 
                     public static int[] StartTri(int[] a)
@@ -362,7 +362,7 @@ namespace DLib
                             Combine3Sections(a, start, count);
                         }
                         else if (count > 1)
-                            CombSort(a, start, count);
+                            Comb(a, start, count);
                     }
                 }
 
@@ -487,7 +487,7 @@ namespace DLib
                     public static int[] Start(int[] a)
                     {
                         for (int start = 0; start + 1 < a.Length; start += 2048)
-                            CombSort(a, start, System.Math.Min(a.Length - start, 2048));
+                            Comb(a, start, System.Math.Min(a.Length - start, 2048));
                         for (int firstCount = 1; firstCount < a.Length; firstCount <<= 1)
                             for (int start = 0; start + firstCount < a.Length; start += (firstCount << 1))
                                 Combine2Sections(a, start, firstCount);
@@ -497,7 +497,7 @@ namespace DLib
                     public static int[] StartTri(int[] a)
                     {
                         for (int start = 0; start + 1 < a.Length; start += 2048)
-                            CombSort(a, start, System.Math.Min(a.Length - start, 2048));
+                            Comb(a, start, System.Math.Min(a.Length - start, 2048));
                         for (int size = 2048; size < a.Length; size *= 3)
                             for (int u = 0; u + size < a.Length; u += size * 3)
                                 Combine3Sections(a, u, size);
@@ -615,7 +615,7 @@ namespace DLib
             }
         }
 
-        public static void CombSort(int[] a, int start, int count)
+        public static void Comb(int[] a, int start, int count)
         {
             for (int gap = a.Length - 1; gap > 1; gap = (int)(gap / 1.3))
                 for (int i = start; i + gap < start + count; i++)
@@ -706,7 +706,7 @@ namespace DLib
             }
         }
 
-        public static int[] TimSort(int[] a)
+        public static int[] Tim(int[] a)
         {
             for (int u = 1; u < a.Length;)
             {
@@ -782,7 +782,7 @@ namespace DLib
             return a;
         }
 
-        public static int[] RadixSort(int[] a)
+        public static int[] Radix(int[] a)
         {
             int m = a[0];
             for (int i = 1; i < a.Length; i++)
@@ -803,7 +803,7 @@ namespace DLib
             return a;
         }
 
-        public static int[] CountingSort(int[] a)
+        public static int[] Counting(int[] a)
         {
             int min = a[0], max = a[0];
             for (int i = 1; i < a.Length; i++)
@@ -820,7 +820,7 @@ namespace DLib
             return a;
         }
 
-        public static int[] FlashSort(int[] a)
+        public static int[] Flash(int[] a)
         {
             int min = a[0], max = a[0];
             for (int i = 1; i < a.Length; i++)
@@ -859,7 +859,7 @@ namespace DLib
                         }
                     }
             }
-            return Swap.CocktailSort(a);
+            return Swap.Cocktail(a);
         }
 
         public static class Bucket

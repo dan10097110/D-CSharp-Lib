@@ -71,7 +71,7 @@ namespace DLib.Math.Prime.Test
 
         public static bool Pocklington(ulong n)
         {
-            ulong[] primes = Prime.Sieve.Standard((ulong)System.Math.Log(n - 1)).Cast<ulong>().ToArray();
+            ulong[] primes = Sieve.Standard((ulong)System.Math.Log(n - 1)).Cast<ulong>().ToArray();
             ulong f = n - 1, sqrt = (ulong)System.Math.Sqrt(n);
             foreach (ulong prime in primes)
             {
