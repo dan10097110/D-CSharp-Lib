@@ -81,11 +81,11 @@
     <Compile Include="Math\CFrac.cs" />
     <Compile Include="Math\Factor.cs" />
     <Compile Include="Math\GCD.cs" />
-    <Compile Include="Math\Integer.cs" />
+    <Compile Include="Math\Number\Integer.cs" />
     <Compile Include="Math\LCM.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Mul.cs" />
-    <Compile Include="Math\Natural.cs" />
+    <Compile Include="Math\Number\Natural.cs" />
     <Compile Include="Math\Polynomial.cs" />
     <Compile Include="Math\Power.cs" />
     <Compile Include="Math\Prime\Factorise.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Math\Prime\Test\Deterministic.cs" />
     <Compile Include="Math\Prime\Test\Heuristic.cs" />
     <Compile Include="Math\Prime\Test\Probabilistic.cs" />
-    <Compile Include="Math\Rational.cs" />
+    <Compile Include="Math\Number\Rational.cs" />
     <Compile Include="Math\Seeker\MersennePrime.cs" />
     <Compile Include="Math\Seeker\MersennePrimeNetworkMember.cs" />
     <Compile Include="Math\Seeker\MersennePrimeNetworkServer.cs" />

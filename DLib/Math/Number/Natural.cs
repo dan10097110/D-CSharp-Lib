@@ -449,5 +449,7 @@ namespace DLib.Math
         public static implicit operator Natural(ulong u) => new Natural(u);
 
         public static implicit operator string(Natural n) => n.ToString();
+
+        public static explicit operator ulong(Natural natural) => natural.ToDecimal();
     }
 }

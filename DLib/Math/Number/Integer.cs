@@ -101,6 +101,8 @@
 
         public static explicit operator Natural(Integer integer) => Abs(integer);
 
+        public static explicit operator long(Integer integer) => integer.ToDecimal();
+
         public static implicit operator Integer(long u) => new Integer(u);
 
         public static implicit operator string(Integer n) => n.ToString();
