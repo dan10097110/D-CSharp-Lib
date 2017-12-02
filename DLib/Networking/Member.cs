@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace DLib.Networking
@@ -181,10 +183,12 @@ namespace DLib.Networking
 
         ~MemberNew() => Dispose();
 
-        public void Dispose()
+        public void Connect(string serverName)
         {
-            client.Dispose();
+
         }
+
+        public void Dispose() => client.Dispose();
 
         public void Send(string s)
         {
@@ -203,6 +207,85 @@ namespace DLib.Networking
         {
             Send(s);
             return Recieve();
+        }
+    }
+
+
+    public class MemberNew2
+    {
+        ClientNew client;
+        IPEndPoint server;
+
+        public MemberNew2(int port)
+        {
+            server = new IPEndPoint(IPAddress.Broadcast, port);
+            client = new ClientNew();
+        }
+
+        ~MemberNew2() => Dispose();
+
+        public void Connect(string serverName)
+        {
+
+        }
+
+        public void Dispose() => client.Dispose();
+
+        public void Send(string s)
+        {
+            client.SendAndWait(s, server);
+        }
+
+        public string Recieve()
+        {
+            string message = null;
+            IPEndPoint endPoint = null;
+            client.ReceiveUntilAvailable(ref message, ref endPoint);
+            return message;
+        }
+
+        public string SendRecieve(string s)
+        {
+            ClientNew client = new ClientNew();
+            string message = null;
+            IPEndPoint endPoint = null;
+            client.SendAndWait(s, server);
+            client.ReceiveUntilAvailable(ref message, ref endPoint);
+            client.Dispose();
+            return message;
+        }
+    }
+
+    public class MemberNew3
+    {
+        UdpClient member;
+        IPEndPoint server;
+
+        public MemberNew3(int port)
+        {
+            member = new UdpClient();
+            server = new IPEndPoint(IPAddress.Broadcast, port);
+        }
+
+        ~MemberNew3() => Dispose();
+
+        public void Dispose() => member.Dispose();
+
+        public string SendRecieve(string s)
+        {
+            var client = new UdpClient();
+            var array = Encoding.ASCII.GetBytes(s);
+            client.Send(array, array.Length, server);
+            IPEndPoint endPoint = null;
+            s = Encoding.ASCII.GetString(client.Receive(ref endPoint));
+            client.Dispose();
+            return s;
+        }
+
+        public void Send(string s)
+        {
+            var array = Encoding.ASCII.GetBytes(s);
+            member.Send(array, array.Length, server);
         }
     }
 }

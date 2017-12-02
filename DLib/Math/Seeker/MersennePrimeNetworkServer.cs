@@ -10,7 +10,7 @@ namespace DLib.Math.Seeker
 {
     public class MPNetworkServer : IDisposable
     {
-        Networking.ServerNew server;
+        Networking.ServerNew3 server;
         List<(uint exponent, DateTime explorationDate, TimeSpan totalTime, TimeSpan testTime, IPAddress ipAdresse)> mersennePrimes = new List<(uint, DateTime, TimeSpan, TimeSpan, IPAddress)>();
         ManualResetEventSlim manualResetEvent = new ManualResetEventSlim(true);
         Stopwatch totalTime = new Stopwatch();
@@ -28,7 +28,7 @@ namespace DLib.Math.Seeker
             if (!Running && !Started)
             {
                 Running = true;
-                server = new Networking.ServerNew(port);
+                server = new Networking.ServerNew3(port);
                 mersennePrimes.Clear();
                 manualResetEvent.Set();
                 NextExponent = System.Math.Max(5, startExponent + ((startExponent + 1) & 1));
@@ -38,20 +38,21 @@ namespace DLib.Math.Seeker
                     while (Running)
                     {
                         manualResetEvent.Wait();
-                        (string content, IPEndPoint member) message = server.Recieve();
-                        if (message.content == "g")
+                        IPEndPoint member = null;
+                        string message = server.Recieve(ref member);
+                        if (message == "g")
                         {
                             const int c = 1024;
                             for (ulong max = (NextExponent += (c * 2)), u = max - (c * 2); u < max; u += 2)
                                 sb.Append(u + "|");
                             sb.Remove(sb.Length - 1, 1);
-                            server.Send(sb.ToString(), message.member);
+                            server.Send(sb.ToString(), member);
                             sb.Clear();
                         }
                         else
                         {
-                            var array = Extra.SplitString(message.content, '|', n => n).ToArray();
-                            InsertMersennPrime((uint.Parse(array[0]), DateTime.Parse(array[1]), ServerWorkTime, TimeSpan.Parse(array[2]), message.member.Address));
+                            var array = Extra.SplitString(message, '|', n => n).ToArray();
+                            InsertMersennPrime((uint.Parse(array[0]), DateTime.Parse(array[1]), ServerWorkTime, TimeSpan.Parse(array[2]), member.Address));
 
                             void InsertMersennPrime((uint, DateTime, TimeSpan, TimeSpan, IPAddress) mersennePrime)
                             {

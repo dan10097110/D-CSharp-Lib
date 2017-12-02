@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace DLib.Networking
@@ -127,10 +129,7 @@ namespace DLib.Networking
 
         ~ServerNew() => Dispose();
 
-        public void Dispose()
-        {
-            client.Dispose();
-        }
+        public void Dispose() => client.Dispose();
 
         public void Send(string s)
         {
@@ -151,6 +150,31 @@ namespace DLib.Networking
             if (!members.Contains(endPoint))
                 members.Add(endPoint);
             return (message, endPoint);
+        }
+    }
+
+    public class ServerNew3
+    {
+        UdpClient server;
+
+        public ServerNew3(int port)
+        {
+            server = new UdpClient(port);
+        }
+
+        ~ServerNew3() => Dispose();
+
+        public void Dispose() => server.Dispose();
+
+        public void Send(string s, IPEndPoint member)
+        {
+            var array = Encoding.ASCII.GetBytes(s);
+            server.Send(array, array.Length, member);
+        }
+
+        public string Recieve(ref IPEndPoint member)
+        {
+            return Encoding.ASCII.GetString(server.Receive(ref member));
         }
     }
 }

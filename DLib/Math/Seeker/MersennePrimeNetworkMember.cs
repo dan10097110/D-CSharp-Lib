@@ -29,22 +29,20 @@ namespace DLib.Math.Seeker
                         byte id = b;
                         new Thread(() => {
                             runningThreadCount++;
-                            var client = new Networking.MemberNew(Port);
+                            var member = new Networking.MemberNew3(Port);
                             (ulong i, mpz_t s) start = (1, 3);
                             ulong lastExponent = 0;
                             var testTime = new Stopwatch();
                             while (Running && id < ThreadCount)
-                                foreach (string t in Extra.SplitString(client.SendRecieve("g"), '|', s => s))
+                                foreach (ulong exponent in Extra.SplitString(member.SendRecieve("g"), '|', s => s).Cast<ulong>().ToArray())
                                 {
                                     testTime.Restart();
-                                    ulong exponent = ulong.Parse(t);
                                     if (exponent < lastExponent)
                                         start = (1, 3);
                                     lastExponent = exponent;
                                     if (Prime.Mersenne.Test(exponent, ref start.i, ref start.s, primes))
-                                        client.Send(exponent.ToString() + "|" + DateTime.Now + "|" + testTime.Elapsed);
+                                        member.Send(exponent.ToString() + "|" + DateTime.Now + "|" + testTime.Elapsed);
                                 }
-                            client.Dispose();
                             runningThreadCount--;
                         }).Start();
                     }

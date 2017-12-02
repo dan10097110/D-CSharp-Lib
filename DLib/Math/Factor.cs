@@ -274,17 +274,97 @@ namespace DLib.Math
                 for(int i = 0; i < rels.Length; i++)
                     for(int j = i + 1; j < rels.Length; j++)
                     {
-                        var y = System.Math.Sqrt(rels[i].Item2 * rels[j].Item2);
-                        if (y > 0 && y % 1 == 0)
+                        var v = rels[i].Item2 * rels[j].Item2;
+                        if(v > 0)
                         {
-                            ulong gcd = Math.GCD.Standard((ulong)(rels[i].Item1 * rels[j].Item1 - (long)y), n);
-                            gcd = System.Math.Min(gcd, n / gcd);
-                            if (gcd != 1 && fs.Contains(gcd))
-                                fs.Add(gcd);
+                            var y = System.Math.Sqrt(v);
+                            if (y % 1 == 0)
+                            {
+                                ulong gcd = Math.GCD.Standard((ulong)(rels[i].Item1 * rels[j].Item1 - (long)y), n);
+                                gcd = System.Math.Min(gcd, n / gcd);
+                                if (gcd != 1 && !fs.Contains(gcd))
+                                    fs.Add(gcd);
+                            }
                         }
                     }
                 return fs.ToArray();
             }
+
+            /*static ulong[] GetFactors(ulong n, (long, long, long[])[] rels)
+            {
+
+            }
+
+            class EvolutionaryAlgorithm
+            {
+                public static Relation[] rel;
+
+                public EvolutionaryAlgorithm()
+                {
+                    var sols = new List<Solution>();
+
+                    sols.Sort((a, b) => a.Points > b.Points ? 1 : 0);
+                }
+            }
+
+            class Relation
+            {
+
+            }
+
+            class Solution
+            {
+                Random random = new Random();
+                bool[] gen;
+                public bool[] Sum
+                {
+                    get
+                    {
+                        var sum = new bool[EvolutionaryAlgorithm.rel.factors.Length];
+                        for(int i = 0; i < sum.Length; i++)
+                            for(int j = 0; j < EvolutionaryAlgorithm.rel.Length; j++)
+                                sum[i] ^= EvolutionaryAlgorithm.rel.factors[j];
+                        return sum;
+                    }
+                }
+                public int Points
+                {
+                    get
+                    {
+                        int points = 0;
+                        for (int i = 0; i < Sum.Length; i++)
+                            if (Sum[i])
+                                points++;
+                        return points;
+                    }
+                }
+
+                public Solution()
+                {
+                    gen = new bool[EvolutionaryAlgorithm.rel.Length];
+                }
+
+                public Solution(bool[] gen)
+                {
+                    this.gen = gen;
+                }
+
+                public Solution Mutate(int complexity)
+                {
+                    bool[] gen = this.gen.ToArray();
+                    for (int i = 0; i < complexity; i++)
+                    {
+                        int r = random.Next(0, gen.Length);
+                        gen[r] = !gen[r];
+                    }
+                    return new Solution(gen);
+                }
+
+                public static Solution Combine(Solution sol1, Solution sol2)
+                {
+
+                }
+            }*/
         }
     }
 }
