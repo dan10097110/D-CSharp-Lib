@@ -34,7 +34,7 @@ namespace DLib.Math.Seeker
                             ulong lastExponent = 0;
                             var testTime = new Stopwatch();
                             while (Running && id < ThreadCount)
-                                foreach (ulong exponent in Extra.SplitString(member.SendRecieve("g"), '|', s => s).Cast<ulong>().ToArray())
+                                foreach (ulong exponent in Extra.SplitString(member.SendRecieve("g"), '|', s => Convert.ToUInt64(s)).Cast<ulong>().ToArray())
                                 {
                                     testTime.Restart();
                                     if (exponent < lastExponent)
