@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DLib.Math.Seeker
 {
@@ -50,10 +49,7 @@ namespace DLib.Math.Seeker
             }
         }
 
-        ~MPNetworkMember()
-        {
-            Dispose();
-        }
+        ~MPNetworkMember() => Dispose();
 
         public void Dispose()
         {
@@ -90,26 +86,57 @@ namespace DLib.Math.Seeker
 
     public class MPNetworkMember2 : IDisposable
     {
+        List<ulong> primes = new List<ulong>();
         bool threadRunning;
+        ulong primesUntil;
 
         public bool Running { get; private set; }
         public bool Disposed { get; private set; }
-        public uint Port { get; private set; }
-        public byte ThreadCount { get; private set; }
+        public int Port { get; private set; }
+        public byte ThreadCount { get; set; }
 
-        ~MPNetworkMember2()
+        ~MPNetworkMember2() => Dispose();
+
+        public void Dispose()
         {
-            Dispose();
+            if (Running)
+                Stop();
+            Disposed = true;
+            primes.Clear();
         }
 
-        public void Start(uint port, byte threadCount)
+        public void Start(int port, byte threadCount)
         {
             if (!Disposed)
             {
                 Running = true;
                 Port = port;
+                primes.Add(2);
+                primesUntil = 2;
                 ThreadCount = threadCount;
-                new Thread(ThreadWork).Start();
+                new Thread(() => {
+                    threadRunning = true;
+                    var member = new Networking.MemberNew3(Port);
+                    (ulong i, mpz_t s) start = (1, 3);
+                    var lastExponent = int.MaxValue;
+                    while (Running)
+                    {
+                        var message = member.SendRecieve("g");
+                        int startExponent = int.Parse(message.Remove(message.IndexOf("|"))), count = int.Parse(message.Remove(0, message.IndexOf("|") + 1));
+                        if (startExponent < lastExponent)
+                        {
+                            start = (1, 3);
+                            primes.Clear();
+                            primes.Add(2);
+                            primesUntil = 2;
+                        }
+                        lastExponent = startExponent + count;
+                        primes.AddRange(Enumerable.Range((int)primesUntil, startExponent - (int)primesUntil).Where(n => Prime.Test.Probabilistic.TrialDivision((ulong)n, primes)).Cast<ulong>());
+                        primesUntil = (ulong)lastExponent;
+                        member.Send(string.Join("|", Enumerable.Range(startExponent, count).AsParallel().WithDegreeOfParallelism(ThreadCount).Where(exponent => Prime.Mersenne.Test((ulong)exponent, ref start.i, ref start.s, primes))));
+                    }
+                    threadRunning = false;
+                }).Start();
             }
         }
 
@@ -118,73 +145,10 @@ namespace DLib.Math.Seeker
             if (!Disposed)
             {
                 Running = false;
+                primes.Clear();
                 while (threadRunning)
                     Thread.Sleep(5);
             }
-        }
-
-        public void Dispose()
-        {
-            if (Running)
-                Stop();
-            Disposed = true;
-        }
-
-        void ThreadWork()
-        {
-            threadRunning = true;
-            List<ulong> primes = new List<ulong>() { 3 };
-            Networking.Member client = new Networking.Member(Port);
-            ulong startI;
-            mpz_t startS;
-            while (Running)
-            {
-                var exponents = Extra.SplitString(client.SendRecieveSave("g"), '|', ulong.Parse);
-                startI = (ulong)(exponents.First() / 1.667);// Math.Floor(BigInteger.Log((BigInteger.One << (int)exponents.First()) - 1, 3));
-                startS = mpz_t.Three.Power((int)startI);
-                var options = new ParallelOptions { MaxDegreeOfParallelism = ThreadCount };
-                Parallel.ForEach(Enumerable.Range((int)primes.Last() + 2, (int)exponents.Last()).Where(x => (x & 1) == 1), options, n => {
-                    if (IsPrime((ulong)n))
-                        primes.Add((ulong)n);///////squential not parrallel
-                });
-                Parallel.ForEach(exponents, options, exponent => {
-                    Stopwatch testTime = new Stopwatch();
-                    testTime.Start();
-                    if (IsMersennePrime())
-                        client.Send(exponent.ToString() + "|" + DateTime.Now + "|" + testTime.Elapsed);
-
-                    bool IsMersennePrime()
-                    {
-                        if (!IsPrime(exponent) || ((exponent & 3) == 3 && IsPrime((exponent << 1) + 1)))
-                            return false;
-                        mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
-                        return Prime.Mersenne.TrialDivision(exponent, mersenneNumber, primes) && LucasLehmer();
-
-                        bool LucasLehmer()
-                        {
-                            mpz_t s = startS.Clone();
-                            /*ulong m = (exponent - startI) & 1;
-                            if (m == 1)
-                                mpir.mpz_powm_ui(s, s, 2, mersenneNumber);*/
-                            for (ulong i = startI/* + m*/; i < exponent; i++)
-                                mpir.mpz_powm_ui(s, s, 2, mersenneNumber);
-                            return s + 3 == mersenneNumber;
-                        }
-                    }
-                });
-
-                bool IsPrime(ulong n)
-                {
-                    ulong sqrt = (ulong)System.Math.Sqrt(n);
-                    for (int i = 0; primes[i] <= sqrt; i++)
-                        if (n % primes[i] == 0)
-                            return false;
-                    return true;
-                }
-            }
-            client.Dispose();
-            primes.Clear();
-            threadRunning = false;
         }
     }
 }

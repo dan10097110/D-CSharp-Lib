@@ -34,7 +34,6 @@ namespace DLib.Math.Seeker
                 NextExponent = System.Math.Max(5, startExponent + ((startExponent + 1) & 1));
                 totalTime.Restart();
                 new Thread(() => {
-                    var sb = new StringBuilder();
                     while (Running)
                     {
                         manualResetEvent.Wait();
@@ -42,12 +41,9 @@ namespace DLib.Math.Seeker
                         string message = server.Recieve(ref member);
                         if (message == "g")
                         {
-                            const int c = 1024;
-                            for (ulong max = (NextExponent += (c * 2)), u = max - (c * 2); u < max; u += 2)
-                                sb.Append(u + "|");
-                            sb.Remove(sb.Length - 1, 1);
-                            server.Send(sb.ToString(), member);
-                            sb.Clear();
+                            const int count = 1024;
+                            server.Send(NextExponent + "|" + count, member);
+                            NextExponent += count;
                         }
                         else
                         {
