@@ -157,8 +157,11 @@ namespace DLib.Networking
     {
         UdpClient server;
 
+        public int Port { get; private set; }
+
         public ServerNew3(int port)
         {
+            Port = port;
             server = new UdpClient(port);
         }
 
@@ -166,9 +169,9 @@ namespace DLib.Networking
 
         public void Dispose() => server.Dispose();
 
-        public void Send(string s, IPEndPoint member)
+        public void Send<T>(IPEndPoint member, params T[] s)
         {
-            var array = Encoding.ASCII.GetBytes(s);
+            var array = Encoding.ASCII.GetBytes(string.Join("|", s));
             server.Send(array, array.Length, member);
         }
 

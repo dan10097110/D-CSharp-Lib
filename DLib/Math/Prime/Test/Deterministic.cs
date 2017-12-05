@@ -6,7 +6,7 @@ namespace DLib.Math.Prime.Test
 {
     public static class Deterministic
     {
-        public static bool TrialDivison(ulong n) => Factor.TrialDivison(n) == 1;
+        public static bool TrialDivision(ulong n) => Factor.TrialDivison(n) == 1;
 
         public static bool PrimeDivision(ulong n) => Factor.PrimeDivisionIntegratedSieve(n) == 1;
 

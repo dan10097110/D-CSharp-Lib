@@ -271,20 +271,22 @@ namespace DLib.Networking
 
         public void Dispose() => member.Dispose();
 
-        public string SendRecieve(string s)
+        public string SendRecieve<T>(params T[] s)
         {
             var client = new UdpClient();
-            var array = Encoding.ASCII.GetBytes(s);
+            string m = (s.Length > 0 ? string.Join("|", s) : "");
+            var array = Encoding.ASCII.GetBytes(m);
             client.Send(array, array.Length, server);
             IPEndPoint endPoint = null;
-            s = Encoding.ASCII.GetString(client.Receive(ref endPoint));
+            m = Encoding.ASCII.GetString(client.Receive(ref endPoint));
             client.Dispose();
-            return s;
+            return m;
         }
 
-        public void Send(string s)
+        public void Send<T>(params T[] s)
         {
-            var array = Encoding.ASCII.GetBytes(s);
+            string m = (s.Length > 0 ? string.Join("|", s) : "");
+            var array = Encoding.ASCII.GetBytes(m);
             member.Send(array, array.Length, server);
         }
     }

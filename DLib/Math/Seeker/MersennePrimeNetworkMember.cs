@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace DLib.Math.Seeker
 {
-    public class MPNetworkMember : IDisposable
+    public class MPNetworkMember2 : IDisposable
     {
         List<ulong> primes = new List<ulong>();
         byte threadCount, runningThreadCount;
@@ -40,7 +40,7 @@ namespace DLib.Math.Seeker
                                         start = (1, 3);
                                     lastExponent = exponent;
                                     if (Prime.Mersenne.Test(exponent, ref start.i, ref start.s, primes))
-                                        member.Send(exponent.ToString() + "|" + DateTime.Now + "|" + testTime.Elapsed);
+                                        member.Send(exponent.ToString(), DateTime.Now.ToString(), testTime.Elapsed.ToString());
                                 }
                             runningThreadCount--;
                         }).Start();
@@ -49,7 +49,7 @@ namespace DLib.Math.Seeker
             }
         }
 
-        ~MPNetworkMember() => Dispose();
+        ~MPNetworkMember2() => Dispose();
 
         public void Dispose()
         {
@@ -84,60 +84,53 @@ namespace DLib.Math.Seeker
         }
     }
 
-    public class MPNetworkMember2 : IDisposable
+    public class MPNetworkMember : IDisposable
     {
-        List<ulong> primes = new List<ulong>();
         bool threadRunning;
-        ulong primesUntil;
 
         public bool Running { get; private set; }
         public bool Disposed { get; private set; }
         public int Port { get; private set; }
         public byte ThreadCount { get; set; }
 
-        ~MPNetworkMember2() => Dispose();
+        ~MPNetworkMember() => Dispose();
 
         public void Dispose()
         {
             if (Running)
                 Stop();
             Disposed = true;
-            primes.Clear();
         }
 
         public void Start(int port, byte threadCount)
         {
-            if (!Disposed)
-            {
-                Running = true;
-                Port = port;
-                primes.Add(2);
-                primesUntil = 2;
-                ThreadCount = threadCount;
+            if (!Running && !Disposed)
                 new Thread(() => {
+                    Running = true;
                     threadRunning = true;
-                    var member = new Networking.MemberNew3(Port);
-                    (ulong i, mpz_t s) start = (1, 3);
+                    Port = port;
+                    ThreadCount = threadCount;
+                    var primes = new List<ulong>() { 2 };
+                    var member = new DLib.Networking.MemberNew3(Port);
                     var lastExponent = int.MaxValue;
+                    (ulong i, mpz_t s) start = (1, 3);
                     while (Running)
                     {
-                        var message = member.SendRecieve("g");
-                        int startExponent = int.Parse(message.Remove(message.IndexOf("|"))), count = int.Parse(message.Remove(0, message.IndexOf("|") + 1));
-                        if (startExponent < lastExponent)
+                        var message = member.SendRecieve("g").Split('|').Select(n => int.Parse(n)).ToArray();
+                        if (message[0] < lastExponent)
                         {
                             start = (1, 3);
                             primes.Clear();
                             primes.Add(2);
-                            primesUntil = 2;
                         }
-                        lastExponent = startExponent + count;
-                        primes.AddRange(Enumerable.Range((int)primesUntil, startExponent - (int)primesUntil).Where(n => Prime.Test.Probabilistic.TrialDivision((ulong)n, primes)).Cast<ulong>());
-                        primesUntil = (ulong)lastExponent;
-                        member.Send(string.Join("|", Enumerable.Range(startExponent, count).AsParallel().WithDegreeOfParallelism(ThreadCount).Where(exponent => Prime.Mersenne.Test((ulong)exponent, ref start.i, ref start.s, primes))));
+                        lastExponent = message[0] + message[1];
+                        primes.AddRange(Enumerable.Range((int)primes.Last() + 1, message[0]).Where(n => DLib.Math.Prime.Test.Deterministic.TrialDivision((ulong)n)).Select(n => (ulong)n));
+                        var mp = Enumerable.Range(message[0], message[1]).AsParallel().WithDegreeOfParallelism(ThreadCount).Where(exponent => DLib.Math.Prime.Mersenne.Test2((ulong)exponent, ref start.i, ref start.s, primes)).ToArray();
+                        if (mp.Length > 0)
+                            member.Send(mp);
                     }
                     threadRunning = false;
                 }).Start();
-            }
         }
 
         public void Stop()
@@ -145,7 +138,6 @@ namespace DLib.Math.Seeker
             if (!Disposed)
             {
                 Running = false;
-                primes.Clear();
                 while (threadRunning)
                     Thread.Sleep(5);
             }

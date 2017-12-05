@@ -22,6 +22,14 @@ namespace DLib.Math.Prime
             return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
         }
 
+        public static bool Test2(ulong exponent, ref ulong startI, ref mpz_t startS, List<ulong> primes)
+        {
+            if (!Prime.Test.Probabilistic.TrialDivision(exponent, primes) || ((exponent & 3) == 3 && Prime.Test.Probabilistic.TrialDivision((exponent << 1) + 1, primes)))
+                return false;
+            mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
+            return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
+        }
+
         public static class LucasLehmerTest
         {
             public static bool Start01(ulong exponent)//2669
