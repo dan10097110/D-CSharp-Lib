@@ -2,21 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace DLib.Math.Prime
 {
     public static class Sieve
     {
-        public static IEnumerable<ulong> Standard(ulong exclusiveMax)
-        {
-            return Eratosthenes(exclusiveMax);
-        }
+        public static IEnumerable<ulong> Standard(ulong exclusiveMax) => Eratosthenes(exclusiveMax);
 
-        public static IEnumerable<ulong> Standard(ulong exclusiveMax, Func<ulong, bool> condition)
-        {
-            return Eratosthenes(exclusiveMax, condition);
-        }
+        public static IEnumerable<ulong> Standard(ulong exclusiveMax, Func<ulong, bool> condition) => Eratosthenes(exclusiveMax, condition);
 
         /// <summary>
         /// equal to optimized Euler sieve
