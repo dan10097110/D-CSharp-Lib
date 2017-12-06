@@ -5,23 +5,41 @@ namespace DLib.Math
 {
     public class Matrix
     {
-        double[,] matrix;
+        double[,] array;
 
-        public int Width => matrix.GetLength(0);
-        public int Height => matrix.GetLength(1);
+        public int Width => array.GetLength(0);
+        public int Height => array.GetLength(1);
+        
+        public Matrix() { }
 
-        public Matrix(int width, int height) => matrix = new double[width, height];
+        public Matrix(int width, int height) => array = new double[width, height];
+
+        public Matrix(double[,] array) => this.array = (double[,])array.Clone();
+
+        public Matrix(Matrix vector) => this.array = (double[,])vector.array.Clone();
+
+        public Matrix Clone() => new Matrix(this);
 
         public double this[int i, int j]
         {
-            get => i < Width && j < Height ? matrix[i, j] : throw new IndexOutOfRangeException();
-            set
-            {
-                if (i < Width && j < Height)
-                    matrix[i, j] = value;
-                else
-                    throw new IndexOutOfRangeException();
-            }
+            get => i < Width && j < Height ? array[i, j] : throw new IndexOutOfRangeException();
+            set => array[i, j] = i < Width && j < Height ? value : throw new IndexOutOfRangeException();
+        }
+
+        public Vector GetRow(int i)
+        {
+            var vector = new Vector(Width);
+            for (int j = 0; j < vector.Length; j++)
+                vector[j] = array[j, i];
+            return vector;
+        }
+
+        public Vector GetColumn(int i)
+        {
+            var vector = new Vector(Height);
+            for (int j = 0; j < vector.Length; j++)
+                vector[j] = array[i, j];
+            return vector;
         }
 
         public static Matrix operator +(Matrix a, Matrix b)
@@ -55,15 +73,6 @@ namespace DLib.Math
             return matrix;
         }
 
-        public static Matrix operator *(Matrix a, Matrix b)
-        {
-            var matrix = new Matrix(b.Width, a.Height);
-            for (int i = 0; i < matrix.Width; i++)
-                for (int j = 0; j < matrix.Height; j++)
-                    matrix[i, j] = a.GetRow(j) * b.GetColumn(i);
-            return matrix;
-        }
-
         public static Matrix operator /(Matrix a, double b)
         {
             var matrix = new Matrix(a.Width, a.Height);
@@ -73,20 +82,13 @@ namespace DLib.Math
             return matrix;
         }
 
-        public Vector GetRow(int i)
+        public static Matrix operator *(Matrix a, Matrix b)
         {
-            Vector vector = new Vector(Width);
-            for (int j = 0; j < vector.Length; j++)
-                vector[j] = matrix[j, i];
-            return vector;
-        }
-
-        public Vector GetColumn(int i)
-        {
-            Vector vector = new Vector(Height);
-            for (int j = 0; j < vector.Length; j++)
-                vector[j] = matrix[i, j];
-            return vector;
+            var matrix = new Matrix(b.Width, a.Height);
+            for (int i = 0; i < matrix.Width; i++)
+                for (int j = 0; j < matrix.Height; j++)
+                    matrix[i, j] = a.GetRow(j) * b.GetColumn(i);
+            return matrix;
         }
 
         public override string ToString()
@@ -99,7 +101,7 @@ namespace DLib.Math
                 sb.Append(": ( ");
                 for (int j = 0; j < Width; j++)
                 {
-                    sb.Append(matrix[j, i]);
+                    sb.Append(array[i, j]);
                     if (j + 1 < Width)
                         sb.Append(", ");
                 }
@@ -115,24 +117,24 @@ namespace DLib.Math
         {
             if (Width != Height)
                 return null;
-            Matrix inverse = new Matrix(Width, Height);
+            var preInverse = new Matrix(Width, Height);
             for (int i = 0; i < Width; i++)
                 for (int j = 0; j < Height; j++)
                 {
-                    Matrix m = new Matrix(Width - 1, Height - 1);
+                    var m = new Matrix(Width - 1, Height - 1);
                     for (int k = 0; k < Width; k++)
                         if (i != k)
                             for (int l = 0; l < Height; l++)
                                 if (j != l)
                                     m[k - (k > i ? 1 : 0), l - (l > j ? 1 : 0)] = this[k, l];
-                    inverse[i, j] = m.Determinant();
+                    preInverse[i, j] = m.Determinant();
                 }
             for (int i = 0; i < Height; i++)
-                for (int j = (i & 1) == 0 ? 1 : 0; j < Width; inverse[j, i] = -inverse[j, i], j += 2) ;
-            Matrix inverse2 = new Matrix(Width, Height);
+                for (int j = (i & 1) == 0 ? 1 : 0; j < Width; preInverse[j, i] = -preInverse[j, i], j += 2) ;
+            var inverse = new Matrix(Width, Height);
             for (int i = 0; i < Width; i++)
-                for (int j = 0; j < Height; inverse2[i, j] = inverse[j, i], j++) ;
-            return inverse2 / Determinant();
+                for (int j = 0; j < Height; inverse[i, j] = preInverse[j, i], j++) ;
+            return inverse / Determinant();
         }
 
         public double Determinant()
@@ -140,18 +142,24 @@ namespace DLib.Math
             if (Width != Height)
                 return 0;
             if (Width == 2 && Height == 2)
-                return matrix[0, 0] * matrix[1, 1] - matrix[1, 0] * matrix[0, 1];
-            double d = 0;
+                return array[0, 0] * array[1, 1] - array[1, 0] * array[0, 1];
+            double det = 0;
             for (int i = 0; i < Width; i++)
             {
-                Matrix m = new Matrix(Width - 1, Height - 1);
+                var m = new Matrix(Width - 1, Height - 1);
                 for (int j = 0; j < Width; j++)
                     if (i != j)
                         for (int k = 0; k < Height - 1; k++)
                             m[j - (j > i ? 1 : 0), k] = this[j, k + 1];
-                d += (m.Determinant() * ((i & 1) == 0 ? 1 : -1) * this[i, 0]);
+                det += (m.Determinant() * ((i & 1) == 0 ? 1 : -1) * this[i, 0]);
             }
-            return d;
+            return det;
         }
+
+        public static implicit operator Matrix(double[,] array) => new Matrix() { array = array };
+
+        public static implicit operator string(Matrix matrix) => matrix.ToString();
+
+        public static implicit operator double[,] (Matrix matrix) => matrix.array;
     }
 }
