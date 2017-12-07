@@ -109,7 +109,7 @@ namespace DLib.Math.Prime
         public static class Incremental//nicht hoch 2 sondern vlt linear
         {
             static Thread thread;
-            static Collection.List<ulong> primes = new Collection.List<ulong>();
+            static Collection.Long.List<ulong> primes = new Collection.Long.List<ulong>();
             static Stopwatch sw = new Stopwatch();
 
             public static ulong Count => primes.Count;
@@ -124,11 +124,11 @@ namespace DLib.Math.Prime
                 thread.Start();
             }
 
-            public static Collection.Array<ulong> EndAsync()
+            public static Collection.Long.Array<ulong> EndAsync()
             {
                 thread.Abort();
                 sw.Stop();
-                return new Collection.Array<ulong>(primes);
+                return new Collection.Long.Array<ulong>(primes);
             }
 
             static void Sieve()
@@ -137,11 +137,11 @@ namespace DLib.Math.Prime
                 {
                     Failed = false;
                     sw.Restart();
-                    primes = new Collection.List<ulong>();
+                    primes = new Collection.Long.List<ulong>();
                     primes.Add(3);
                     while (true)
                     {
-                        var bits = new Collection.BitArray(primes.Last() * ((primes.Last() - 1) >> 1));
+                        var bits = new Collection.Long.BitArray(primes.Last() * ((primes.Last() - 1) >> 1));
                         for (ulong j = 0; j < primes.Count; j++)
                         {
                             ulong prime = primes[j];

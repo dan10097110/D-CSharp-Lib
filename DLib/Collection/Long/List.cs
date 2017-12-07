@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace DLib.Collection
+namespace DLib.Collection.Long
 {
     public class List<T>
     {

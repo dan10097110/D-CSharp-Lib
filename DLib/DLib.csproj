@@ -69,8 +69,9 @@
     <Compile Include="Bot\RoemischPokern\Game.cs" />
     <Compile Include="Bot\RoemischPokern\Player.cs" />
     <Compile Include="Collection\Array.cs" />
-    <Compile Include="Collection\BitArray.cs" />
-    <Compile Include="Collection\List.cs" />
+    <Compile Include="Collection\Long\Array.cs" />
+    <Compile Include="Collection\Long\BitArray.cs" />
+    <Compile Include="Collection\Long\List.cs" />
     <Compile Include="Coordinates.cs" />
     <Compile Include="Extra.cs" />
     <Compile Include="Math\Mod.cs" />

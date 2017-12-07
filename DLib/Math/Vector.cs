@@ -44,5 +44,7 @@ namespace DLib.Math
         public static implicit operator Vector(double[] array) => new Vector() { array = array };
 
         public static implicit operator double[] (Vector vector) => vector.array;
+
+        public static implicit operator string(Vector vector) => vector.ToString();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace DLib.Collection
+﻿namespace DLib.Collection.Long
 {
     public class BitArray
     {

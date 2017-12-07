@@ -1,41 +1,70 @@
 ﻿using System;
+using System.Linq;
 
 namespace DLib.Collection
 {
-    public class Array<T>
+    class Array<T>
     {
-        T[][] arrays;
+        public int Dimensions => length.Length;
+        int[] length;
+        public T[] array;
 
-        public ulong Length { get; private set; }
-
-        public Array(ulong length)
+        public Array(params int[] length)
         {
-            arrays = new T[(int)System.Math.Ceiling(length / (double)int.MaxValue)][];
-            for (int i = 0; i < arrays.Length - 1; i++)
-                arrays[i] = new T[int.MaxValue];
-            arrays[arrays.Length - 1] = new T[(int)(length % (int.MaxValue - 1))];
-            Length = length;
+            this.length = length.ToArray();
+            array = new T[length.Aggregate(1, (acc, val) => acc * val)];
         }
 
-        public Array(List<T> list)
+        public Array(T[] array)
         {
-            arrays = new T[list.Lists.Count][];
-            for (int i = 0; i < arrays.Length; i++)
-                arrays[i] = list.Lists[i].ToArray();
-            Length = list.Count;
+            length = new int[] { array.GetLength(0) };
+            array = array.ToArray();
         }
 
-        public T this[ulong i]
+        public Array(T[,] array)
         {
-            get => arrays[(int)(i / (double)int.MaxValue)][(int)(i % (int.MaxValue - 1))];
-            set => arrays[(int)(i / (double)int.MaxValue)][(int)(i % (int.MaxValue - 1))] = value;
+            length = new int[] { array.GetLength(0), array.GetLength(1) };
+            this.array = new T[length.Aggregate(1, (acc, val) => acc * val)];
+            for (int i = 0; i < GetLength(0); i++)
+                for(int j = 0; j < GetLength(1); j++)
+                    this.array[GetIndex(i, j)] = array[i, j];
         }
 
-        public void Foreach(Action<T> action)
+        public Array(Array<T> array)
         {
-            foreach (T[] array in arrays)
-                foreach (T item in array)
-                    action(item);
+            this.array = array.array.ToArray();
+            length = array.length.ToArray();
+        }
+
+        public Array<T> Clone() => new Array<T>(this);
+
+        public T Get(params int[] pos) => pos.Length == Dimensions ? array[GetIndex(pos)] : throw new ArgumentException();
+
+        public void Set(T value, params int[] pos) => array[GetIndex(pos)] = pos.Length != Dimensions ? throw new ArgumentException() : value;
+
+        int GetIndex(params int[] pos)
+        {
+            int p = 0;
+            for (int i = 0; i < Dimensions; i++)
+            {
+                int q = pos[i];
+                for (int j = 0; j < i; q *= GetLength(j), j++) ;
+                p += q;
+            }
+            return p;
+        }
+
+        public int GetLength(int dimension) => dimension >= 0 && dimension < Dimensions ? length[dimension] : throw new ArgumentException();
+
+        public void ToString()
+        {
+            for(int i = 0; i < Dimensions; i++)
+            {
+                for(int j = 0; j < GetLength(i); j++)
+                {
+
+                }
+            }
         }
     }
 }
