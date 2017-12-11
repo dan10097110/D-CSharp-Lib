@@ -130,7 +130,7 @@ namespace DLib.Math.Function
             return roots.ToArray();
         }
 
-        public override double Root() => NonlinearEquations.NewtonVerfahren(this, 0);
+        public override double Root() => NonlinearEquations.NewtonMethod(this, 0);
 
         public override double GetY(double x)
         {

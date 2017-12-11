@@ -4,7 +4,7 @@ namespace DLib.Math
 {
     public static class NonlinearEquations
     {
-        public static double Sekantenverfahren(Function.Function p, double a, double b)
+        public static double SecantMethod(Function.Function p, double a, double b)
         {
             while (p.GetY(b) != 0)
             {
@@ -15,7 +15,7 @@ namespace DLib.Math
             return b;
         }
 
-        public static double Bisektion(Function.Function p, double a, double b)
+        public static double Bisection(Function.Function p, double a, double b)
         {
             while (true)
             {
@@ -31,7 +31,21 @@ namespace DLib.Math
             }
         }
 
-        public static double RegulaFalsi(Function.Function p, double a, double b)
+        public static double Bisection(double a, double b, Func<double, double> Func, int precision)
+        {
+            while (true)
+            {
+                double c = (a + b) / 2, d = System.Math.Round(Func(c), precision);
+                if (d == 0)
+                    return c;
+                else if (d > 0)
+                    b = c;
+                else
+                    a = c;
+            }
+        }
+
+        public static double FalsePositionMethod(Function.Function p, double a, double b)
         {
             while (true)
             {
@@ -45,7 +59,7 @@ namespace DLib.Math
             }
         }
 
-        public static double NewtonVerfahren(Function.Polynomial p, double a)
+        public static double NewtonMethod(Function.Polynomial p, double a)
         {
             Function.Polynomial q = p.GetIntegral(-1);
             while (p.GetY(a) != 0)
@@ -53,7 +67,7 @@ namespace DLib.Math
             return a;
         }
 
-        public static double HalleyVerfahren(Function.Polynomial p, double a)
+        public static double HalleyMethod(Function.Polynomial p, double a)
         {
             Function.Polynomial q = p.GetIntegral(-1), r = q.GetIntegral(-1);
             while (p.GetY(a) != 0)

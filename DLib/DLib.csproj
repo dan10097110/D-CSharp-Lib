@@ -107,7 +107,7 @@
     <Compile Include="Math\Sequence\Fib.cs" />
     <Compile Include="Math\Sequence\Lucas.cs" />
     <Compile Include="Math\Sequence\Perrin.cs" />
-    <Compile Include="Math\Sqrt.cs" />
+    <Compile Include="Math\Root.cs" />
     <Compile Include="Math\Symbol.cs" />
     <Compile Include="Math\Vector.cs" />
     <Compile Include="Networking\Client.cs" />
