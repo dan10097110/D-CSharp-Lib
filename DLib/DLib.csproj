@@ -74,7 +74,10 @@
     <Compile Include="Collection\Long\List.cs" />
     <Compile Include="Coordinates.cs" />
     <Compile Include="Extra.cs" />
+    <Compile Include="Math\Function\Function.cs" />
+    <Compile Include="Math\Function\Power.cs" />
     <Compile Include="Math\Mod.cs" />
+    <Compile Include="Math\NonlinearEquations.cs" />
     <Compile Include="Pathfinding\AStar.cs" />
     <Compile Include="Benchmark.cs" />
     <Compile Include="Collection\Bits.cs" />
@@ -87,7 +90,7 @@
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Mul.cs" />
     <Compile Include="Math\Number\Natural.cs" />
-    <Compile Include="Math\Polynomial.cs" />
+    <Compile Include="Math\Function\Polynomial.cs" />
     <Compile Include="Math\Power.cs" />
     <Compile Include="Math\Prime\Factorise.cs" />
     <Compile Include="Math\Prime\Mersenne.cs" />
