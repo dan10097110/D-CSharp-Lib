@@ -31,33 +31,15 @@ namespace DLib.Math.Function
 
         public static Power operator /(Power a, double b) => new Power(a.Factor * b, a.Exponent);
 
-        public Power GetDerivation() => Exponent == 0 ? new Power(0, 0) : new Power(Factor * Exponent, Exponent - 1);
+        public override Function GetDerivation() => Exponent == 0 ? new Power(0, 0) : new Power(Factor * Exponent, Exponent - 1);
 
-        public Power GetIntegral() => Exponent == -1 ? throw new Exception("integration not possible") : new Power(Factor / (Exponent + 1), Exponent + 1);
-
-        public Power GetDerivation(int i)
-        {
-            if (i < 0)
-                return GetIntegral(-i);
-            var p = this;
-            for (; i >= 0; i--)
-                p = p.GetDerivation();
-            return p;
-        }
-
-        public Power GetIntegral(int i)
-        {
-            if (i < 0)
-                return GetDerivation(-i);
-            var p = this;
-            for (; i >= 0; i--)
-                p = p.GetIntegral();
-            return p;
-        }
+        public override Function GetIntegral() => Exponent == -1 ? throw new Exception("integration not possible") : new Power(Factor / (Exponent + 1), Exponent + 1);
 
         public override double GetY(double x) => Factor * System.Math.Pow(x, Exponent);
 
         public override double Root() => 0;
+
+        public override double[] Roots() => new double[] { Root() };
 
         public double[] Intersection(Power a)
         {

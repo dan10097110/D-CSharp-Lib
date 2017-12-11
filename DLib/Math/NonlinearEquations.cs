@@ -59,17 +59,17 @@ namespace DLib.Math
             }
         }
 
-        public static double NewtonMethod(Function.Polynomial p, double a)
+        public static double NewtonMethod(Function.Function p, double a)
         {
-            Function.Polynomial q = p.GetIntegral(-1);
+            var q = p.GetDerivation();
             while (p.GetY(a) != 0)
                 a -= p.GetY(a) / q.GetY(a);
             return a;
         }
 
-        public static double HalleyMethod(Function.Polynomial p, double a)
+        public static double HalleyMethod(Function.Function p, double a)
         {
-            Function.Polynomial q = p.GetIntegral(-1), r = q.GetIntegral(-1);
+            Function.Function q = p.GetDerivation(), r = q.GetDerivation();
             while (p.GetY(a) != 0)
                 a -= (2 * p.GetY(a) * q.GetY(a)) / (2 * q.GetY(a) * q.GetY(a) - p.GetY(a) * r.GetY(a));
             return a;

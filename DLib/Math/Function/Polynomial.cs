@@ -116,7 +116,7 @@ namespace DLib.Math.Function
 
         public double[] Intersection(Polynomial polynomial) => (this - polynomial).Roots();
 
-        public double[] Roots()
+        public override double[] Roots()
         {
             var roots = new List<double>();
             Polynomial p = Clone();
@@ -142,39 +142,19 @@ namespace DLib.Math.Function
 
         public Power GetAddend(int i) => i > Degree ? new Power(0, i) : powers[i].Clone();
 
-        public Polynomial GetDerivation()
+        public override Function GetDerivation()
         {
             var powers = new Power[this.powers.Length - 1];
-            for (int i = 0; i < powers.Length; powers[i] = this.powers[i + 1].GetDerivation(), i++) ;
+            for (int i = 0; i < powers.Length; powers[i] = (Power)this.powers[i + 1].GetDerivation(), i++) ;
             return new Polynomial() { powers = powers };
         }
 
-        public Polynomial GetIntegral()
+        public override Function GetIntegral()
         {
             var powers = new Power[this.powers.Length + 1];
             powers[0] = new Power(0, 0);
-            for (int i = 1; i < powers.Length; powers[i] = this.powers[i - 1].GetIntegral(), i++) ;
+            for (int i = 1; i < powers.Length; powers[i] = (Power)this.powers[i - 1].GetIntegral(), i++) ;
             return new Polynomial() { powers = powers };
-        }
-
-        public Polynomial GetDerivation(int i)
-        {
-            if (i < 0)
-                return GetIntegral(-i);
-            var p = this;
-            for (; i >= 0; i--)
-                p = p.GetDerivation();
-            return p;
-        }
-
-        public Polynomial GetIntegral(int i)
-        {
-            if (i < 0)
-                return GetDerivation(-i);
-            var p = this;
-            for (; i >= 0; i--)
-                p = p.GetIntegral();
-            return p;
         }
 
         public Polynomial Clone() => new Polynomial(this);
