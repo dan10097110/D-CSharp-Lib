@@ -41,6 +41,6 @@ namespace DLib.Math.Function
 
         public override string ToString() => Factor + Base + "^x";
 
-        public override Function Clone() => new Polynomial(Factor, Base);
+        public override Function Clone() => new Exponential(Factor, Base);
     }
 }

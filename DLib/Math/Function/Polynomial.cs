@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DLib.Math.Function
 {
-    public class Polynomial : Function
+    /*public class Polynomial : Function
     {
         public Power[] powers;
         
@@ -168,7 +168,7 @@ namespace DLib.Math.Function
         }
 
         public static implicit operator string(Polynomial p) => p.ToString();
-    }
+    }*/
 
     /*public class Polynomial2 : Function
     {

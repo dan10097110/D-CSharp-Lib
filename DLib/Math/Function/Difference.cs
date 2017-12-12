@@ -28,7 +28,7 @@ namespace DLib.Math.Function
                 if (root == null)
                     break;
                 roots.Add((double)root);
-                p = new Quotient(p.Clone(), new Polynomial(-(double)root, 1));
+                p = new Quotient(p.Clone(), new Difference(new Power(1, 1), new Power((double)root, 0)));
             }
             roots.Sort();
             return roots.ToArray();
