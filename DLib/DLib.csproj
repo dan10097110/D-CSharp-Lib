@@ -74,6 +74,7 @@
     <Compile Include="Collection\Long\List.cs" />
     <Compile Include="Coordinates.cs" />
     <Compile Include="Extra.cs" />
+    <Compile Include="Math\Function\Exponential.cs" />
     <Compile Include="Math\Function\Function.cs" />
     <Compile Include="Math\Function\Power.cs" />
     <Compile Include="Math\Mod.cs" />

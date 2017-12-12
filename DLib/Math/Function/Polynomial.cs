@@ -122,15 +122,13 @@ namespace DLib.Math.Function
             Polynomial p = Clone();
             while (p.Degree > 0)
             {
-                double root = p.Root();
+                double root = NonlinearEquations.NewtonMethod(p, 0);
                 roots.Add(root);
                 p /= new Polynomial(-root, 1);
             }
             roots.Sort();
             return roots.ToArray();
         }
-
-        public override double Root() => NonlinearEquations.NewtonMethod(this, 0);
 
         public override double GetY(double x)
         {

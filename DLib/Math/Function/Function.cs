@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace DLib.Math.Function
 {
     public abstract class Function
     {
         public abstract double GetY(double x);
-
-        public abstract double Root();
-
-        public abstract double[] Roots();
-
-        public abstract override string ToString();
 
         public abstract Function GetDerivation();
 
@@ -37,6 +30,9 @@ namespace DLib.Math.Function
             return p;
         }
 
+        public abstract double[] Roots();
+
+        //evt aus vorzeichenwechsel betrachten
         public double[] Extrema()
         {
             Function d1 = GetDerivation(), d2 = d1.GetDerivation();
@@ -66,5 +62,7 @@ namespace DLib.Math.Function
             Function d1 = GetDerivation(), d2 = d1.GetDerivation(), d3 = d2.GetDerivation();
             return Roots().Where(d => d2.GetY(d) == 0 && d3.GetY(d) != 0).ToArray();
         }
+
+        public abstract override string ToString();
     }
 }

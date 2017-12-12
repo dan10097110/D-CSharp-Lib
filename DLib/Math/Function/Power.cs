@@ -37,9 +37,7 @@ namespace DLib.Math.Function
 
         public override double GetY(double x) => Factor * System.Math.Pow(x, Exponent);
 
-        public override double Root() => 0;
-
-        public override double[] Roots() => new double[] { Root() };
+        public override double[] Roots() => new double[] { 0 };
 
         public double[] Intersection(Power a)
         {
