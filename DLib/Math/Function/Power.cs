@@ -31,11 +31,11 @@ namespace DLib.Math.Function
 
         public static Power operator /(Power a, double b) => new Power(a.Factor * b, a.Exponent);
 
-        public override Function GetDerivation() => Exponent == 0 ? new Power(0, 0) : new Power(Factor * Exponent, Exponent - 1);
+        public override Function Derivate() => Exponent == 0 ? new Power(0, 0) : new Power(Factor * Exponent, Exponent - 1);
 
-        public override Function GetIntegral() => Exponent == -1 ? throw new Exception("integration not possible") : new Power(Factor / (Exponent + 1), Exponent + 1);
+        public override Function Integrate() => Exponent == -1 ? throw new Exception("integration not possible") : new Power(Factor / (Exponent + 1), Exponent + 1);
 
-        public override double GetY(double x) => Factor * System.Math.Pow(x, Exponent);
+        public override double Y(double x) => Factor * System.Math.Pow(x, Exponent);
 
         public override double[] Roots() => new double[] { 0 };
 
@@ -67,7 +67,7 @@ namespace DLib.Math.Function
             }
         }
 
-        public Power Clone() => new Power(Factor, Exponent);
+        public override Function Clone() => new Power(Factor, Exponent);
 
         public override string ToString() => Factor + "x^" + Exponent;
 

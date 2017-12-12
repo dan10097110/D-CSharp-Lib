@@ -31,14 +31,16 @@ namespace DLib.Math.Function
 
         public static Exponential operator /(Exponential a, double b) => new Exponential(a.Factor * b, a.Base);
 
-        public override Function GetDerivation() => new Exponential(Factor * System.Math.Log(Base), Base);
+        public override Function Derivate() => new Exponential(Factor * System.Math.Log(Base), Base);
 
-        public override Function GetIntegral() => new Exponential(Factor / System.Math.Log(Base), Base);
+        public override Function Integrate() => new Exponential(Factor / System.Math.Log(Base), Base);
 
-        public override double GetY(double x) => Factor * System.Math.Pow(Base, x);
+        public override double Y(double x) => Factor * System.Math.Pow(Base, x);
 
         public override double[] Roots() => new double[0];
 
         public override string ToString() => Factor + Base + "^x";
+
+        public override Function Clone() => new Polynomial(Factor, Base);
     }
 }

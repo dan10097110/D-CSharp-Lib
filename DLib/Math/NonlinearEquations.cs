@@ -6,9 +6,9 @@ namespace DLib.Math
     {
         public static double SecantMethod(Function.Function p, double a, double b)
         {
-            while (p.GetY(b) != 0)
+            while (p.Y(b) != 0)
             {
-                double c = b - (b - a) * p.GetY(b) / (p.GetY(b) - p.GetY(a));
+                double c = b - (b - a) * p.Y(b) / (p.Y(b) - p.Y(a));
                 a = b;
                 b = c;
             }
@@ -19,7 +19,7 @@ namespace DLib.Math
         {
             while (true)
             {
-                double c = (a + b) / 2, y = p.GetY(c);
+                double c = (a + b) / 2, y = p.Y(c);
                 if (y == 0)
                     return c;
                 else if (y > 0)
@@ -49,29 +49,35 @@ namespace DLib.Math
         {
             while (true)
             {
-                double c = (a * p.GetY(b) - b * p.GetY(a)) / (p.GetY(b) - p.GetY(a));
-                if (p.GetY(c) == 0)
+                double c = (a * p.Y(b) - b * p.Y(a)) / (p.Y(b) - p.Y(a));
+                if (p.Y(c) == 0)
                     return c;
-                if (p.GetY(c) * p.GetY(a) > 0)
+                if (p.Y(c) * p.Y(a) > 0)
                     a = c;
                 else
                     b = c;
             }
         }
 
-        public static double NewtonMethod(Function.Function p, double a)
+        public static double? NewtonMethod(Function.Function p, double a)
         {
-            var q = p.GetDerivation();
-            while (p.GetY(a) != 0)
-                a -= p.GetY(a) / q.GetY(a);
+            var q = p.Derivate();
+            while (p.Y(a) != 0)
+            {
+                Console.WriteLine(p.Y(a));
+                double d = p.Y(a) / q.Y(a);
+                if (d == 0)
+                    return null;
+                a -= d;
+            }
             return a;
         }
 
         public static double HalleyMethod(Function.Function p, double a)
         {
-            Function.Function q = p.GetDerivation(), r = q.GetDerivation();
-            while (p.GetY(a) != 0)
-                a -= (2 * p.GetY(a) * q.GetY(a)) / (2 * q.GetY(a) * q.GetY(a) - p.GetY(a) * r.GetY(a));
+            Function.Function q = p.Derivate(), r = q.Derivate();
+            while (p.Y(a) != 0)
+                a -= (2 * p.Y(a) * q.Y(a)) / (2 * q.Y(a) * q.Y(a) - p.Y(a) * r.Y(a));
             return a;
         }
     }

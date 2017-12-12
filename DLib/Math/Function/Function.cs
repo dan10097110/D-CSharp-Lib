@@ -4,29 +4,29 @@ namespace DLib.Math.Function
 {
     public abstract class Function
     {
-        public abstract double GetY(double x);
+        public abstract double Y(double x);
 
-        public abstract Function GetDerivation();
+        public abstract Function Derivate();
 
-        public abstract Function GetIntegral();
+        public abstract Function Integrate();
 
-        public Function GetDerivation(int i)
+        public Function Derivate(int i)
         {
             if (i < 0)
-                return GetIntegral(-i);
+                return Integrate(-i);
             var p = this;
             for (; i >= 0; i--)
-                p = p.GetDerivation();
+                p = p.Derivate();
             return p;
         }
 
-        public Function GetIntegral(int i)
+        public Function Integrate(int i)
         {
             if (i < 0)
-                return GetDerivation(-i);
+                return Derivate(-i);
             var p = this;
             for (; i >= 0; i--)
-                p = p.GetIntegral();
+                p = p.Integrate();
             return p;
         }
 
@@ -35,34 +35,36 @@ namespace DLib.Math.Function
         //evt aus vorzeichenwechsel betrachten
         public double[] Extrema()
         {
-            Function d1 = GetDerivation(), d2 = d1.GetDerivation();
-            return Roots().Where(d => d2.GetY(d) != 0).ToArray();
+            Function d1 = Derivate(), d2 = d1.Derivate();
+            return Roots().Where(d => d2.Y(d) != 0).ToArray();
         }
 
         public double[] Maxima()
         {
-            Function d1 = GetDerivation(), d2 = d1.GetDerivation();
-            return Roots().Where(d => d2.GetY(d) < 0).ToArray();
+            Function d1 = Derivate(), d2 = d1.Derivate();
+            return Roots().Where(d => d2.Y(d) < 0).ToArray();
         }
 
         public double[] Minima()
         {
-            Function d1 = GetDerivation(), d2 = d1.GetDerivation();
-            return Roots().Where(d => d2.GetY(d) > 0).ToArray();
+            Function d1 = Derivate(), d2 = d1.Derivate();
+            return Roots().Where(d => d2.Y(d) > 0).ToArray();
         }
 
         public double[] Inflections()
         {
-            Function d2 = GetDerivation(2), d3 = d2.GetDerivation();
-            return d2.Roots().Where(d => d3.GetY(d) != 0).ToArray();
+            Function d2 = Derivate(2), d3 = d2.Derivate();
+            return d2.Roots().Where(d => d3.Y(d) != 0).ToArray();
         }
 
         public double[] Saddles()
         {
-            Function d1 = GetDerivation(), d2 = d1.GetDerivation(), d3 = d2.GetDerivation();
-            return Roots().Where(d => d2.GetY(d) == 0 && d3.GetY(d) != 0).ToArray();
+            Function d1 = Derivate(), d2 = d1.Derivate(), d3 = d2.Derivate();
+            return Roots().Where(d => d2.Y(d) == 0 && d3.Y(d) != 0).ToArray();
         }
 
         public abstract override string ToString();
+
+        public abstract Function Clone();
     }
 }
