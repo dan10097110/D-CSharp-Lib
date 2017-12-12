@@ -28,9 +28,9 @@ namespace DLib.Math.Function
                 var root = NonlinearEquations.NewtonMethod(p, 0);
                 if (root == null)
                     break;
-                Console.WriteLine(root);
                 roots.Add((double)root);
                 p = new Quotient(p.Clone(), new Difference(new Power(1, 1), new Power((double)root, 0)));
+                Console.WriteLine(root);
                 Console.WriteLine(p);
             }
             roots.Sort();

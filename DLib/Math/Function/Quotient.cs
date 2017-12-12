@@ -20,6 +20,19 @@ namespace DLib.Math.Function
                 return new Quotient(a.Derivate(), b.Derivate()).Y(x);
             else
                 return n / m;
+            /*double n = a.Y(x), m = b.Y(x);
+            if (n == 0 && m == 0)
+            {
+                Function f = a, g = b;
+                while(n == 0 && m == 0)
+                {
+                    f = a.Derivate();
+                    g = b.Derivate();
+                    n = f.Y(x);
+                    m = g.Y(x);
+                }
+            }
+            return n / m;*/
         }
 
         public override Function Derivate() => new Quotient(new Sum(new Product(a.Derivate(), b), new Product(a, b.Derivate())), new Product(b, b));
