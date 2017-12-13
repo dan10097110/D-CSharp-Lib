@@ -29,6 +29,8 @@ namespace DLib.Math.Function
 
         public static Power operator *(Power a, double b) => new Power(a.Factor * b, a.Exponent);
 
+        public static Power operator *(double a, Power b) => b * a;
+
         public static Power operator /(Power a, double b) => new Power(a.Factor * b, a.Exponent);
 
         public override Function Derivate() => Exponent == 0 ? new Power(0, 0) : new Power(Factor * Exponent, Exponent - 1);

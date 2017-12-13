@@ -62,9 +62,8 @@ namespace DLib.Math
         public static double? NewtonMethod(Function.Function p, double a)
         {
             var q = p.Derivate();
-            while (p.Y(a) != 0)
+            while (System.Math.Round(p.Y(a), 6) != 0)
             {
-                Console.WriteLine(p.Y(a));
                 double d = p.Y(a) / q.Y(a);
                 if (d == 0)
                     return null;

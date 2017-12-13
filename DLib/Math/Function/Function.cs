@@ -30,6 +30,8 @@ namespace DLib.Math.Function
             return p;
         }
 
+        public double[] Intersection(Function a) => new Difference(this, a).Roots();
+
         public abstract double[] Roots();
 
         //evt aus vorzeichenwechsel betrachten

@@ -18,10 +18,10 @@ namespace DLib.Math.Function
         public override Function Derivate() => new Sum(a.Derivate(), b.Derivate());
 
         public override Function Integrate() => new Sum(a.Integrate(), b.Integrate());
-        
+
         public override double[] Roots()
         {
-            var roots = new List<double>();
+            /*var roots = new List<double>();
             Function p = Clone();
             while (true)
             {
@@ -31,6 +31,20 @@ namespace DLib.Math.Function
                 roots.Add((double)root);
                 p = new Quotient(p.Clone(), new Difference(new Power(1, 1), new Power((double)root, 0)));
                 Console.WriteLine(root);
+                Console.WriteLine(p);
+            }
+            roots.Sort();
+            return roots.ToArray();*/
+            var roots = new List<double>();
+            Polynomial p = new Polynomial(1);
+            while (true)
+            {
+                var root = NonlinearEquations.NewtonMethod(new Quotient(this, p), 0);
+                if (root == null)
+                    break;
+                roots.Add((double)root);
+                Console.WriteLine(root);
+                p *= new Polynomial(-(double)root, 1);
                 Console.WriteLine(p);
             }
             roots.Sort();
