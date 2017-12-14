@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DLib.Math.Function
+namespace Dlib.Math.Function
 {
     public class Exponential : Function
     {
@@ -29,7 +29,9 @@ namespace DLib.Math.Function
 
         public static Exponential operator *(Exponential a, double b) => new Exponential(a.Factor * b, a.Base);
 
-        public static Exponential operator /(Exponential a, double b) => new Exponential(a.Factor * b, a.Base);
+        public static Exponential operator /(Exponential a, double b) => a * (1 / b);
+
+        public double[] Intersection(Exponential exp) => new double[] { System.Math.Log(exp.Factor / Factor, Base / exp.Base) };
 
         public override Function Derivate() => new Exponential(Factor * System.Math.Log(Base), Base);
 
@@ -39,7 +41,7 @@ namespace DLib.Math.Function
 
         public override double[] Roots() => new double[0];
 
-        public override string ToString() => Factor + Base + "^x";
+        public override string ToString() => Factor + "*" + Base + "^x";
 
         public override Function Clone() => new Exponential(Factor, Base);
     }

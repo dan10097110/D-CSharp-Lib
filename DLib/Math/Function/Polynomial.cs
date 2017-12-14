@@ -1,13 +1,16 @@
-﻿using System;
+﻿using DLib;
+using DLib.Math;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 
-namespace DLib.Math.Function
+namespace Dlib.Math.Function
 {
     public class Polynomial : Function
     {
-        public double[] powers;
-        
-        public int Degree => powers.Length - 1;
+        public double[] factorss;
+
+        public int Degree => factorss.Length - 1;
 
         public Polynomial() { }
 
@@ -20,49 +23,56 @@ namespace DLib.Math.Function
             for (int i = 0; i < matrix1.Height; i++)
                 matrix1[0, i] = coords[i].Y;
             var vector = (matrix.Inverse() * matrix1).GetColumn(0);
-            powers = new double[vector.Length];
-            for (int i = 0; i < powers.Length; i++)
-                powers[i] = vector[powers.Length - 1 - i];
+            factorss = new double[vector.Length];
+            for (int i = 0; i < factorss.Length; i++)
+                factorss[i] = vector[factorss.Length - 1 - i];
         }
 
         public Polynomial(params double[] factors)
         {
             int degree = factors.Length - 1;
             for (; degree >= 0 && factors[degree] == 0; degree--) ;
-            powers = new double[degree + 1];
-            for (int i = 0; i < powers.Length; i++)
-                powers[i] = factors[i];
+            factorss = new double[degree + 1];
+            for (int i = 0; i < factorss.Length; i++)
+                factorss[i] = factors[i];
         }
 
-        public Polynomial(Polynomial polynomial) => powers = (double[])polynomial.powers.Clone();
+        public Polynomial(params Power[] powers)
+        {
+            factorss = new double[powers.Select(n => (int)n.Exponent).Max() + 1];
+            foreach (var power in powers)
+                factorss[(int)power.Exponent] += power.Factor;
+        }
+
+        public Polynomial(Polynomial polynomial) => factorss = (double[])polynomial.factorss.Clone();
 
         public static bool operator ==(Polynomial a, Polynomial b) => a.Equals(b);
 
         public static bool operator !=(Polynomial a, Polynomial b) => !a.Equals(b);
-        
+
         public override bool Equals(object obj) => throw new NotImplementedException();
 
         public static Polynomial operator +(Polynomial a, Polynomial b)
         {
-            var powers = new double[System.Math.Max(a.powers.Length, b.powers.Length)];
-            for (int i = 0; i < powers.Length; powers[i] = (i < a.powers.Length ? a.powers[i] : 0) + (i < b.powers.Length ? b.powers[i] : 0), i++) ;
-            return new Polynomial() { powers = powers };
+            var powers = new double[System.Math.Max(a.factorss.Length, b.factorss.Length)];
+            for (int i = 0; i < powers.Length; powers[i] = (i < a.factorss.Length ? a.factorss[i] : 0) + (i < b.factorss.Length ? b.factorss[i] : 0), i++) ;
+            return new Polynomial() { factorss = powers };
         }
 
         public static Polynomial operator -(Polynomial a, Polynomial b)
         {
-            int length = System.Math.Max(a.powers.Length, b.powers.Length);
-            if (a.powers.Length == b.powers.Length)
-                for (; a.powers[length - 1] == b.powers[length - 1]; length--) ;
+            int length = System.Math.Max(a.factorss.Length, b.factorss.Length);
+            if (a.factorss.Length == b.factorss.Length)
+                for (; a.factorss[length - 1] == b.factorss[length - 1]; length--) ;
             var powers = new double[length];
-            for (int i = 0; i < powers.Length; powers[i] = (i < a.powers.Length ? a.powers[i] : 0) - (i < b.powers.Length ? b.powers[i] : 0), i++) ;
-            return new Polynomial() { powers = powers };
+            for (int i = 0; i < powers.Length; powers[i] = (i < a.factorss.Length ? a.factorss[i] : 0) - (i < b.factorss.Length ? b.factorss[i] : 0), i++) ;
+            return new Polynomial() { factorss = powers };
         }
 
         public static Polynomial operator *(Polynomial a, Polynomial b)
         {
-            var v = b * new Power(a.powers[0], 0);
-            for (int i = 1; i < a.powers.Length; v += (new Power(a.powers[i], i) * b), i++) ;
+            var v = b * new Power(a.factorss[0], 0);
+            for (int i = 1; i < a.factorss.Length; v += (new Power(a.factorss[i], i) * b), i++) ;
             return v;
         }
 
@@ -71,25 +81,25 @@ namespace DLib.Math.Function
         {
             var p = (Polynomial)a.Clone();
             var powers = new double[a.Degree - b.Degree + 1];
-            for (int i = 0; i < powers.Length; powers[powers.Length - 1 - i] = p.powers[p.Degree] / b.powers[b.Degree], p -= (b * powers[powers.Length - 1 - i]), i++) ;
-            return new Polynomial() { powers = powers };
+            for (int i = 0; i < powers.Length; powers[powers.Length - 1 - i] = p.factorss[p.Degree] / b.factorss[b.Degree], p -= (b * powers[powers.Length - 1 - i]), i++) ;
+            return new Polynomial() { factorss = powers };
         }
 
         //b kann nur positiv sein
         public static Polynomial operator *(Polynomial a, Power b)
         {
-            var powers = new double[a.powers.Length + (int)b.Exponent];
-            for (int i = 0; i < a.powers.Length; powers[i + (int)b.Exponent] = a.powers[i] * b.Factor, i++) ;
-            return new Polynomial() { powers = powers };
+            var powers = new double[a.factorss.Length + (int)b.Exponent];
+            for (int i = 0; i < a.factorss.Length; powers[i + (int)b.Exponent] = a.factorss[i] * b.Factor, i++) ;
+            return new Polynomial() { factorss = powers };
         }
 
         public static Polynomial operator *(Power a, Polynomial b) => b * a;
 
         public static Polynomial operator *(Polynomial a, double b)
         {
-            var powers = new double[a.powers.Length];
-            for (int i = 0; i < powers.Length; powers[i] = a.powers[i] * b, i++) ;
-            return new Polynomial() { powers = powers };
+            var powers = new double[a.factorss.Length];
+            for (int i = 0; i < powers.Length; powers[i] = a.factorss[i] * b, i++) ;
+            return new Polynomial() { factorss = powers };
         }
 
         public static Polynomial operator *(double a, Polynomial b) => b * a;
@@ -117,8 +127,8 @@ namespace DLib.Math.Function
         public override double Y(double x)
         {
             double y = 0;
-            for (int i = 0; i < powers.Length;i++)
-                y += (powers[i] * System.Math.Pow(x, i));
+            for (int i = 0; i < factorss.Length; i++)
+                y += (factorss[i] * System.Math.Pow(x, i));
             return y;
         }
 
@@ -128,26 +138,26 @@ namespace DLib.Math.Function
                 return new Polynomial(0);
             else
             {
-                var powers = new double[this.powers.Length - 1];
-                for (int i = 0; i < powers.Length; powers[i] = this.powers[i + 1] * (i + 1), i++) ;
-                return new Polynomial() { powers = powers };
+                var powers = new double[this.factorss.Length - 1];
+                for (int i = 0; i < powers.Length; powers[i] = this.factorss[i + 1] * (i + 1), i++) ;
+                return new Polynomial() { factorss = powers };
             }
         }
 
         public override Function Integrate()
         {
-            var powers = new double[this.powers.Length + 1];
-            for (int i = 1; i < powers.Length; powers[i] = this.powers[i - 1] / i, i++) ;
-            return new Polynomial() { powers = powers };
+            var powers = new double[this.factorss.Length + 1];
+            for (int i = 1; i < powers.Length; powers[i] = this.factorss[i - 1] / i, i++) ;
+            return new Polynomial() { factorss = powers };
         }
 
         public override Function Clone() => new Polynomial(this);
 
         public override string ToString()
         {
-            string[] s = new string[powers.Length];
+            string[] s = new string[factorss.Length];
             for (int i = 0; i < s.Length; i++)
-                s[i] = powers[i] + "*x^" + i;
+                s[i] = factorss[i] + "*x^" + i;
             return "(" + string.Join("+", s) + ")";
         }
 

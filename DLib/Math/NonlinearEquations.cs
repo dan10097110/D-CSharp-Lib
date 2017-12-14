@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dlib.Math.Function;
+using System;
 
 namespace DLib.Math
 {
     public static class NonlinearEquations
     {
-        public static double SecantMethod(Function.Function p, double a, double b)
+        public static double SecantMethod(Function p, double a, double b)
         {
             while (p.Y(b) != 0)
             {
@@ -15,7 +16,7 @@ namespace DLib.Math
             return b;
         }
 
-        public static double Bisection(Function.Function p, double a, double b)
+        public static double Bisection(Function p, double a, double b)
         {
             while (true)
             {
@@ -42,10 +43,12 @@ namespace DLib.Math
                     b = c;
                 else
                     a = c;
+                if (a == b)
+                    throw new Exception("no solution");
             }
         }
 
-        public static double FalsePositionMethod(Function.Function p, double a, double b)
+        public static double FalsePositionMethod(Function p, double a, double b)
         {
             while (true)
             {
@@ -59,22 +62,29 @@ namespace DLib.Math
             }
         }
 
-        public static double? NewtonMethod(Function.Function p, double a)
+        static Random r = new Random();
+
+        public static double? NewtonMethod(Function p, double a)
         {
-            var q = p.Derivate();
+            var q = new Quotient(p, p.Derivate());
             while (System.Math.Round(p.Y(a), 6) != 0)
             {
-                double d = p.Y(a) / q.Y(a);
-                if (d == 0)
+                double d = q.Y(a);
+                if (Double.IsInfinity(d) || Double.IsNaN(d))
+                {
+                    a += r.Next(-10000, 10001);
+                    continue;
+                }
+                if (System.Math.Round(d, 15) == 0)
                     return null;
                 a -= d;
             }
             return a;
         }
 
-        public static double HalleyMethod(Function.Function p, double a)
+        public static double HalleyMethod(Function p, double a)
         {
-            Function.Function q = p.Derivate(), r = q.Derivate();
+            Function q = p.Derivate(), r = q.Derivate();
             while (p.Y(a) != 0)
                 a -= (2 * p.Y(a) * q.Y(a)) / (2 * q.Y(a) * q.Y(a) - p.Y(a) * r.Y(a));
             return a;

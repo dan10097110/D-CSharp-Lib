@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using DLib.Math;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace DLib.Math.Function
+namespace Dlib.Math.Function
 {
     public abstract class Function
     {
@@ -32,7 +34,21 @@ namespace DLib.Math.Function
 
         public double[] Intersection(Function a) => new Difference(this, a).Roots();
 
-        public abstract double[] Roots();
+        public virtual double[] Roots()
+        {
+            var roots = new List<double>();
+            Polynomial p = new Polynomial(1);
+            while (true)
+            {
+                var root = NonlinearEquations.NewtonMethod(new Quotient(this, p), 0);
+                if (root == null)
+                    break;
+                roots.Add((double)root);
+                p *= new Polynomial(-(double)root, 1);
+            }
+            roots.Sort();
+            return roots.ToArray();
+        }
 
         //evt aus vorzeichenwechsel betrachten
         public double[] Extrema()

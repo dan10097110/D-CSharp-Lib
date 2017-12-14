@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DLib.Math.Function
+namespace Dlib.Math.Function
 {
     public class Power : Function
     {
@@ -19,7 +19,7 @@ namespace DLib.Math.Function
 
         public override bool Equals(object obj) => Exponent == ((Power)obj).Exponent && Factor == ((Power)obj).Factor;
 
-        public static Power operator +(Power a, Power b) => a.Exponent == b.Exponent? new Power(a.Factor + b.Factor, a.Exponent) : throw new ArgumentException("Exponents do not fit");
+        public static Power operator +(Power a, Power b) => a.Exponent == b.Exponent ? new Power(a.Factor + b.Factor, a.Exponent) : throw new ArgumentException("Exponents do not fit");
 
         public static Power operator -(Power a, Power b) => a.Exponent == b.Exponent ? new Power(a.Factor - b.Factor, a.Exponent) : throw new ArgumentException("Exponents do not fit");
 
@@ -31,7 +31,7 @@ namespace DLib.Math.Function
 
         public static Power operator *(double a, Power b) => b * a;
 
-        public static Power operator /(Power a, double b) => new Power(a.Factor * b, a.Exponent);
+        public static Power operator /(Power a, double b) => a * (1 / b);
 
         public override Function Derivate() => Exponent == 0 ? new Power(0, 0) : new Power(Factor * Exponent, Exponent - 1);
 
@@ -41,37 +41,11 @@ namespace DLib.Math.Function
 
         public override double[] Roots() => new double[] { 0 };
 
-        public double[] Intersection(Power a)
-        {
-            if (Factor * a.Factor < 0)
-            {
-                if (Exponent % 2 == a.Exponent % 2)
-                    return new double[] { 0 };
-                else
-                {
-                    if (Factor > 0)
-                        return new double[] { 0, System.Math.Pow(a.Factor / Factor, 1 / (Exponent - a.Exponent)) };
-                    else
-                        return new double[] { -System.Math.Pow(a.Factor / Factor, 1 / (Exponent - a.Exponent)), 0 };
-                }
-            }
-            else
-            {
-                if (Exponent % 2 == a.Exponent % 2)
-                    return new double[] { -System.Math.Pow(a.Factor / Factor, 1 / (Exponent - a.Exponent)), 0, System.Math.Pow(a.Factor / Factor, 1 / (Exponent - a.Exponent)) };
-                else
-                {
-                    if (Factor > 0)
-                        return new double[] { 0, System.Math.Pow(a.Factor / Factor, 1 / (Exponent - a.Exponent)) };
-                    else
-                        return new double[] { -System.Math.Pow(a.Factor / Factor, 1 / (Exponent - a.Exponent)), 0 };
-                }
-            }
-        }
+        public double[] Intersection(Power a) => (new Polynomial(this) - new Polynomial(a)).Roots();
 
         public override Function Clone() => new Power(Factor, Exponent);
 
-        public override string ToString() => Factor + "x^" + Exponent;
+        public override string ToString() => Factor + "*" + "x^" + Exponent;
 
         public static implicit operator string(Power a) => a.ToString();
     }

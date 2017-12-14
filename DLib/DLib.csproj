@@ -76,10 +76,12 @@
     <Compile Include="Extra.cs" />
     <Compile Include="Math\Function\Difference.cs" />
     <Compile Include="Math\Function\Exponential.cs" />
+    <Compile Include="Math\Function\Factor.cs" />
     <Compile Include="Math\Function\Function.cs" />
     <Compile Include="Math\Function\Power.cs" />
     <Compile Include="Math\Function\Product.cs" />
     <Compile Include="Math\Function\Quotient.cs" />
+    <Compile Include="Math\Function\Square.cs" />
     <Compile Include="Math\Function\Sum.cs" />
     <Compile Include="Math\Mod.cs" />
     <Compile Include="Math\NonlinearEquations.cs" />

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace DLib.Math.Function
+namespace Dlib.Math.Function
 {
     class Product : Function
     {
@@ -13,27 +12,17 @@ namespace DLib.Math.Function
             this.b = b;
         }
 
-        public override double Y(double x) => a.Y(x) == 0 || b.Y(x) == 0 ? 0 : a.Y(x) * b.Y(x);
+        public override double Y(double x)
+        {
+            double n = a.Y(x);
+            if (n == 0)
+                return 0;
+            return b.Y(x) * n;
+        }
 
         public override Function Derivate() => new Sum(new Product(a.Derivate(), b), new Product(a, b.Derivate()));
 
         public override Function Integrate() => throw new NotImplementedException();// => new Difference(new Product(a.Integrate(), b), new Product(a.Integrate(), b.Derivate()).Integrate());
-
-        public override double[] Roots()
-        {
-            var roots = new List<double>();
-            Function p = Clone();
-            while (true)
-            {
-                var root = NonlinearEquations.NewtonMethod(p, 0);
-                if (root == null)
-                    break;
-                roots.Add((double)root);
-                p = new Quotient(p.Clone(), new Difference(new Power(1, 1), new Power((double)root, 0)));
-            }
-            roots.Sort();
-            return roots.ToArray();
-        }
 
         public override string ToString() => "(" + a.ToString() + "*" + b.ToString() + ")";
 
