@@ -83,7 +83,8 @@
     <Compile Include="Math\Function\Quotient.cs" />
     <Compile Include="Math\Function\Square.cs" />
     <Compile Include="Math\Function\Sum.cs" />
-    <Compile Include="Math\Mod.cs" />
+    <Compile Include="Math\Operator\Div.cs" />
+    <Compile Include="Math\Operator\Mod.cs" />
     <Compile Include="Math\NonlinearEquations.cs" />
     <Compile Include="Pathfinding\AStar.cs" />
     <Compile Include="Benchmark.cs" />
@@ -95,10 +96,10 @@
     <Compile Include="Math\Number\Integer.cs" />
     <Compile Include="Math\LCM.cs" />
     <Compile Include="Math\Matrix.cs" />
-    <Compile Include="Math\Mul.cs" />
+    <Compile Include="Math\Operator\Mul.cs" />
     <Compile Include="Math\Number\Natural.cs" />
     <Compile Include="Math\Function\Polynomial.cs" />
-    <Compile Include="Math\Power.cs" />
+    <Compile Include="Math\Operator\Power.cs" />
     <Compile Include="Math\Prime\Factorise.cs" />
     <Compile Include="Math\Prime\Mersenne.cs" />
     <Compile Include="Math\Prime\Problably.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Math\Sequence\Fib.cs" />
     <Compile Include="Math\Sequence\Lucas.cs" />
     <Compile Include="Math\Sequence\Perrin.cs" />
-    <Compile Include="Math\Root.cs" />
+    <Compile Include="Math\Operator\Root.cs" />
     <Compile Include="Math\Symbol.cs" />
     <Compile Include="Math\Vector.cs" />
     <Compile Include="Networking\Client.cs" />
