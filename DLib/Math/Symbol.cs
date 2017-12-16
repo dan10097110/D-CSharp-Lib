@@ -1,4 +1,6 @@
-﻿namespace DLib.Math
+﻿using DLib.Math.Operator;
+
+namespace DLib.Math
 {
     public static class Symbol
     {

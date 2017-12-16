@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DLib.Math.Operator;
+using System;
 using System.Collections.Generic;
 
 namespace DLib.Math.Prime.Test

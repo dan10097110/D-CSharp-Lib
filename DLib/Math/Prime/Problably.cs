@@ -1,4 +1,6 @@
-﻿namespace DLib.Math.Prime
+﻿using DLib.Math.Operator;
+
+namespace DLib.Math.Prime
 {
     public static class Problably
     {

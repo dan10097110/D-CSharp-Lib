@@ -1,4 +1,4 @@
-﻿namespace DLib.Math
+﻿namespace DLib.Math.Operator
 {
     public static class Mul
     {
