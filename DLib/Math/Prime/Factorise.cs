@@ -1,90 +1,23 @@
-﻿namespace DLib.Math.Prime
+﻿using System;
+using System.Collections.Generic;
+
+namespace DLib.Math.Prime
 {
     public static class Factorise
     {
-        public static T[] Standard<T>(T n)
+        public static ulong[] Standard(ulong n, Func<ulong, ulong> GetFactor)
         {
-            return new T[1];
-        }
-
-        public static ulong[] TrialDivision(ulong n)
-        {
-            return null;
-        }
-
-        public static T[] GCD<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] ECM<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] Rho<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] PM1<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] PP1<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] Fermat<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] Legendre<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] Euler<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] Shank<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] CFrac<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] Dixon<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] QS<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] GNFS<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] SNFS<T>(T n)
-        {
-            return new T[1];
-        }
-
-        public static T[] RS<T>(T n)
-        {
-            return new T[1];
+            var factors = new List<ulong>();
+            while(true)
+            {
+                ulong u = GetFactor(n);
+                factors.Add(u);
+                if (u == 1)
+                    break;
+                n /= u;
+            }
+            factors.Sort();
+            return factors.ToArray();
         }
     }
 }
