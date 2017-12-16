@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace DLib.Math
+namespace DLib.Math.Number
 {
-    public class Natural : ParallelExecutionObject
+    public class Natural : ParallelExecutionObject, INumber
     {
         public Collection.Bits bits;
 
@@ -425,6 +425,8 @@ namespace DLib.Math
             }
             return a;
         }
+
+        public static Natural LCM(Natural a, Natural b) => a * b / GCD(a, b);
 
 
         public override string ToString() => ToDecimal().ToString();

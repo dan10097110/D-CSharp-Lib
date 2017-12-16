@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DLib.Math.Number;
 
 namespace DLib.Math
 {
@@ -22,8 +23,8 @@ namespace DLib.Math
         public Rational ToFrac()
         {
             Rational rational = 0;
-            for (int i = cFrac.Count - 1; i >= 0; i--, rational = (rational + cFrac[i]).Inverse()) ;
-            return rational.Inverse();
+            for (int i = cFrac.Count - 1; i >= 0; i--, rational = (rational + cFrac[i]).Reciprocal()) ;
+            return rational.Reciprocal();
         }
 
         public void Add(Natural item) => cFrac.Add(item.Clone());

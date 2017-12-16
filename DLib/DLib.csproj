@@ -83,6 +83,8 @@
     <Compile Include="Math\Function\Quotient.cs" />
     <Compile Include="Math\Function\Square.cs" />
     <Compile Include="Math\Function\Sum.cs" />
+    <Compile Include="Math\Number\Complex.cs" />
+    <Compile Include="Math\Number\INumber.cs" />
     <Compile Include="Math\Operator\Div.cs" />
     <Compile Include="Math\Operator\Mod.cs" />
     <Compile Include="Math\NonlinearEquations.cs" />

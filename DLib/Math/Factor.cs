@@ -206,14 +206,14 @@ namespace DLib.Math
             {
                 var fb = GetFactorBase((ulong)System.Math.Round(System.Math.Exp(System.Math.Sqrt(System.Math.Log(n) * System.Math.Log(System.Math.Log(n))) / 2)), p => true);
                 var rels = new(long, long, long[])[fb.Length];
-                Rational a = n;
+                Number.Rational a = n;
                 var cFrac = new CFrac(a.Round().Abs());
                 for (int c = 0; c < rels.Length; c++)
                 {
                     var b = a - cFrac[cFrac.Length - 1];
                     if (b.IsZero())
                         break;
-                    a = b.Inverse();
+                    a = b.Reciprocal();
                     cFrac.Add(a.Round().Abs());
                     var frac = cFrac.ToFrac();
                     var Q = (long)((int)System.Math.Pow(-1, cFrac.Length) * (frac.Numerator * frac.Numerator - n * frac.Denominator * frac.Denominator));

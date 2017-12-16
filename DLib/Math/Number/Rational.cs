@@ -1,6 +1,6 @@
-﻿namespace DLib.Math
+﻿namespace DLib.Math.Number
 {
-    public class Rational
+    public class Rational : INumber
     {
         public Integer Numerator { get; private set; }
         public Natural Denominator { get; private set; }
@@ -90,7 +90,32 @@
         }
 
 
-        public Rational Inverse() => new Rational() { Numerator = (Integer)Denominator * Numerator.Sign(), Denominator = Numerator.Abs() };
+        public static bool operator ==(Rational a, Rational b) => Compare(a, b) == 0;
+
+        public static bool operator !=(Rational a, Rational b) => Compare(a, b) != 0;
+
+        public static bool operator <(Rational a, Rational b) => Compare(a, b) == -1;
+
+        public static bool operator >(Rational a, Rational b) => Compare(a, b) == 1;
+
+        public static bool operator <=(Rational a, Rational b) => Compare(a, b) != 1;
+
+        public static bool operator >=(Rational a, Rational b) => Compare(a, b) != -1;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>a < b: - 1; a == b: 0; a > b: == 1</b></returns>
+        public static int Compare(Rational a, Rational b)
+        {
+            Natural lcm = Natural.LCM(a.Denominator, b.Denominator);
+            return Integer.Compare(a.Numerator * lcm / a.Denominator, b.Numerator * lcm / a.Denominator);
+        }
+
+
+        public Rational Reciprocal() => new Rational() { Numerator = (Integer)Denominator * Numerator.Sign(), Denominator = Numerator.Abs() };
 
         public Integer Round() => Numerator / Denominator;
 
