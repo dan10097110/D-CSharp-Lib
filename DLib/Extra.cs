@@ -8,6 +8,14 @@ namespace DLib
     {
         public static bool IsNumeric(string s) => double.TryParse(s, out var n);
 
+        public static bool IsPerfectPower(ulong n)
+        {
+            for (uint b = 2; b <= System.Math.Log(n, 2); b++)
+                if (System.Math.Pow(n, 1 / (double)b) % 1 == 0)
+                    return true;
+            return false;
+        }
+
         public static ulong Factorial(ulong n)
         {
             ulong result = 1;
@@ -40,13 +48,7 @@ namespace DLib
             return sum;
         }
 
-        public static bool IsPerfectPower(ulong n)
-        {
-            for (uint b = 2; b <= System.Math.Log(n, 2); b++)
-                if (System.Math.Pow(n, 1 / (double)b) % 1 == 0)
-                    return true;
-            return false;
-        }
+        public static ulong GetDigitSum2(ulong n) => (ulong)n.ToString().ToCharArray().Select(chr => (int)chr).Sum();
 
         public static bool IsSmooth(ulong n, ulong b)
         {
@@ -74,8 +76,6 @@ namespace DLib
             }
             return false;
         }
-
-        public static ulong GetDigitSum2(ulong n) => (ulong)n.ToString().ToCharArray().Select(chr => (int)chr).Sum();
 
         public static void Swap<T>(ref T lhs, ref T rhs)
         {
