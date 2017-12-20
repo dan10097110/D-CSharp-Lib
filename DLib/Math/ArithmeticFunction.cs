@@ -8,9 +8,10 @@ namespace DLib.Math
 {
     public static class ArithmeticFunction
     {
-        public static ulong Divisor(ulong n, ulong p)
+        /*public static ulong Divisor(ulong n, ulong p)
         {
+            var factors = Prime.Factorise.Standard(n, Math.Factor.TrialDivison);
 
-        }
+        }*/
     }
 }
