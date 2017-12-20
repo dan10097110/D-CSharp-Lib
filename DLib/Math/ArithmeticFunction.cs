@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace DLib.Math
 {
     public static class ArithmeticFunction
     {
-        /*public static ulong Divisor(ulong n, ulong p)
-        {
-            var factors = Prime.Factorise.Standard(n, Math.Factor.TrialDivison);
-
-        }*/
+        //macht keinen sinn weil combine nicht alle kombinationen sondern nur welche maximaler länge returnded;
+        public static ulong Divisor(ulong n, ulong e) => (ulong)Combinatorics.CombineEveryLength(Prime.Factorise.Standard(n, Factor.TrialDivison)).Select(i => i.Aggregate(1, (acc, val) => acc * (int)val)).Aggregate(0, (acc, val) => acc + (int)System.Math.Pow(val, e));
     }
 }
