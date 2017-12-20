@@ -111,40 +111,5 @@ namespace DLib
             }
             return (R, p - R);
         }
-
-        /*public static T[][] Combine<T>(T[] array)
-        {
-            var r = new HashSet<HashSet<T>>();
-            for(int i = 0; i < array.Length; i++)
-            {
-                for(; ; )
-                {
-
-                }
-            }
-            return r.ToList();
-        }*/
-
-        public static T[][] Combine<T>(T[] array)
-        {
-            var combs = new T[(int)System.Math.Pow(array.Length, array.Length)][];
-            var c = new int[array.Length];
-            for(int i = 0, p = 0; i < array.Length; p++)
-            {
-                var comb = new T[array.Length];
-                for (int j = 0; j < comb.Length; j++)
-                    comb[j] = array[c[j]];
-                combs[p] = comb;
-                c[i]++;
-                if (c[i] > array.Length)
-                {
-                    for (int j = 0; j <= i; c[j] = 0, j++) ;
-                    i++;
-                }
-                else if (i > 0)
-                    i--;
-            }
-            return combs;
-        }
     }
 }
