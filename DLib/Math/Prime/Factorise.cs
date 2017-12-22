@@ -8,7 +8,7 @@ namespace DLib.Math.Prime
         public static ulong[] Standard(ulong n, Func<ulong, ulong> GetFactor)
         {
             var factors = new List<ulong>();
-            while (true)
+            for (; ;)
             {
                 ulong u = GetFactor(n);
                 if (u == 1)
