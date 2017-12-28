@@ -1,7 +1,7 @@
 # D-CSharp-Lib
 Collection of useful methodes and classes.
 
-Including:\n
+Including:<br />
   -Prime tests:
     -Trial division
     -Prime division
