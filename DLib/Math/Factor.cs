@@ -10,6 +10,16 @@ namespace DLib.Math
     {
         public static ulong Standard(ulong n) => PrimeDivision(n);
 
+        public static ulong Division(ulong n, IEnumerable dividends)
+        {
+            foreach (ulong prime in dividends)
+                if (n % prime == 0)
+                    return prime;
+            return 1;
+        }
+        
+        public static ulong Division(ulong n, Func<ulong, IEnumerable> Sieve) => Division(n, Sieve((ulong)System.Math.Sqrt(n) + 1));
+
         public static ulong TrialDivison(ulong n)
         {
             if (n < 4)
@@ -26,13 +36,7 @@ namespace DLib.Math
             return 1;
         }
 
-        public static ulong PrimeDivision(ulong n)
-        {
-            foreach (ulong prime in Prime.Sieve.Standard((ulong)System.Math.Sqrt(n) + 1))
-                if (n % prime == 0)
-                    return prime;
-            return 1;
-        }
+        public static ulong PrimeDivision(ulong n) => Division(n, Prime.Sieve.Standard);
 
         public static ulong PrimeDivisionIntegratedSieve(ulong n)
         {
@@ -85,10 +89,7 @@ namespace DLib.Math
             for (ulong x = a, y = x; d == 1; x = f(x), y = f(f(y)), d = Math.GCD.Standard(x - y, n)) ;
             return System.Math.Min(d, n / d);
 
-            ulong f(ulong u)
-            {
-                return (u * u + c) % n;
-            }
+            ulong f(ulong u) => (u * u + c) % n;
         }
 
         public static ulong PM1(ulong n, ulong b)
@@ -139,15 +140,9 @@ namespace DLib.Math
             return 1;
         }
 
-        public static ulong SQUFOF(ulong n)
-        {
-            return 1;
-        }
+        public static ulong SQUFOF(ulong n) => throw new NotImplementedException();
 
-        public static ulong ECM(ulong n)
-        {
-            return 1;
-        }
+        public static ulong ECM(ulong n) => throw new NotImplementedException();
 
         public static class CongruenceOfSquares
         {
@@ -247,11 +242,11 @@ namespace DLib.Math
                 return 1;
             }
 
-            public static ulong GNFS(ulong n) => 1;
+            public static ulong GNFS(ulong n) => throw new NotImplementedException();
 
-            public static ulong SNFS(ulong n) => 1;
+            public static ulong SNFS(ulong n) => throw new NotImplementedException();
 
-            public static ulong RS(ulong n) => 1;
+            public static ulong RS(ulong n) => throw new NotImplementedException();
 
             static long[] IsSmooth(long n, long[] factorBase)
             {

@@ -36,15 +36,9 @@ namespace DLib.Math.Prime.Test
             return true;
         }
 
-        public static bool AKS(ulong n)
-        {
-            return false;
-        }
+        public static bool AKS(ulong n) => throw new NotImplementedException();
 
-        public static bool APR(ulong n)
-        {
-            return false;
-        }
+        public static bool APR(ulong n) => throw new NotImplementedException();
 
         public static bool Wilson(ulong n)
         {
@@ -54,15 +48,9 @@ namespace DLib.Math.Prime.Test
             return m + 1 == n;
         }
 
-        public static bool LucasLehmerRiesel(ulong n)
-        {
-            return false;
-        }
+        public static bool LucasLehmerRiesel(ulong n) => throw new NotImplementedException();
 
-        public static bool Proth(ulong n)//proth number
-        {
-            return false;
-        }
+        public static bool Proth(ulong n) => throw new NotImplementedException();//proth numbers
 
         public static bool Pepin(ulong exponent)//fermat numbers
         {

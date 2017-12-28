@@ -68,15 +68,9 @@ namespace DLib.Math.Prime.Test
             return true;
         }
 
-        public static bool EllipticCurve(ulong n)
-        {
-            return false;
-        }
+        public static bool EllipticCurve(ulong n) => throw new NotImplementedException();
 
-        public static bool QFT(ulong n)
-        {
-            return false;
-        }
+        public static bool QFT(ulong n) => throw new NotImplementedException();
 
         public static bool Lucas(ulong n, ulong iterations)//returns true if n is prime, false if n is possibly composite
         {
