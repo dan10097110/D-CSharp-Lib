@@ -15,7 +15,9 @@ namespace DLib.Math
         public static ulong Division(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax)
         {
             foreach (ulong dividend in dividends)
-                if (dividend >= inclusiveMin && dividend < exclusiveMax && n % dividend == 0)
+                if (dividend < exclusiveMax)
+                    break;
+                else if (dividend >= inclusiveMin && n % dividend == 0)
                     return dividend;
             return 1;
         }
@@ -36,7 +38,7 @@ namespace DLib.Math
             return 1;
         }
 
-        public static ulong PrimeDivision(ulong n) => Division(n, Prime.Sieve.Standard(System.Math.Sqrt(n) + 1));
+        public static ulong PrimeDivision(ulong n) => Division(n, Prime.Sieve.Standard((ulong)System.Math.Sqrt(n) + 1));
 
         public static ulong PrimeDivisionIntegratedSieve(ulong n)
         {

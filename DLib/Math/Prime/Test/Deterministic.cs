@@ -1,6 +1,5 @@
 ﻿using DLib.Math.Operator;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DLib.Math.Prime.Test

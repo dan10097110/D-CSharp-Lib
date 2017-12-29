@@ -6,9 +6,9 @@ namespace DLib.Math.Prime.Test
 {
     public static class Probabilistic
     {
-        public static bool TrialDivision(ulong n, IEnumerable<ulong> dividends) => TrialDivision(n, dividends, 2, n);
+        public static bool Division(ulong n, IEnumerable<ulong> dividends) => Division(n, dividends, 2, n);
 
-        public static bool TrialDivision(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax) => Factor.Division(n, dividends, inclusiveMin, exclusiveMax) != 1;
+        public static bool Division(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax) => Factor.Division(n, dividends, inclusiveMin, exclusiveMax) != 1;
 
         public static bool Fermat(ulong n, ulong iterations)
         {

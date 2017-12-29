@@ -72,6 +72,7 @@
     <Compile Include="Collection\Long\Array.cs" />
     <Compile Include="Collection\Long\BitArray.cs" />
     <Compile Include="Collection\Long\List.cs" />
+    <Compile Include="Collection\Primes.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="Coordinates.cs" />
     <Compile Include="Extra.cs" />
