@@ -8,7 +8,7 @@ namespace DLib.Math.Prime
     {
         public static bool Test(ulong exponent, ref ulong startI, ref mpz_t startS, List<ulong> primes)
         {
-            if (!Prime.Test.Probabilistic.TrialDivision(exponent, primes))
+            if (!Prime.Test.Probabilistic.TrialDivision(exponent, primes, 3, (ulong)System.Math.Sqrt(exponent)+1))
                 return false;
             lock (primes)
             {
@@ -17,7 +17,7 @@ namespace DLib.Math.Prime
                 if (i > 0 && primes[i - 1] != exponent)
                     primes.Insert(i, exponent);
             }
-            if ((exponent & 3) == 3 && Prime.Test.Probabilistic.TrialDivision((exponent << 1) + 1, primes))
+            if ((exponent & 3) == 3 && Prime.Test.Probabilistic.TrialDivision((exponent << 1) + 1, primes, 3, (ulong)System.Math.Sqrt((exponent << 1) + 1)+1)))
                 return false;
             mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
             return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
@@ -25,7 +25,7 @@ namespace DLib.Math.Prime
 
         public static bool Test2(ulong exponent, ref ulong startI, ref mpz_t startS, List<ulong> primes)
         {
-            if (!Prime.Test.Probabilistic.TrialDivision(exponent, primes) || ((exponent & 3) == 3 && Prime.Test.Probabilistic.TrialDivision((exponent << 1) + 1, primes)))
+            if (!Prime.Test.Probabilistic.TrialDivision(exponent, primes, 3, (ulong)System.Math.Sqrt(exponent)+1)) || ((exponent & 3) == 3 && Prime.Test.Probabilistic.TrialDivision((exponent << 1) + 1, primes, 3, (ulong)System.Math.Sqrt((exponent << 1) + 1)+1))))
                 return false;
             mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
             return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);

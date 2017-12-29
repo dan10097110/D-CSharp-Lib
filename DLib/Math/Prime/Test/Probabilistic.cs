@@ -6,25 +6,9 @@ namespace DLib.Math.Prime.Test
 {
     public static class Probabilistic
     {
-        public static bool TrialDivision(ulong n, ulong limit, List<ulong> primes) => TrialDivision(n, i => limit, primes);
+        public static bool TrialDivision(ulong n, IEnumerable<ulong> dividends) => TrialDivision(n, dividends, 2, n);
 
-        public static bool TrialDivision(ulong n, Func<ulong, ulong> Limit, List<ulong> primes)
-        {
-            ulong l = Limit(n);
-            for (int i = 1; i < primes.Count && primes[i] <= l; i++)
-                if (n % primes[i] == 0)
-                    return false;
-            return true;
-        }
-
-        public static bool TrialDivision(ulong n, List<ulong> primes)
-        {
-            ulong sqrt = (ulong)System.Math.Sqrt(n);
-            for (int i = 0; i < primes.Count && primes[i] <= sqrt; i++)
-                if (n % primes[i] == 0)
-                    return false;
-            return true;
-        }
+        public static bool TrialDivision(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax) => Factor.Division(n, dividends, inclusiveMin, exclusiveMax) != 1;
 
         public static bool Fermat(ulong n, ulong iterations)
         {
@@ -68,10 +52,6 @@ namespace DLib.Math.Prime.Test
             return true;
         }
 
-        public static bool EllipticCurve(ulong n) => throw new NotImplementedException();
-
-        public static bool QFT(ulong n) => throw new NotImplementedException();
-
         public static bool Lucas(ulong n, ulong iterations)//returns true if n is prime, false if n is possibly composite
         {
             Random random = new Random();
@@ -94,5 +74,9 @@ namespace DLib.Math.Prime.Test
             }
             return false;
         }
+
+        public static bool EllipticCurve(ulong n) => throw new NotImplementedException();
+
+        public static bool QFT(ulong n) => throw new NotImplementedException();
     }
 }

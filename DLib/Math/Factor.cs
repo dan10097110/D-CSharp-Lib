@@ -8,17 +8,17 @@ namespace DLib.Math
 {
     public static class Factor
     {
-        public static ulong Standard(ulong n) => PrimeDivision(n);
+        public static ulong Standard(ulong n) => TrialDivison(n);
 
-        public static ulong Division(ulong n, IEnumerable dividends)
+        public static ulong Division(ulong n, IEnumerable<ulong> dividends) => Division(n, dividends, 2, n);
+
+        public static ulong Division(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax)
         {
-            foreach (ulong prime in dividends)
-                if (n % prime == 0)
-                    return prime;
+            foreach (ulong dividend in dividends)
+                if (dividend >= inclusiveMin && dividend < exclusiveMax && n % dividend == 0)
+                    return dividend;
             return 1;
         }
-        
-        public static ulong Division(ulong n, Func<ulong, IEnumerable> Sieve) => Division(n, Sieve((ulong)System.Math.Sqrt(n) + 1));
 
         public static ulong TrialDivison(ulong n)
         {
@@ -36,7 +36,7 @@ namespace DLib.Math
             return 1;
         }
 
-        public static ulong PrimeDivision(ulong n) => Division(n, Prime.Sieve.Standard);
+        public static ulong PrimeDivision(ulong n) => Division(n, Prime.Sieve.Standard(System.Math.Sqrt(n) + 1));
 
         public static ulong PrimeDivisionIntegratedSieve(ulong n)
         {
