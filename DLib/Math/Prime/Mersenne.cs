@@ -26,11 +26,18 @@ namespace DLib.Math.Prime
             return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
         }
         
-        //die primes werden vorher geaddesed der prime test auf exponent wird also doppelt ausgeführt
         public static bool Test2(ulong exponent, ref ulong startI, ref mpz_t startS, List<ulong> primes)
         {
             double sqrtExp = System.Math.Sqrt(exponent);
             if (!Prime.Test.Probabilistic.Division(exponent, primes, 3, (ulong)System.Math.Sqrt(exponent) + 1) || ((exponent & 3) == 3 && Prime.Test.Probabilistic.Division((exponent << 1) + 1, primes, 3, (ulong)(sqrtExp + sqrt2) + 1)))
+                return false;
+            mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
+            return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
+        }
+        
+        public static bool Test0(ulong exponent, ref ulong startI, ref mpz_t startS)
+        {
+            if (!Collection.Primes.IsPrime(exponent) || ((exponent & 3) == 3 && Collection.Primes.IsPrime((exponent << 1) + 1)))
                 return false;
             mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
             return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
