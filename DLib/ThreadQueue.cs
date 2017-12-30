@@ -3,21 +3,20 @@ using System.Threading;
 
 namespace DLib
 {
-
     public class ThreadQueue
     {
-        Queue<Thread> queue = new Queue<Thread>();
+        Queue<string> queue = new Queue<string>();
 
         public void Wait()
         {
-            queue.Enqueue(Thread.CurrentThread);
-            while (queue.Peek() != Thread.CurrentThread)
+            queue.Enqueue(Thread.CurrentThread.Name);
+            while (queue.Peek() != Thread.CurrentThread.Name)
                 Thread.Sleep(1);
         }
 
         public void Finished()
         {
-            if (Thread.CurrentThread == queue.Peek())
+            if (Thread.CurrentThread.Name == queue.Peek())
                 queue.Dequeue();
         }
     }
