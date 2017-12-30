@@ -35,7 +35,7 @@ namespace DLib.Math.Prime
             return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
         }
         
-        public static bool Test0(ulong exponent, ref ulong startI, ref mpz_t startS)
+        public static bool Test(ulong exponent, ref ulong startI, ref mpz_t startS)
         {
             if (!Collection.Primes.IsPrime((int)exponent) || ((exponent & 3) == 3 && Collection.Primes.IsPrime(((int)exponent << 1) + 1)))
                 return false;

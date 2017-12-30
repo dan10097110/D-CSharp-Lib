@@ -10,7 +10,7 @@ namespace DLib.Math.Seeker
 {
     public class MersennePrime
     {
-        public const string version = "170916";
+        public const string version = "171230";
 
         byte threadCount, pausedThreadCount, runningThreadCount;
         ManualResetEventSlim manualResetEvent = new ManualResetEventSlim(false);
@@ -48,7 +48,7 @@ namespace DLib.Math.Seeker
                                 pausedThreadCount--;
                                 testTime.Restart();
                                 ulong exponent = (NextExponent += 2) - 2;
-                                if (Prime.Mersenne.Test0(exponent, ref start.i, ref start.s))
+                                if (Prime.Mersenne.Test(exponent, ref start.i, ref start.s))
                                     lock (mersennePrimes)
                                     {
                                         int i = mersennePrimes.Count;

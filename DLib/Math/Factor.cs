@@ -14,11 +14,14 @@ namespace DLib.Math
 
         public static ulong Division(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax)
         {
-            foreach (ulong dividend in dividends)
-                if (dividend < exclusiveMax)
-                    break;
-                else if (dividend >= inclusiveMin && n % dividend == 0)
-                    return dividend;
+            lock (dividends)
+            {
+                foreach (ulong dividend in dividends)
+                    if (dividend >= exclusiveMax)
+                        break;
+                    else if (dividend >= inclusiveMin && n % dividend == 0)
+                        return dividend;
+            }
             return 1;
         }
 
