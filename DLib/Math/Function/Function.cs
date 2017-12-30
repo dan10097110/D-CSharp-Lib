@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Dlib.Math.Function
+namespace DLib.Math.Function
 {
     public abstract class Function
     {

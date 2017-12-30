@@ -1,4 +1,4 @@
-﻿namespace Dlib.Math.Function
+﻿namespace DLib.Math.Function
 {
     public class Difference : Function
     {

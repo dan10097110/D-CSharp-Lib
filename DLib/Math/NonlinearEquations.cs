@@ -1,11 +1,10 @@
-﻿using Dlib.Math.Function;
-using System;
+﻿using System;
 
 namespace DLib.Math
 {
     public static class NonlinearEquations
     {
-        public static double SecantMethod(Function p, double a, double b)
+        public static double SecantMethod(Function.Function p, double a, double b)
         {
             while (p.Y(b) != 0)
             {
@@ -16,7 +15,7 @@ namespace DLib.Math
             return b;
         }
 
-        public static double Bisection(Function p, double a, double b)
+        public static double Bisection(Function.Function p, double a, double b)
         {
             while (true)
             {
@@ -48,7 +47,7 @@ namespace DLib.Math
             }
         }
 
-        public static double FalsePositionMethod(Function p, double a, double b)
+        public static double FalsePositionMethod(Function.Function p, double a, double b)
         {
             while (true)
             {
@@ -64,9 +63,9 @@ namespace DLib.Math
 
         static Random r = new Random();
 
-        public static double? NewtonMethod(Function p, double a)
+        public static double? NewtonMethod(Function.Function p, double a)
         {
-            var q = new Quotient(p, p.Derivate());
+            var q = new Function.Quotient(p, p.Derivate());
             while (System.Math.Round(p.Y(a), 6) != 0)
             {
                 double d = q.Y(a);
@@ -82,9 +81,9 @@ namespace DLib.Math
             return a;
         }
 
-        public static double HalleyMethod(Function p, double a)
+        public static double HalleyMethod(Function.Function p, double a)
         {
-            Function q = p.Derivate(), r = q.Derivate();
+            Function.Function q = p.Derivate(), r = q.Derivate();
             while (p.Y(a) != 0)
                 a -= (2 * p.Y(a) * q.Y(a)) / (2 * q.Y(a) * q.Y(a) - p.Y(a) * r.Y(a));
             return a;
