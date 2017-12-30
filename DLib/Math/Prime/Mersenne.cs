@@ -37,7 +37,7 @@ namespace DLib.Math.Prime
         
         public static bool Test0(ulong exponent, ref ulong startI, ref mpz_t startS)
         {
-            if (!Collection.Primes.IsPrime(exponent) || ((exponent & 3) == 3 && Collection.Primes.IsPrime((exponent << 1) + 1)))
+            if (!Collection.Primes.IsPrime((int)exponent) || ((exponent & 3) == 3 && Collection.Primes.IsPrime(((int)exponent << 1) + 1)))
                 return false;
             mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
             return TrialDivision0(exponent, mersenneNumber) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
@@ -203,7 +203,7 @@ namespace DLib.Math.Prime
             ulong two = exponent << 1, six = 3 * two, ten = 5 * two;
             var d = new ulong[] { six, ten, exponent << 3, six, ten, six, two, six, ten, six, exponent << 3, ten, six, two, 22 * exponent, two };
             for (ulong dividend = 1, limit = exponent * exponent; (dividend += d[i]) < limit; i = (i + 1) & 15)
-                if (Collection.Primes.IsProbPrime(dividend) && mersenneNumber % dividend == 0)
+                if (Collection.Primes.IsProbPrime((int)dividend) && mersenneNumber % dividend == 0)
                     return false;
             return true;
         }

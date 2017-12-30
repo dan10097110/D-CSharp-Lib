@@ -1,34 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace DLib.Collection
 {
-
-
-
-
-
-
-    //prime numbers in sieve are unsorted
-
-
-
-
     public static class Primes
     {
-        static List<ulong> primes = new List<ulong>() { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 91, 97 };
-        static ulong nextCand = primes.Last() + 2;
+        static List<int> primes = new List<int>() { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 91, 97 };
+        static int nextCand = primes.Last() + 2;
+        static bool calc = false;
 
-        public static ulong GetIth(int i)
+        public static int GetIth(int i)
         {
+            while (calc)
+                Thread.Sleep(1);
             if (i >= primes.Count)
                 CalcUntilIthPrime(i + 1);
             return primes[i];
         }
 
-        public static bool IsPrime(ulong n)
+        public static bool IsPrime(int n)
         {
+            while (calc)
+                Thread.Sleep(1);
             if (n < nextCand)
                 return Contain(n);
             else if (n < nextCand * nextCand)
@@ -38,7 +33,7 @@ namespace DLib.Collection
             }
             else
             {
-                CalcUntilI((ulong)System.Math.Sqrt(n));
+                CalcUntilI((int)System.Math.Sqrt(n));
                 for (int i = 0; i < primes.Count; i++)
                     if (n % primes[i] == 0)
                         return false;
@@ -46,13 +41,15 @@ namespace DLib.Collection
             }
         }
 
-        public static bool IsProbPrime(ulong n)
+        public static bool IsProbPrime(int n)
         {
+            while (calc)
+                Thread.Sleep(1);
             if (n <= nextCand)
                 return Contain(n);
             else
             {
-                CalcUntilI((ulong)System.Math.Sqrt(System.Math.Sqrt(n)));
+                CalcUntilI((int)System.Math.Sqrt(System.Math.Sqrt(n)));
                 for (int i = 0; i < primes.Count; i++)
                     if (n % primes[i] == 0)
                         return false;
@@ -62,20 +59,28 @@ namespace DLib.Collection
 
         public static void CalcUntilIthPrime(int exclusiveI)
         {
+            while (calc)
+                Thread.Sleep(1);
+            calc = true;
             while (primes.Count < exclusiveI)
                 TestNextCand();
+            calc = false;
         }
 
-        public static void CalcUntilI(ulong inclusiveI)
+        public static void CalcUntilI(int inclusiveI)
         {
+            while (calc)
+                Thread.Sleep(1);
+            calc = true;
             if (inclusiveI < (nextCand << 1))
                 while (primes.Last() < inclusiveI)
                     TestNextCand();
             else
                 Sieve(inclusiveI);
+            calc = false;
         }
 
-        static bool Contain(ulong n)
+        static bool Contain(int n)
         {
             int u = 0;
             for (int o = primes.Count - 1; u != o;)
@@ -101,18 +106,22 @@ namespace DLib.Collection
             nextCand += 2;
         }
 
-        static void Sieve(ulong exclusive)
+        static void Sieve(int exclusive)
         {
-            BitArray sieve = new BitArray((int)exclusive + 1, true);
+            var sieve = new BitArray(exclusive + 1, true);
             for (int i = 1; i < primes.Count; i++)
-                for (int j = (int)(primes[i] * primes[i]); j < sieve.Count; sieve[j] = false, j += (int)primes[i]) ;
-            for (int i = primes.Count; i * i <= sieve.Count; i += 2)
+                for (int j = primes[i] * primes[i]; j < sieve.Count; sieve[j] = false, j += primes[i]) ;
+            for (int i = nextCand; i * i <= sieve.Count; i += 2)
                 if (sieve[i])
+                {
+                    primes.Add(i);
                     for (int j = i * i; j < sieve.Count; sieve[j] = false, j += i) ;
-            for (int i = (int)primes.Last() + 2; i < sieve.Count; i += 2)
+                }
+            int fsqrt = (int)System.Math.Sqrt(sieve.Count);
+            for (int i = System.Math.Max(primes.Last() + 2, fsqrt + 1 + (fsqrt & 1)); i < sieve.Count; i += 2)
                 if (sieve[i])
-                    primes.Add((ulong)i);
-            nextCand = (ulong)(sieve.Count + ((sieve.Count + 1) & 1));
+                    primes.Add(i);
+            nextCand = sieve.Count + ((sieve.Count + 1) & 1);
         }
     }
 }
