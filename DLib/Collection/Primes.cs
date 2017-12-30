@@ -9,12 +9,11 @@ namespace DLib.Collection
     {
         static List<int> primes = new List<int>() { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 91, 97 };
         static int nextCand = primes.Last() + 2;
-        static bool calc = false;
+        static ThreadQueue threadQueue = new ThreadQueue();
 
         public static int GetIth(int i)
         {
-            while (calc)
-                Thread.Sleep(1);
+            threadQueue.Wait();
             if (i >= primes.Count)
                 CalcUntilIthPrime(i + 1);
             return primes[i];
@@ -22,8 +21,7 @@ namespace DLib.Collection
 
         public static bool IsPrime(int n)
         {
-            while (calc)
-                Thread.Sleep(1);
+            threadQueue.Wait();
             if (n < nextCand)
                 return Contain(n);
             else if (n < nextCand * nextCand)
@@ -43,8 +41,7 @@ namespace DLib.Collection
 
         public static bool IsProbPrime(int n)
         {
-            while (calc)
-                Thread.Sleep(1);
+            threadQueue.Wait();
             if (n <= nextCand)
                 return Contain(n);
             else
@@ -59,25 +56,21 @@ namespace DLib.Collection
 
         public static void CalcUntilIthPrime(int exclusiveI)
         {
-            while (calc)
-                Thread.Sleep(1);
-            calc = true;
+            threadQueue.Wait();
             while (primes.Count < exclusiveI)
                 TestNextCand();
-            calc = false;
+            threadQueue.Finished();
         }
 
         public static void CalcUntilI(int inclusiveI)
         {
-            while (calc)
-                Thread.Sleep(1);
-            calc = true;
+            threadQueue.Wait();
             if (inclusiveI < (nextCand << 1))
                 while (primes.Last() < inclusiveI)
                     TestNextCand();
             else
                 Sieve(inclusiveI);
-            calc = false;
+            threadQueue.Finished();
         }
 
         static bool Contain(int n)
