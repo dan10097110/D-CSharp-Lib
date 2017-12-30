@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace DLib
 {
+
     public class ThreadQueue
     {
         Queue<Thread> queue = new Queue<Thread>();
@@ -14,6 +15,10 @@ namespace DLib
                 Thread.Sleep(1);
         }
 
-        public void Finished() => queue.Dequeue();
+        public void Finished()
+        {
+            if (Thread.CurrentThread == queue.Peek())
+                queue.Dequeue();
+        }
     }
 }
