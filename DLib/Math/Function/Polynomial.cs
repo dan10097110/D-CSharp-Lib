@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Dlib.Math.Function
+namespace DLib.Math.Function
 {
     public class Polynomial : Function
     {

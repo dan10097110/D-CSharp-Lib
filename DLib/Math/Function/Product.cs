@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dlib.Math.Function
+namespace DLib.Math.Function
 {
     class Product : Function
     {

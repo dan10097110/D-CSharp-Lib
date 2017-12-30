@@ -1,6 +1,5 @@
 ﻿using DLib.Math.Operator;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DLib.Math.Prime.Test
@@ -10,15 +9,6 @@ namespace DLib.Math.Prime.Test
         public static bool TrialDivision(ulong n) => Factor.TrialDivison(n) == 1;
 
         public static bool PrimeDivision(ulong n) => Factor.PrimeDivisionIntegratedSieve(n) == 1;
-
-        public static bool TrialDivision(ulong n, List<ulong> primes)
-        {
-            ulong sqrt = (ulong)System.Math.Sqrt(n);
-            for (int i = 0; primes[i] <= sqrt; i++)
-                if (n % primes[i] == 0)
-                    return false;
-            return true;
-        }
 
         public static bool Fermat(ulong n)
         {
@@ -36,32 +26,12 @@ namespace DLib.Math.Prime.Test
             return true;
         }
 
-        public static bool AKS(ulong n)
-        {
-            return false;
-        }
-
-        public static bool APR(ulong n)
-        {
-            return false;
-        }
-
         public static bool Wilson(ulong n)
         {
             ulong m = 2;
             for (ulong i = 3; i < n; i++)
                 m = (m * i) % n;
             return m + 1 == n;
-        }
-
-        public static bool LucasLehmerRiesel(ulong n)
-        {
-            return false;
-        }
-
-        public static bool Proth(ulong n)//proth number
-        {
-            return false;
         }
 
         public static bool Pepin(ulong exponent)//fermat numbers
@@ -156,5 +126,13 @@ namespace DLib.Math.Prime.Test
             }
             return true;
         }
+
+        public static bool AKS(ulong n) => throw new NotImplementedException();
+
+        public static bool APR(ulong n) => throw new NotImplementedException();
+
+        public static bool LucasLehmerRiesel(ulong n) => throw new NotImplementedException();
+
+        public static bool Proth(ulong n) => throw new NotImplementedException();//proth numbers
     }
 }

@@ -356,7 +356,7 @@ namespace DLib.Math.Number
             //1,3
             public static bool Test(ulong exponent, ref ulong startI, ref Natural startS, List<ulong> primes)
             {
-                if (!Prime.Test.Deterministic.TrialDivision(exponent, primes))
+                if (!Prime.Test.Probabilistic.Division(exponent, primes, 3, (ulong)System.Math.Sqrt(exponent) + 1))
                     return false;
                 lock (primes)
                 {
@@ -365,7 +365,7 @@ namespace DLib.Math.Number
                     if (i > 0 && primes[i - 1] != exponent)
                         primes.Insert(i, exponent);
                 }
-                if ((exponent & 3) == 3 && Prime.Test.Deterministic.TrialDivision((exponent << 1) + 1, primes))
+                if ((exponent & 3) == 3 && Prime.Test.Probabilistic.Division((exponent << 1) + 1, primes, 3, (ulong)System.Math.Sqrt((exponent << 1) + 1) + 1))
                     return false;
                 Natural mersenneNumber = MersenneNumber((int)exponent);
                 return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest(exponent, mersenneNumber, ref startI, ref startS);
@@ -408,7 +408,7 @@ namespace DLib.Math.Number
                 ulong two = exponent << 1, six = 3 * two, ten = 5 * two;
                 var d = new ulong[] { six, ten, exponent << 3, six, ten, six, two, six, ten, six, exponent << 3, ten, six, two, 22 * exponent, two };
                 for (ulong dividend = 1, limit = exponent * exponent; (dividend += d[i]) < limit; i = (i + 1) & 15)
-                    if (Prime.Test.Probabilistic.TrialDivision(dividend, (ulong)System.Math.Sqrt(System.Math.Sqrt(dividend)), primes) && (mersenneNumber % (Natural)dividend) == 0)
+                    if (Prime.Test.Probabilistic.Division(dividend, primes, 7, (ulong)System.Math.Sqrt(System.Math.Sqrt(dividend))) && (mersenneNumber % (Natural)dividend) == 0)
                         return false;
                 return true;
             }

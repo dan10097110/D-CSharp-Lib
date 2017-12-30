@@ -73,6 +73,7 @@
     <Compile Include="Collection\Long\Array.cs" />
     <Compile Include="Collection\Long\BitArray.cs" />
     <Compile Include="Collection\Long\List.cs" />
+    <Compile Include="Collection\Primes.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="Coordinates.cs" />
     <Compile Include="Extra.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Pathfinding\Vertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sort.cs" />
+    <Compile Include="ThreadQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="xmpir32.dll">
