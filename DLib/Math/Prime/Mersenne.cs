@@ -40,11 +40,13 @@ namespace DLib.Math.Prime
             if (!Collection.Primes.IsPrime((int)exponent) || ((exponent & 3) == 3 && Collection.Primes.IsPrime(((int)exponent << 1) + 1)))
                 return false;
             mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
-            return TrialDivision0(exponent, mersenneNumber) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
+            return TrialDivision(exponent, mersenneNumber) && LucasLehmerTest.Fastest(exponent, mersenneNumber, ref startI, ref startS);
         }
 
         public static class LucasLehmerTest
         {
+            public static bool Fastest(ulong exponent, mpz_t mersenneNumber, ref ulong startI, ref mpz_t startS) => Start10(exponent, mersenneNumber, ref startI, ref startS);
+
             public static bool Start01(ulong exponent)//2669
             {
                 mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1, s = 4;
@@ -178,7 +180,7 @@ namespace DLib.Math.Prime
             return true;
         }
 
-        public static bool TrialDivision0(ulong exponent, mpz_t mersenneNumber)
+        public static bool TrialDivision(ulong exponent, mpz_t mersenneNumber)
         {
             int i = 0;
             switch (exponent % 60)
