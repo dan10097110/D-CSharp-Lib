@@ -6,7 +6,7 @@ namespace DLib
     public class ThreadQueue
     {
         Queue<string> queue = new Queue<string>();
-        int threadNumber = 0;
+        static int threadNumber = 0;
 
         public void Wait()
         {
