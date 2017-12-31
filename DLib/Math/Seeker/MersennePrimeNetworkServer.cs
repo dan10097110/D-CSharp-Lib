@@ -46,7 +46,7 @@ namespace DLib.Math.Seeker
                         }
                         else
                         {
-                            var array = Extra.SplitString(message, '|', n => n).ToArray();
+                            var array = message.Split('|');
                             InsertMersennPrime((uint.Parse(array[0]), DateTime.Parse(array[1]), ServerWorkTime, TimeSpan.Parse(array[2]), member.Address));
 
                             void InsertMersennPrime((uint, DateTime, TimeSpan, TimeSpan, IPAddress) mersennePrime)
@@ -101,7 +101,7 @@ namespace DLib.Math.Seeker
 
     public class MPNetworkServer : IDisposable
     {
-        DLib.Networking.ServerNew3 server;
+        Networking.ServerNew3 server;
         List<(uint exponent, TimeSpan time, IPAddress ipAdresse)> mersennePrimes = new List<(uint, TimeSpan, IPAddress)>();
         ManualResetEventSlim manualResetEvent = new ManualResetEventSlim(true);
         Stopwatch totalTime = new Stopwatch();
@@ -126,7 +126,7 @@ namespace DLib.Math.Seeker
                     Running = true;
                     NextExponent = System.Math.Max(5, startExponent + ((startExponent + 1) & 1));
                     totalTime.Restart();
-                    server = new DLib.Networking.ServerNew3(port);
+                    server = new Networking.ServerNew3(port);
                     while (Running)
                     {
                         manualResetEvent.Wait();

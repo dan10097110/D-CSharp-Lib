@@ -84,13 +84,6 @@ namespace DLib
             rhs = temp;
         }
 
-        public static IEnumerable<T> SplitString<T>(string s, char splitChar, Func<string, T> parse)
-        {
-            for (int i; (i = s.IndexOf(splitChar)) != -1; s = s.Remove(0, i + 1))
-                yield return parse(s.Substring(0, i));
-            yield return parse(s);
-        }
-
         public static bool[] ToBinaryBoolArray(long n) => Convert.ToString(n, 2).ToCharArray().Select(c => c == 49 ? true : false).ToArray();
 
         public static (long, long) TonelliShank(long p, long n)

@@ -7,33 +7,6 @@ namespace DLib.Math.Prime
     public static class Mersenne
     {
         const double sqrt2 = 1.414;
-
-        public static bool Test(ulong exponent, ref ulong startI, ref mpz_t startS, List<ulong> primes)
-        {
-            double sqrtExp = System.Math.Sqrt(exponent);
-            if (!Prime.Test.Probabilistic.Division(exponent, primes, 3, (ulong)sqrtExp + 1))
-                return false;
-            lock (primes)
-            {
-                int i = primes.Count;
-                for (; i > 0 && primes[i - 1] > exponent; i--) ;
-                if (i > 0 && primes[i - 1] != exponent)
-                    primes.Insert(i, exponent);
-            }
-            if ((exponent & 3) == 3 && Prime.Test.Probabilistic.Division((exponent << 1) + 1, primes, 3, (ulong)(sqrtExp * sqrt2) + 1))
-                return false;
-            mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
-            return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
-        }
-        
-        public static bool Test2(ulong exponent, ref ulong startI, ref mpz_t startS, List<ulong> primes)
-        {
-            double sqrtExp = System.Math.Sqrt(exponent);
-            if (!Prime.Test.Probabilistic.Division(exponent, primes, 3, (ulong)System.Math.Sqrt(exponent) + 1) || ((exponent & 3) == 3 && Prime.Test.Probabilistic.Division((exponent << 1) + 1, primes, 3, (ulong)(sqrtExp + sqrt2) + 1)))
-                return false;
-            mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
-            return TrialDivision(exponent, mersenneNumber, primes) && LucasLehmerTest.Start10(exponent, mersenneNumber, ref startI, ref startS);
-        }
         
         public static bool Test(ulong exponent, ref ulong startI, ref mpz_t startS)
         {

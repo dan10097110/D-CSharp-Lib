@@ -6,7 +6,7 @@ namespace DLib.Collection
 {
     public static class Primes
     {
-        static List<int> primes = new List<int>() { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 91, 97 };
+        static List<int> primes = new List<int>() { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 };
         static int nextCand = primes.Last() + 2;
         static ThreadQueue threadQueue = new ThreadQueue();
 
@@ -53,7 +53,8 @@ namespace DLib.Collection
                 b = Contain(n);
             else
             {
-                CalcUntilI((int)System.Math.Sqrt(System.Math.Sqrt(n)));
+                //CalcUntilI((int)System.Math.Sqrt(System.Math.Sqrt(n)));
+                CalcUntilI((int)System.Math.Log(n));
                 for (int i = 0; i < primes.Count; i++)
                     if (n % primes[i] == 0)
                     {
@@ -77,7 +78,7 @@ namespace DLib.Collection
                 while (primes.Last() < inclusiveI)
                     TestNextCand();
             else
-                Sieve(inclusiveI);
+                Sieve(inclusiveI + 1);
         }
 
         static bool Contain(int n)
@@ -108,17 +109,16 @@ namespace DLib.Collection
 
         static void Sieve(int exclusive)
         {
-            var sieve = new BitArray(exclusive + 1, true);
+            var sieve = new BitArray(exclusive, true);
             for (int i = 1; i < primes.Count; i++)
-                for (int j = primes[i] * primes[i]; j < sieve.Count; sieve[j] = false, j += primes[i]) ;
+                for (int j = primes[i] * primes[i], k = primes[i] << 1; j < sieve.Count; sieve[j] = false, j += k) ;
             for (int i = nextCand; i * i <= sieve.Count; i += 2)
                 if (sieve[i])
                 {
                     primes.Add(i);
-                    for (int j = i * i; j < sieve.Count; sieve[j] = false, j += i) ;
+                    for (int j = i * i, k = i << 1; j < sieve.Count; sieve[j] = false, j += k) ;
                 }
-            int fsqrt = (int)System.Math.Sqrt(sieve.Count);
-            for (int i = System.Math.Max(primes.Last() + 2, fsqrt + 1 + (fsqrt & 1)); i < sieve.Count; i += 2)
+            for (int i = primes.Last() + 2; i < sieve.Count; i += 2)
                 if (sieve[i])
                     primes.Add(i);
             nextCand = sieve.Count + ((sieve.Count + 1) & 1);

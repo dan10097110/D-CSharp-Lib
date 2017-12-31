@@ -27,7 +27,7 @@ namespace DLib.Math.Prime
                 if (sieve[(int)i])
                 {
                     yield return i;
-                    for (ulong j = i * i; j < exclusiveMax; sieve[(int)j] = false, j += i) ;
+                    for (ulong j = i * i, k = i << 1; j < exclusiveMax; sieve[(int)j] = false, j += k) ;
                 }
             for (ulong i = fsqrt + 1 + (fsqrt & 1); i < exclusiveMax; i += 2)
                 if (sieve[(int)i])
