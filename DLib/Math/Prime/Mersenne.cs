@@ -1,19 +1,46 @@
 ﻿using DLib.Math.Operator;
 using Mpir.NET;
-using System.Collections.Generic;
 
 namespace DLib.Math.Prime
 {
     public static class Mersenne
     {
-        const double sqrt2 = 1.414;
-        
         public static bool Test(ulong exponent, ref ulong startI, ref mpz_t startS)
         {
             if (!Collection.Primes.IsPrime((int)exponent) || ((exponent & 3) == 3 && Collection.Primes.IsPrime(((int)exponent << 1) + 1)))
                 return false;
             mpz_t mersenneNumber = mpz_t.One.ShiftLeft((int)exponent) - 1;
             return TrialDivision(exponent, mersenneNumber) && LucasLehmerTest.Fastest(exponent, mersenneNumber, ref startI, ref startS);
+        }
+
+        public static bool TrialDivision(ulong exponent, mpz_t mersenneNumber)
+        {
+            int i = 0;
+            switch (exponent % 60)
+            {
+                case 1: i = 7; break;
+                case 7: i = 4; break;
+                case 11: i = 15; break;
+                case 13: i = 3; break;
+                case 17: i = 5; break;
+                case 19: i = 1; break;
+                case 23: i = 13; break;
+                case 29: i = 2; break;
+                case 31: i = 11; break;
+                case 37: i = 0; break;
+                case 41: i = 12; break;
+                case 43: i = 8; break;
+                case 47: i = 10; break;
+                case 49: i = 14; break;
+                case 53: i = 9; break;
+                case 59: i = 6; break;
+            }
+            ulong two = exponent << 1, six = 3 * two, ten = 5 * two;
+            var d = new ulong[] { six, ten, exponent << 3, six, ten, six, two, six, ten, six, exponent << 3, ten, six, two, 22 * exponent, two };
+            for (ulong dividend = 1, limit = exponent * exponent; (dividend += d[i]) < limit; i = (i + 1) & 15)
+                if (Collection.Primes.IsProbPrime((int)dividend) && mersenneNumber % dividend == 0)
+                    return false;
+            return true;
         }
 
         public static class LucasLehmerTest
@@ -121,66 +148,6 @@ namespace DLib.Math.Prime
                 }
                 return s.PowerMod(e, mersenneNumber) == mersenneNumber - 3;
             }
-        }
-
-        public static bool TrialDivision(ulong exponent, mpz_t mersenneNumber, List<ulong> primes)
-        {
-            int i = 0;
-            switch (exponent % 60)
-            {
-                case 1: i = 7; break;
-                case 7: i = 4; break;
-                case 11: i = 15; break;
-                case 13: i = 3; break;
-                case 17: i = 5; break;
-                case 19: i = 1; break;
-                case 23: i = 13; break;
-                case 29: i = 2; break;
-                case 31: i = 11; break;
-                case 37: i = 0; break;
-                case 41: i = 12; break;
-                case 43: i = 8; break;
-                case 47: i = 10; break;
-                case 49: i = 14; break;
-                case 53: i = 9; break;
-                case 59: i = 6; break;
-            }
-            ulong two = exponent << 1, six = 3 * two, ten = 5 * two;
-            var d = new ulong[] { six, ten, exponent << 3, six, ten, six, two, six, ten, six, exponent << 3, ten, six, two, 22 * exponent, two };
-            for (ulong dividend = 1, limit = exponent * exponent; (dividend += d[i]) < limit; i = (i + 1) & 15)
-                if (Prime.Test.Probabilistic.Division(dividend, primes, 7, (ulong)System.Math.Sqrt(System.Math.Sqrt(dividend))) && mersenneNumber % dividend == 0)
-                    return false;
-            return true;
-        }
-
-        public static bool TrialDivision(ulong exponent, mpz_t mersenneNumber)
-        {
-            int i = 0;
-            switch (exponent % 60)
-            {
-                case 1: i = 7; break;
-                case 7: i = 4; break;
-                case 11: i = 15; break;
-                case 13: i = 3; break;
-                case 17: i = 5; break;
-                case 19: i = 1; break;
-                case 23: i = 13; break;
-                case 29: i = 2; break;
-                case 31: i = 11; break;
-                case 37: i = 0; break;
-                case 41: i = 12; break;
-                case 43: i = 8; break;
-                case 47: i = 10; break;
-                case 49: i = 14; break;
-                case 53: i = 9; break;
-                case 59: i = 6; break;
-            }
-            ulong two = exponent << 1, six = 3 * two, ten = 5 * two;
-            var d = new ulong[] { six, ten, exponent << 3, six, ten, six, two, six, ten, six, exponent << 3, ten, six, two, 22 * exponent, two };
-            for (ulong dividend = 1, limit = exponent * exponent; (dividend += d[i]) < limit; i = (i + 1) & 15)
-                if (Collection.Primes.IsProbPrime((int)dividend) && mersenneNumber % dividend == 0)
-                    return false;
-            return true;
         }
     }
 }
