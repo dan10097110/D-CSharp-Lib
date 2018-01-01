@@ -5,10 +5,10 @@ namespace DLib.Math.Number
 {
     public class MersenneNumber
     {
+        const double log2 = 0.693147180559945309417232121458176568075500134360255254120, c = -0.66444870745388938334802927784457284837943064347344078207;
         public int Exponent { get; private set; }
         mpz_t m;
         bool? isPrime = null;
-        const double log2 = 0.693147180559945309417232121458176568075500134360255254120, c = -0.66444870745388938334802927784457284837943064347344078207;
         public bool IsPrime
         {
             get
@@ -57,12 +57,10 @@ namespace DLib.Math.Number
 
         bool LucasLehmerTest()
         {
-            int startI = (int)(System.Math.Log(Exponent) / log2);// + c);
-            mpz_t s = mpz_t.Power(3, (int)System.Math.Pow(2, startI - 1));
-            if ((startI & 1) == 0)
+            int i = (int)(System.Math.Log(Exponent) / log2);// + c);
+            var s = mpz_t.Power(3, (int)System.Math.Pow(2, i - 1));
+            for (; i < Exponent; i++)
                 mpir.mpz_powm_ui(s, s, 2, m);
-            for (int i = startI + ((startI - 1) & 1); i < Exponent; i += 2)
-                mpir.mpz_powm_ui(s, s, 4, m);
             return s == m - 3;
         }
     }
