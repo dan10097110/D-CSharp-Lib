@@ -135,7 +135,7 @@ namespace DLib.Math.Prime
                     startS *= startS;
                 }
                 return s == mersenneNumber - 3;
-            }//fastest
+            }
 
             //1,3
             public static bool Start11(ulong exponent, ref ulong startI, ref mpz_t startS)//3969
