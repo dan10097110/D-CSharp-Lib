@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DLib
@@ -8,13 +7,16 @@ namespace DLib
     {
         public static bool IsNumeric(string s) => double.TryParse(s, out var n);
 
-        public static bool IsPerfectPower(ulong n)
+        public static bool IsPerfectPower(int n)
         {
-            for (uint b = 2; b <= System.Math.Log(n, 2); b++)
+            int l = (int)System.Math.Log(n, 2);
+            for (int b = 2; b <= l; b++)
                 if (System.Math.Pow(n, 1 / (double)b) % 1 == 0)
                     return true;
             return false;
         }
+
+        public static bool IsPowerOfTwo(int x) => (x != 0) && ((x & (x - 1)) == 0);
 
         public static ulong Factorial(ulong n)
         {

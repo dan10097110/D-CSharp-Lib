@@ -1,4 +1,6 @@
-﻿namespace DLib.Math.Operator
+﻿using System.Runtime.InteropServices;
+
+namespace DLib.Math.Operator
 {
     public static class Root
     {
@@ -36,6 +38,48 @@
                     root -= d;
                 }
                 return root;
+            }
+        }
+
+        public static class Approx
+        {
+            public static float Sqrt1(float z)
+            {
+                if (z == 0) return 0;
+                FloatIntUnion u;
+                u.tmp = 0;
+                float xhalf = 0.5f * z;
+                u.f = z;
+                u.tmp = 0x5f375a86 - (u.tmp >> 1);
+                u.f = u.f * (1.5f - xhalf * u.f * u.f);
+                return u.f * z;
+            }
+
+            [StructLayout(LayoutKind.Explicit)]
+            struct FloatIntUnion
+            {
+                [FieldOffset(0)]
+                public float f;
+
+                [FieldOffset(0)]
+                public int tmp;
+            }
+
+            public static float Sqrt2(float m)
+            {
+                float i = 0, x1, x2 = 0;
+                while ((i * i) <= m)
+                    i += 0.1f;
+                x1 = i;
+                for (int j = 0; j < 10; j++)
+                {
+                    x2 = m;
+                    x2 /= x1;
+                    x2 += x1;
+                    x2 /= 2;
+                    x1 = x2;
+                }
+                return x2;
             }
         }
 

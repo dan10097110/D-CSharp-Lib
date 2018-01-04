@@ -1,5 +1,4 @@
-﻿using DLib.Math.Operator;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -130,13 +129,28 @@ namespace DLib.Math
             return System.Math.Min(factor, n / factor);
         }
 
-        public static ulong Rho(ulong n, ulong a, ulong c)//(c!=0;2) ^ (a>1)
+        public static ulong RhoFloyd(ulong n, ulong a, ulong c)//(c!=0;2) ^ (a>1)
         {
             ulong d = 1;
-            for (ulong x = a, y = x; d == 1; x = f(x), y = f(f(y)), d = Math.GCD.Standard(x - y, n)) ;
+            for (ulong x = a, y = x; d == 1; x = f(x), y = f(f(y)), d = Math.GCD.Standard((ulong)Math.Abs(x - y), n)) ;
             return System.Math.Min(d, n / d);
 
             ulong f(ulong u) => (u * u + c) % n;
+        }
+
+        static int RhoBrent(int n)
+        {
+            throw new NotImplementedException();
+            int x = 2, y = x, d = 1, i = 0;
+            while (d == 1)// || d == n)
+            {
+                i++;
+                x = (x * x + 1) % n;
+                if (DLib.Extra.IsPowerOfTwo(i))
+                    y = x;
+                d = (int)DLib.Math.GCD.Standard((ulong)n, (ulong)System.Math.Abs(x - y));
+            }
+            return d;
         }
 
         public static int PM1(int n)
