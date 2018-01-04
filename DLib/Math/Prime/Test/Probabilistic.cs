@@ -10,7 +10,7 @@ namespace DLib.Math.Prime.Test
 
         public static bool Division(ulong n, IEnumerable<ulong> dividends) => Division(n, dividends, 2, n);
 
-        public static bool Division(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax) => Factor.Division(n, dividends, inclusiveMin, exclusiveMax) == 1;
+        public static bool Division(ulong n, IEnumerable<ulong> dividends, ulong inclusiveMin, ulong exclusiveMax) => Factoring.Special.Division(n, dividends, inclusiveMin, exclusiveMax) == 1;
 
         public static bool Fermat(ulong n, ulong iterations)
         {
@@ -59,7 +59,7 @@ namespace DLib.Math.Prime.Test
         /// <returns>true if n is prime, false if n is possibly composite</returns>
         public static bool Lucas(ulong n, ulong iterations)
         {
-            ulong[] factorisation = Factorise.Standard(n - 1, Factor.TrialDivison);
+            ulong[] factorisation = Factorise.Standard(n - 1, Factoring.Special.TrialDivison);
             for (ulong i = 0; i < iterations; i++)
             {
                 c:

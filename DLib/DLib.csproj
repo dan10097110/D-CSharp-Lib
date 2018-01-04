@@ -79,6 +79,9 @@
     <Compile Include="Extra.cs" />
     <Compile Include="Linguistics.cs" />
     <Compile Include="Math\ArithmeticFunction.cs" />
+    <Compile Include="Math\Factoring\General.cs" />
+    <Compile Include="Math\Factoring\Other.cs" />
+    <Compile Include="Math\Factoring\Special.cs" />
     <Compile Include="Math\Function\Difference.cs" />
     <Compile Include="Math\Function\Exponential.cs" />
     <Compile Include="Math\Function\Factor.cs" />
@@ -99,7 +102,6 @@
     <Compile Include="Collection\Bits.cs" />
     <Compile Include="Math\Calculator.cs" />
     <Compile Include="Math\CFrac.cs" />
-    <Compile Include="Math\Factor.cs" />
     <Compile Include="Math\GCD.cs" />
     <Compile Include="Math\Number\Integer.cs" />
     <Compile Include="Math\LCM.cs" />
