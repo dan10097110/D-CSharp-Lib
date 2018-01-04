@@ -64,7 +64,11 @@ namespace DLib.Math.Factoring
             return 1;
         }
 
-        public static int TrialDivision(int n) => (int)TrialDivision(n, (int)System.Math.Sqrt(n));
+        public static int TrialDivision(int n)
+        {
+            int? i = TrialDivision(n, (int)System.Math.Sqrt(n));
+            return i == null ? 1 : (int)i;
+        } 
 
         public static int? TrialDivision(int n, int bound)
         {

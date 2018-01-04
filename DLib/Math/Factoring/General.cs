@@ -39,10 +39,10 @@ namespace DLib.Math.Factoring
         public static int CFrac(int n)
         {
             var primes = Prime.Sieve.Standard((ulong)System.Math.Round(System.Math.Exp(System.Math.Sqrt(System.Math.Log(n) * System.Math.Log(System.Math.Log(n))) / 2))).ToArray();
-            var rels = new(int x, int yy, int[] factorisationYY)[primes.Length];
+            var relations = new(int x, int yy, int[] factorisationYY)[primes.Length];
             Number.Rational a = n;
             var cFrac = new CFrac(a.Round().Abs());
-            for (int c = 0; c < rels.Length; c++)
+            for (int c = 0; c < relations.Length; c++)
             {
                 var b = a - cFrac[cFrac.Length - 1];
                 if (b.IsZero())
@@ -50,12 +50,12 @@ namespace DLib.Math.Factoring
                 a = b.Reciprocal();
                 cFrac.Add(a.Round().Abs());
                 var frac = cFrac.ToFrac();
-                var Q = (long)((int)System.Math.Pow(-1, cFrac.Length) * (frac.Numerator * frac.Numerator - (ulong)n * frac.Denominator * frac.Denominator));
-                var factorisation = Factorisation((int)Q, primes.Select(z => (int)z).ToArray());
+                var Q = (int)System.Math.Pow(-1, cFrac.Length) * (int)(frac.Numerator * frac.Numerator - (ulong)n * frac.Denominator * frac.Denominator);
+                var factorisation = Factorisation(Q, primes.Select(z => (int)z).ToArray());
                 if (factorisation != null)
-                    rels[c++] = ((int)frac.Numerator, (int)Q, factorisation);
+                    relations[c++] = ((int)frac.Numerator, Q, factorisation);
             }
-            return GetFactor(n, rels);
+            return GetFactor(n, relations);
         }
 
         static int[] Factorisation(int n, int[] primes)

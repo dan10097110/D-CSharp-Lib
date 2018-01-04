@@ -15,7 +15,7 @@
 
         public Integer(Natural natural)
         {
-            natural = natural.Clone();
+            this.natural = natural.Clone();
             Positive = true;
         }
 
@@ -72,7 +72,13 @@
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns>a < b: - 1; a == b: 0; a > b: == 1</b></returns>
-        public static int Compare(Integer a, Integer b) => (a.Positive ? 1 : -1) * (a.Positive != b.Positive ? 1 : Natural.Compare(Abs(a), Abs(b)));
+        public static int Compare(Integer a, Integer b)
+        {
+            int i = Natural.Compare(Abs(a), Abs(b));
+            if (i == 0)
+                return 0;
+            return (a.Positive ? 1 : -1) * (a.Positive != b.Positive ? 1 : i);
+        }
 
 
         public static Integer Power(Integer b, Natural e) => new Integer() { natural = Natural.Power(Abs(b), e), Positive = b.Positive ? true : (e & 1) == 0 };

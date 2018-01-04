@@ -1,6 +1,6 @@
 ﻿namespace DLib.Math.Number
 {
-    interface INumber
+    public interface INumber
     {
         string ToString();
 

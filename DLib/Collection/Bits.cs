@@ -109,7 +109,7 @@ namespace DLib.Collection
         {
             var bits = new bool[System.Math.Min(a.Length, b.Length)];
             Loop(0, bits.Length, i => bits[i] = a[i] & b[i]);
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
         public static Bits And(params Bits[] bitss)
@@ -124,14 +124,14 @@ namespace DLib.Collection
                 bits[i] = true;
                 for (int j = 0; j < bitss.Length && !(bits[i] = bitss[j][i]); j++) ;
             });
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
         public static Bits operator |(Bits a, Bits b)
         {
             var bits = new bool[System.Math.Max(a.Length, b.Length)];
             Loop(0, bits.Length, i => bits[i] = a[i] | b[i]);
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
         public static Bits Or(params Bits[] bitss)
@@ -146,14 +146,14 @@ namespace DLib.Collection
                 bits[i] = false;
                 for (int j = 0; j < bitss.Length && (bits[i] = bitss[j][i]); j++) ;
             });
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
         public static Bits operator ^(Bits a, Bits b)
         {
             var bits = new bool[System.Math.Max(a.Length, b.Length)];
             Loop(0, bits.Length, i => bits[i] = a[i] ^ b[i]);
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
         public static Bits Xor(params Bits[] bitss)
@@ -170,21 +170,21 @@ namespace DLib.Collection
                 for (; j < bitss.Length && !(bits[i] = bitss[j][i]); j++) ;
                 for (; j < bitss.Length && (bits[i] = !bitss[j][i]); j++) ;
             });
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
         public static Bits operator ~(Bits a)
         {
             var bits = new bool[a.Length];
             Loop(0, bits.Length, i => bits[i] = !a[i]);
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
         public Bits Not(int length)
         {
             var bits = new bool[length];
             Loop(0, length, i => bits[i] = !this[i]);
-            return new Bits() { array = bits };
+            return new Bits() { array = bits, internalLength = bits.Length };
         }
 
 
