@@ -4,7 +4,7 @@
     {
         public static ulong Standard(params ulong[] n)
         {
-            ulong gcd = n[1];
+            ulong gcd = n[0];
             for (int i = 1; i < n.Length; i++)
                 gcd = Standard(gcd, n[i]);
             return gcd;

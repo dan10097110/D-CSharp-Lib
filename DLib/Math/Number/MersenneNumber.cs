@@ -14,7 +14,7 @@ namespace DLib.Math.Number
             get
             {
                 if (isPrime == null)
-                    isPrime = Primes.IsPrime(Exponent) && ((Exponent & 3) != 3 || !Primes.IsPrime((Exponent << 1) + 1)) && TrialDivision() && LucasLehmerTest();
+                    isPrime = Primes.IsPrime(Exponent) && ((Exponent & 3) != 3 || !Primes.IsPrime((Exponent << 1) + 1)) && TrialDivision()  && LucasLehmerTest();
                 return (bool)isPrime;
             }
         }

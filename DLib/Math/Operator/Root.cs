@@ -38,5 +38,60 @@
                 return root;
             }
         }
+
+        public static class Integer
+        {
+            public static int Standard(int n) => BitwiseIterative(n);
+
+            public static int Newton(int n)
+            {
+                for(double x = n, xNext; ; x = xNext)
+                {
+                    xNext = (x + n / x) / 2;
+                    if (System.Math.Abs(xNext - x) < 1)
+                        return (int)xNext;
+                }
+            }
+
+            public static int NewtonIntegerDivison(int n)
+            {
+                for (int x = n; ;)
+                {
+                    int d = (n / x - x) >> 1;
+                    if (d == 0)
+                        return x + d;
+                    else if (d == 1)
+                        return x;
+                    x += d;
+                }
+            }
+
+            public static int BitwiseRecursive(int n)
+            {
+                if (n < 2)
+                    return n;
+                else
+                {
+                    int smallCandidate = BitwiseRecursive(n >> 2) << 1, largeCandidate = smallCandidate + 1;
+                    return largeCandidate * largeCandidate > n ? smallCandidate : largeCandidate;
+                }
+            }
+
+            public static int BitwiseIterative(int n)
+            {
+                int shift = 2, nShifted = n >> shift;
+                for (; nShifted != 0 && nShifted != n; shift += 2, nShifted = n >> shift) ;
+                shift -= 2;
+                int result = 0;
+                for (; shift >= 0; shift -= 2)
+                {
+                    result <<= 1;
+                    int candidateResult = result + 1;
+                    if (candidateResult * candidateResult <= n >> shift)
+                        result = candidateResult;
+                }
+                return result;
+            }
+        }
     }
 }
