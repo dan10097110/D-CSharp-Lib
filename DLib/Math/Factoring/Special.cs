@@ -171,7 +171,7 @@ namespace DLib.Math.Factoring
                     if (Symbol.Jacobi(D, p) == -1)
                         for (ulong m = p + 1; m < n; m += p + 1)
                         {
-                            ulong factor = Math.GCD.Standard(n, (ulong)(Sequence.Lucas.NthModM((long)a, 1, (long)m, (long)n).V - 2));
+                            ulong factor = GCD.Standard(n, (ulong)(Sequence.Lucas.NthModM((long)a, 1, (long)m, (long)n).V - 2));
                             if (factor > 1 && factor != n)
                                 return factor;
                         }

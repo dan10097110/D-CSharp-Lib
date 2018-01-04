@@ -59,7 +59,7 @@ namespace DLib.Math.Prime.Test
         /// <returns>true if n is prime, false if n is possibly composite</returns>
         public static bool Lucas(ulong n, ulong iterations)
         {
-            ulong[] factorisation = Factorise.Standard(n - 1, Factoring.Special.TrialDivison);
+            ulong[] factorisation = Factorise.Standard(n - 1, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
             for (ulong i = 0; i < iterations; i++)
             {
                 c:

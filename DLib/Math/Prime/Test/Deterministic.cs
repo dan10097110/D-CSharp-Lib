@@ -6,7 +6,7 @@ namespace DLib.Math.Prime.Test
 {
     public static class Deterministic
     {
-        public static bool TrialDivision(ulong n) => Factoring.Special.TrialDivison(n) == 1;
+        public static bool TrialDivision(ulong n) => Factoring.Special.TrialDivision((int)n) == 1;
 
         public static bool PrimeDivision(ulong n) => Factoring.Special.PrimeDivisionIntegratedSieve(n) == 1;
 
@@ -56,7 +56,7 @@ namespace DLib.Math.Prime.Test
                 }
             }
             g:
-            ulong[] factors = Factorise.Standard(f, Factoring.Special.TrialDivison);
+            ulong[] factors = Factorise.Standard(f, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
             for (uint i = 2; i < n; i++)
                 if (Power.BinaryMod(i, n - 1, n) == 1)
                 {
@@ -76,7 +76,7 @@ namespace DLib.Math.Prime.Test
         public static bool Lucas(ulong n)
         {
             Random random = new Random();
-            ulong[] factorisation = Factorise.Standard(n - 1, Factoring.Special.TrialDivison);
+            ulong[] factorisation = Factorise.Standard(n - 1, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
             for (ulong a = 2; a < n;)
             {
                 c:
