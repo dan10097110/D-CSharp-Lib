@@ -75,7 +75,7 @@
         public static int Compare(Integer a, Integer b)
         {
             int i = Natural.Compare(Abs(a), Abs(b));
-            if (i == 0)
+            if (i == 0 && Natural.Compare(Abs(a), Natural.Zero) == 0)
                 return 0;
             return (a.Positive ? 1 : -1) * (a.Positive != b.Positive ? 1 : i);
         }

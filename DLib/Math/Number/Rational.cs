@@ -9,8 +9,8 @@
 
         public Rational(double d)
         {
-            Numerator = (long)(d * 1000000);
-            Denominator = 1000000;
+            Numerator = (long)(d * 100000000);
+            Denominator = 100000000;
             Shorten();
         }
 
@@ -112,6 +112,14 @@
         {
             Natural lcm = Natural.LCM(a.Denominator, b.Denominator);
             return Integer.Compare(a.Numerator * lcm / a.Denominator, b.Numerator * lcm / a.Denominator);
+        }
+
+
+        public Rational Sqrt(int iterations)
+        {
+            Rational root = (Integer)Natural.One;
+            for (int i = 0; i < iterations; root = (root + (Numerator * root.Denominator) / (Denominator * root.Numerator)) / Natural.Two, i++) ;
+            return root;
         }
 
 
