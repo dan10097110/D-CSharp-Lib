@@ -6,26 +6,26 @@ namespace DLib.Math
 {
     public class CFrac
     {
-        List<Natural> cFrac = new List<Natural>();
+        List<int> nonP = new List<int>(), p = new List<int>();
 
-        public int Length => cFrac.Count;
+        public int Length => p.Count > 0 ? int.MaxValue : nonP.Count;
 
-        public Natural this[int i] => cFrac[i];
+        public int this[int i] => i < nonP.Count ? nonP[i] : p[(i - nonP.Count) % p.Count];
 
-        public Natural Last() => cFrac.Last();
+        public int Last() => nonP.Last();
 
-        public CFrac(params Natural[] cFrac)
+        public CFrac(params int[] cFrac)
         {
             for (int i = 0; i < cFrac.Length; i++)
-                this.cFrac.Add(cFrac[i]);
+                this.nonP.Add(cFrac[i]);
         }
 
         public CFrac(double a)
         {
-            for (; ; a = 1 / (a - (ulong)a))
+            for (; ; a = 1 / (a - (int)a))
             {
-                cFrac.Add((ulong)a);
-                if (a == (ulong)a)
+                nonP.Add((int)a);
+                if (a == (int)a)
                     break;
             }
         }
@@ -34,19 +34,44 @@ namespace DLib.Math
         {
             for (; ; a = a.FractionalPart().Reciprocal())
             {
-                cFrac.Add(a.Round().Abs());
+                nonP.Add((int)(ulong)a.Round().Abs());
                 if (a.IsInteger())
                     break;
             }
         }
 
-        public Rational ToFrac()
+        public Rational ToIthConvergent(int i)
         {
             Rational rational = 0;
-            for (int i = cFrac.Count - 1; i >= 0; rational = (rational + cFrac[i]).Reciprocal(), i--) ;
+            for (; i >= 0; rational = (rational + this[i]).Reciprocal(), i--) ;
             return rational.Reciprocal();
         }
 
-        public void Add(Natural item) => cFrac.Add(item);
+        public void Add(int item) => nonP.Add(item);
+
+        public static CFrac FromSqrt(int s)
+        {
+            int m = 0, d = 1, a0 = (int)System.Math.Sqrt(s), a = a0;
+            List<(int, int, int)> nonP = new List<(int, int, int)>(), p = new List<(int, int, int)>();
+            nonP.Add((m, d, a));
+            for (; ; )
+            {
+                m = d * a - m;
+                d = (s - m * m) / d;
+                if (d == 0)
+                    break;
+                a = (a0 + m) / d;
+                int i = nonP.IndexOf((m, d, a));
+                if (i != -1)
+                {
+                    for (int j = i; j < nonP.Count; j++)
+                        p.Add(nonP[j]);
+                    nonP.RemoveRange(i, nonP.Count - i);
+                    break;
+                }
+                nonP.Add((m, d, a));
+            }
+            return new CFrac() { nonP = nonP.Select(z => z.Item3).ToList(), p = p.Select(z => z.Item3).ToList() };
+        }
     }
 }
