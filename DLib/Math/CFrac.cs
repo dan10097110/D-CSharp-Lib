@@ -35,7 +35,7 @@ namespace DLib.Math
             for (; ; a = a.FractionalPart().Reciprocal())
             {
                 cFrac.Add(a.Round().Abs());
-                if (a == a.Round())
+                if (a.IsInteger())
                     break;
             }
         }

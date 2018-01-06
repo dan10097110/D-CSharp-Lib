@@ -162,7 +162,7 @@
 
         public bool IsZero() => Numerator.IsZero();
 
-        public bool IsPrime() => Numerator.Positive && Denominator == 1;
+        public bool IsInteger() => Denominator == 1;
 
 
         public Rational Clone() => new Rational(this);

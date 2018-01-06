@@ -6,6 +6,21 @@
         public bool Positive { get; private set; }
 
 
+        public static Integer Zero => new Integer() { natural = Natural.Zero, Positive = true };
+
+        public static Integer One => new Integer() { natural = Natural.One, Positive = true };
+
+        public static Integer Two => new Integer() { natural = Natural.Two, Positive = true };
+
+        public static Integer Three => new Integer() { natural = Natural.Three, Positive = true };
+
+        public static Integer MinusOne => new Integer() { natural = Natural.One, Positive = false };
+
+        public static Integer MinusTwo => new Integer() { natural = Natural.Two, Positive = false };
+
+        public static Integer MinusThree => new Integer() { natural = Natural.Three, Positive = false };
+
+
         public Integer() { }
 
         public Integer(long u)
