@@ -1,5 +1,4 @@
 ﻿using DLib.Math.Number;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,24 +22,21 @@ namespace DLib.Math
 
         public CFrac(double a)
         {
-            while(true)
+            for (; ; a = 1 / (a - (ulong)a))
             {
                 cFrac.Add((ulong)a);
                 if (a == (ulong)a)
                     break;
-                a = 1 / (a - (ulong)a);
             }
         }
 
         public CFrac(Rational a)
         {
-            while (true)
+            for (; ; a = a.FractionalPart().Reciprocal())
             {
                 cFrac.Add(a.Round().Abs());
                 if (a == a.Round())
                     break;
-                a = a - a.Round().Abs();
-                a.Reciprocal();
             }
         }
 

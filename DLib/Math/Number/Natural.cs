@@ -1,20 +1,21 @@
-﻿using System;
+﻿using DLib.Collection;
+using System;
 using System.Collections.Generic;
 
 namespace DLib.Math.Number
 {
     public class Natural : ParallelExecutionObject, INumber
     {
-        public Collection.Bits bits;
+        public Bits bits;
 
 
-        public static Natural Zero => new Natural() { bits = new Collection.Bits() };
+        public static Natural Zero => new Natural() { bits = new Bits() };
 
-        public static Natural One => new Natural() { bits = new Collection.Bits(true) };
+        public static Natural One => new Natural() { bits = new Bits(true) };
 
-        public static Natural Two => new Natural() { bits = new Collection.Bits(false, true) };
+        public static Natural Two => new Natural() { bits = new Bits(false, true) };
 
-        public static Natural Three => new Natural() { bits = new Collection.Bits(true, true) };
+        public static Natural Three => new Natural() { bits = new Bits(true, true) };
 
 
         public Natural() { }
@@ -23,21 +24,88 @@ namespace DLib.Math.Number
         {
             int length = 0;
             for (ulong u1 = u; u1 > 0; u1 >>= 1, length++) ;
-            bits = new Collection.Bits(length);
+            bits = new Bits(length);
             for (int i = 0; i < length; u >>= 1, i++)
                 bits[i] = (u & 1) == 1 ? true : false;
         }
 
-        public Natural(Collection.Bits b) => bits = b.Clone();
+        public Natural(Bits b) => bits = b.Clone();
 
         public Natural(Natural a) => bits = a.bits.Clone();
 
 
-        public static Natural operator +(Natural a, Natural b) => Add2(new Natural[] { a, b });
+        public static bool operator ==(Natural a, Natural b) => Compare(a, b) == 0;
+
+        public static bool operator !=(Natural a, Natural b) => Compare(a, b) != 0;
+
+        public static bool operator <(Natural a, Natural b) => Compare(a, b) == -1;
+
+        public static bool operator >(Natural a, Natural b) => Compare(a, b) == 1;
+
+        public static bool operator <=(Natural a, Natural b) => Compare(a, b) != 1;
+
+        public static bool operator >=(Natural a, Natural b) => Compare(a, b) != -1;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>a < b: - 1; a == b: 0; a > b: == 1</b></returns>
+        public static int Compare(Natural a, Natural b)
+        {
+            for (int i = System.Math.Max(a.bits.Length, b.bits.Length); i >= 0; i--)
+                if (a.bits[i] != b.bits[i])
+                    return a.bits[i] ? 1 : -1;
+            return 0;
+        }
+
 
         public static Natural operator ++(Natural a) => a + One;
 
-        //8158
+        public static Natural operator --(Natural a) => a - One;
+
+        public static Natural operator +(Natural a, Natural b) => Add2(new Natural[] { a, b });
+
+        public static Natural operator -(Natural a, Natural b) => Sub(a, b);
+
+        public static Natural operator *(Natural a, Natural b) => Mul(a, b);
+
+        public static Natural operator /(Natural a, Natural m)
+        {
+            if (m == Natural.Zero)
+                throw new DivideByZeroException();
+            Collection.Bits b = new Collection.Bits();
+            Natural r = a.Clone(), n = m.Clone();
+            n.bits.Shift(r.bits.Length - m.bits.Length + 1);
+            for (int i = r.bits.Length - m.bits.Length + 1; r >= m; r -= n, b[i] = true)
+                for (; r < n; i--)
+                    n.bits.Shift(-1);
+            return b;
+        }
+
+        public static Natural operator %(Natural a, Natural m)
+        {
+            Natural r = a.Clone(), n = m.Clone();
+            n.bits.Shift(r.bits.Length - m.bits.Length + 1);
+            for (; r >= m; r -= n)
+                while (r < n)
+                    n.bits.Shift(-1);
+            return r;
+        }
+
+        public static Natural operator &(Natural a, int i)
+        {
+            Collection.Bits bits = new Collection.Bits(i);
+            Loop(0, i, j => bits[j] = a.bits[j]);
+            return bits;
+        }
+
+        public static Natural operator <<(Natural a, int i) => a.bits << i;
+
+        public static Natural operator >>(Natural a, int i) => a.bits >> i;
+
+        
         public static Natural Add(Natural a, Natural b)
         {
             Collection.Bits r = a.bits.Clone(), d = b.bits.Clone();
@@ -50,8 +118,7 @@ namespace DLib.Math.Number
             }
             return r;
         }
-
-        //8353
+        
         public static Natural Add2(Natural[] n)
         {
             int length = n[0].bits.Length;
@@ -73,22 +140,15 @@ namespace DLib.Math.Number
             for (int i = 0; i < bits.Length - 1; bits[i + 1] += (bits[i] >> 1), b[i] = (bits[i] & 1) == 1, i++) ;
             return b;
         }
-
-        public static Natural operator -(Natural a, Natural b) => Sub(a, b);
-
-        public static Natural operator --(Natural a) => a - One;
-
-        //2078i, 5s, 30000l
+        
         public static Natural Sub(Natural a, Natural b)
         {
             Natural c = a + b.bits.Not(a.bits.Length) + One;
             c.bits[System.Math.Max(0, c.bits.Length - 1)] = false;
             return c;
         }
-
-
+        
         //doesnt work
-        //2969i, 5s, 30000l
         public static Natural Sub2(Natural a, Natural[] n)
         {
             var bits = new Collection.Bits(a.bits.Length);
@@ -98,8 +158,7 @@ namespace DLib.Math.Number
                         puffer++;
             return bits;
         }
-
-        //3000i, 5s, 30000l
+        
         public static Natural AdditiveOperation(Natural a, Natural b, bool sub)
         {
             Collection.Bits r = a.bits.Clone();
@@ -108,10 +167,7 @@ namespace DLib.Math.Number
                     for (int j = i; (r[j] = !r[j]) == sub; j++) ;
             return r;
         }
-
-        public static Natural operator *(Natural a, Natural b) => Mul(a, b);
-
-        //1400
+        
         public static Natural Mul(Natural a, Natural b)
         {
             var n = new int[a.bits.Length + b.bits.Length + 1];
@@ -122,8 +178,7 @@ namespace DLib.Math.Number
                             n[j + i]++;
             return internalAdd(n);
         }
-
-        //104
+        
         public static Natural Karatsuba(Natural x, Natural y)
         {
             if (x.bits.Length == 0 || y.bits.Length == 0)
@@ -134,8 +189,7 @@ namespace DLib.Math.Number
             Natural a = x >> i, b = x & i, c = y >> i, d = y & i, ac = Karatsuba(a, c), bd = Karatsuba(b, d);
             return (ac << (i << 1)) + ((Karatsuba(a + b, c + d) - ac - bd) << i) + bd;
         }
-
-        //116
+        
         public static Natural KaratsubaCombined(Natural x, Natural y)
         {
             if (x.bits.Length == 0 || y.bits.Length == 0)
@@ -148,8 +202,7 @@ namespace DLib.Math.Number
             Natural a = x >> i, b = x & i, c = y >> i, d = y & i, ac = Karatsuba(a, c), bd = Karatsuba(b, d);
             return (ac << (i << 1)) + ((Karatsuba(a + b, c + d) - ac - bd) << i) + bd;
         }
-
-        //312
+        
         /// <summary>
         /// x > y
         /// </summary>
@@ -159,11 +212,10 @@ namespace DLib.Math.Number
         public static Natural QuarterSquareMultiplication(Natural x, Natural y)
         {
             if (x < y)
-                return (NN(y + x) >> 2) - (NN(y - x) >> 2);
-            return (NN(x + y) >> 2) - (NN(x - y) >> 2);
+                return (Square(y + x) >> 2) - (Square(y - x) >> 2);
+            return (Square(x + y) >> 2) - (Square(x - y) >> 2);
         }
-
-        //274
+        
         /// <summary>
         /// x > y
         /// </summary>
@@ -173,80 +225,15 @@ namespace DLib.Math.Number
         public static Natural QuarterSquareMultiplication2(Natural x, Natural y)
         {
             if (x < y)
-                return NN((y + x) >> 1) - NN((y - x) >> 1) + (x.bits[0] != y.bits[0] ? x : Zero);
-            return NN((x + y) >> 1) - NN((x - y) >> 1) + (x.bits[0] != y.bits[0] ? y : Zero);
+                return Square((y + x) >> 1) - Square((y - x) >> 1) + (x.bits[0] != y.bits[0] ? x : Zero);
+            return Square((x + y) >> 1) - Square((x - y) >> 1) + (x.bits[0] != y.bits[0] ? y : Zero);
         }
+        
+        public static Natural PowerOfTwo(int e) => new Bits(e + 1) { [e] = true };
 
-        public static Natural operator %(Natural a, Natural m)
-        {
-            Natural r = a.Clone(), n = m.Clone();
-            n.bits.Shift(r.bits.Length - m.bits.Length + 1);
-            for (; r >= m; r -= n)
-                while (r < n)
-                    n.bits.Shift(-1);
-            return r;
-        }
-
-        public static Natural operator /(Natural a, Natural m)
-        {
-            if (m == Natural.Zero)
-                throw new DivideByZeroException();
-            Collection.Bits b = new Collection.Bits();
-            Natural r = a.Clone(), n = m.Clone();
-            n.bits.Shift(r.bits.Length - m.bits.Length + 1);
-            for (int i = r.bits.Length - m.bits.Length + 1; r >= m; r -= n, b[i] = true)
-                for (; r < n; i--)
-                    n.bits.Shift(-1);
-            return b;
-        }
-
-
-        public static Natural operator &(Natural a, int i)
-        {
-            Collection.Bits bits = new Collection.Bits(i);
-            Loop(0, i, j => bits[j] = a.bits[j]);
-            return bits;
-        }
-
-
-        public static Natural operator <<(Natural a, int i) => a.bits << i;
-
-        public static Natural operator >>(Natural a, int i) => a.bits >> i;
-
-
-        public static bool operator ==(Natural a, Natural b) => Compare(a, b) == 0;
-
-        public static bool operator !=(Natural a, Natural b) => Compare(a, b) != 0;
-
-        public static bool operator <(Natural a, Natural b) => Compare(a, b) == -1;
-
-        public static bool operator >(Natural a, Natural b) => Compare(a, b) == 1;
-
-        public static bool operator <=(Natural a, Natural b) => Compare(a, b) != 1;
-
-        public static bool operator >=(Natural a, Natural b) => Compare(a, b) != -1;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns>a < b: - 1; a == b: 0; a > b: == 1</b></returns>
-        public static int Compare(Natural a, Natural b)
-        {
-            for (int i = System.Math.Max(a.bits.Length, b.bits.Length); i >= 0; i--)
-                if (a.bits[i] != b.bits[i])
-                    return a.bits[i] ? 1 : -1;
-            return 0;
-        }
-
-
-        public static Natural PowerOfTwo(int e) => new Collection.Bits(e + 1) { [e] = true };
-
-        public static Natural MersenneNumber(int e) => new Collection.Bits(e, true);
-
-        //2795i, 5s, 1000l
-        public static Natural NN(Natural n)
+        public static Natural MersenneNumber(int e) => new Bits(e, true);
+        
+        public static Natural Square(Natural n)
         {
             var bits = new int[((n.bits.Length + 1) << 1)];
             for (int i = 0; i < n.bits.Length; i++)
@@ -260,12 +247,11 @@ namespace DLib.Math.Number
             }
             return internalAdd(bits);
         }
-
-
+        
         public static Natural Power(Natural b, Natural e)
         {
             Natural r = One, a = b.Clone();
-            for (int i = 0; i < e.bits.Length; a = NN(a), i++)
+            for (int i = 0; i < e.bits.Length; a = Square(a), i++)
                 if (e.bits[i])
                     r *= a;
             return r;
@@ -274,7 +260,7 @@ namespace DLib.Math.Number
         public static Natural PowerMod(Natural b, Natural e, Natural m)
         {
             Natural r = One, a = b % m;
-            for (int i = 0; i < e.bits.Length; a = NN(a) % m, i++)
+            for (int i = 0; i < e.bits.Length; a = Square(a) % m, i++)
                 if (e.bits[i])
                     r = (r * a) % m;
             return r;
@@ -283,7 +269,7 @@ namespace DLib.Math.Number
         public static Natural PowerModMersenneNumber(Natural b, Natural e, int exponent)
         {
             Natural r = One, a = ModMersenneNumber(b, exponent);
-            for (int i = 0; i < e.bits.Length; a = ModMersenneNumber(NN(a), exponent), i++)
+            for (int i = 0; i < e.bits.Length; a = ModMersenneNumber(Square(a), exponent), i++)
                 if (e.bits[i])
                     r = ModMersenneNumber(r * a, exponent);
             return r;
@@ -297,8 +283,7 @@ namespace DLib.Math.Number
                     r = MulMod(r, a, m);
             return r;
         }
-
-
+        
         public static Natural MulMod(Natural a, Natural b, Natural m)
         {
             Natural r = Zero, s = a % m, t = b % m;
@@ -310,8 +295,7 @@ namespace DLib.Math.Number
             }
             return r;
         }
-
-
+        
         public static Natural ModMersenneNumber(Natural n, int exponent)
         {
             Natural s = n.Clone();
@@ -334,26 +318,40 @@ namespace DLib.Math.Number
         }
 
 
+        public static Natural GCD(Natural a, Natural b)
+        {
+            for (; b != 0;)
+            {
+                Natural c = a % b;
+                a = b;
+                b = c;
+            }
+            return a;
+        }
+
+        public static Natural LCM(Natural a, Natural b) => a * b / GCD(a, b);
+
+
         public static bool LucasLehmerTest(int exponent)
         {
             Natural a = Three;
-            for (int i = 1; i < exponent; a = ModMersenneNumber2(NN(a), exponent), i++) ;
-            return new Collection.Bits(exponent, true) { [0] = false, [1] = false } == a;
+            for (int i = 1; i < exponent; a = ModMersenneNumber2(Square(a), exponent), i++) ;
+            return new Bits(exponent, true) { [0] = false, [1] = false } == a;
         }
 
         public static bool LucasLehmerTest2(int exponent)
         {
             Natural a = Three;
             for (int i = 1; i < exponent; i++)
-                for (a = NN(a); a.bits.Length > exponent;)
+                for (a = Square(a); a.bits.Length > exponent;)
                 {
                     int l = System.Math.Max(exponent, a.bits.Length - exponent) + 1;
-                    Collection.Bits r = new Collection.Bits(l);
+                    Bits r = new Bits(l);
                     bool b = false;
                     for (int j = 0; j < l; a.bits[j] = j < exponent && a.bits[j], r[j] = a.bits[j] == a.bits[j + exponent] == b, b = (b && (a.bits[j] || a.bits[j + exponent])) || (a.bits[j] && a.bits[j + exponent]), j++) ;
                     a = r;
                 }
-            return new Collection.Bits(exponent, true) { [0] = false, [1] = false } == a;
+            return new Bits(exponent, true) { [0] = false, [1] = false } == a;
         }
 
         public static class MersennePrime
@@ -379,7 +377,7 @@ namespace DLib.Math.Number
             static bool LucasLehmerTest(ulong exponent, Natural mersenneNumber, ref ulong startI, ref Natural startS)//3815
             {
                 Natural s = startS.Clone();
-                for (ulong i = startI; i < exponent; s = ModMersenneNumber2(NN(s), (int)exponent), i++) ;
+                for (ulong i = startI; i < exponent; s = ModMersenneNumber2(Square(s), (int)exponent), i++) ;
                 if (startS < mersenneNumber)
                 {
                     startI++;
@@ -419,21 +417,9 @@ namespace DLib.Math.Number
             }
         }
 
-
-        public static Natural GCD(Natural a, Natural b)
-        {
-            for (; b != 0;)
-            {
-                Natural c = a % b;
-                a = b;
-                b = c;
-            }
-            return a;
-        }
-
-        public static Natural LCM(Natural a, Natural b) => a * b / GCD(a, b);
-
-
+        
+        public Natural Clone() => new Natural(this);
+        
         public override string ToString() => ToDecimal().ToString();
 
         public string ToBinaryString() => bits.ToString();
@@ -447,11 +433,7 @@ namespace DLib.Math.Number
             return d;
         }
 
-
-        public Natural Clone() => new Natural(this);
-
-
-        public static implicit operator Natural(Collection.Bits bits) => new Natural() { bits = bits };
+        public static implicit operator Natural(Bits bits) => new Natural() { bits = bits };
 
         public static implicit operator Natural(ulong u) => new Natural(u);
 

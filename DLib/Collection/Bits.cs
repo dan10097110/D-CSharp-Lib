@@ -8,8 +8,7 @@ namespace DLib.Collection
         public bool[] array;
         int internalLength, shift;
         public int Length => System.Math.Max(internalLength + shift, 0);
-
-
+        
         public Bits()
         {
             array = new bool[64];
@@ -49,7 +48,7 @@ namespace DLib.Collection
             internalLength = bits.Length;
             shift = 0;
         }
-
+        
 
         public bool this[int i]
         {
@@ -186,8 +185,7 @@ namespace DLib.Collection
             Loop(0, length, i => bits[i] = !this[i]);
             return new Bits() { array = bits, internalLength = bits.Length };
         }
-
-
+        
         public static Bits operator <<(Bits a, int i)
         {
             a.Shift(i);
@@ -211,9 +209,6 @@ namespace DLib.Collection
         }
 
 
-        public Bits Clone() => new Bits(this);
-
-
         public static Bits Random(int length)
         {
             Random random = new Random();
@@ -224,6 +219,8 @@ namespace DLib.Collection
         }
 
 
+        public Bits Clone() => new Bits(this);
+        
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
