@@ -40,32 +40,31 @@ namespace DLib.Math.Factoring
         public static int CFrac(int n)
         {
             ulong exclSieveLimit = (ulong)System.Math.Exp(System.Math.Sqrt(System.Math.Log(n) * System.Math.Log(System.Math.Log(n))));
-            var primesList = DLib.Math.Prime.Sieve.Standard(exclSieveLimit/*, p => p == 2 || System.Math.Pow(n, (p - 1) / 2) % p <= 1*/).Select(z => (int)z).ToList();
+            var primesList = Prime.Sieve.Standard(exclSieveLimit/*, p => p == 2 || System.Math.Pow(n, (p - 1) / 2) % p <= 1*/).Select(z => (int)z).ToList();
             primesList.Insert(0, -1);
             var primes = primesList.ToArray();
             var relations = new List<(int x, int yy, int[] factorisationYY)>();
-            var cFrac = DLib.Math.CFrac.FromSqrt(n);
+            var cFrac = Math.CFrac.FromSqrt(n);
             for (int i = 0; i < cFrac.Length && relations.Count < primes.Length; i++)
             {
-                var frac = cFrac.ToIthConvergent(i);
-                int x = (int)frac.Numerator;
-                int yy = (int)System.Math.Pow(-1, i) * (int)(x * x - (int)n * (int)(ulong)frac.Denominator * (int)(ulong)frac.Denominator);
+                var frac = cFrac.ToIthConvergentFrac(i);
+                int x = frac.numerator, yy = (int)System.Math.Pow(-1, i) * (x * x - n * frac.denominator * frac.denominator);
                 if (yy > 0)
                 {
                     double y = System.Math.Sqrt(yy);
                     if (y % 1 == 0)
                     {
-                        int gcd = (int)DLib.Math.GCD.Standard((ulong)n, (ulong)(x - (int)y));
+                        int gcd = (int)GCD.Standard((ulong)n, (ulong)(x - (int)y));
                         gcd = System.Math.Min(gcd, n / gcd);
                         if (gcd != 1)
                             return gcd;
                     }
                 }
-                var factorisation = DLib.Math.Factoring.General.Factorisation(yy, primes);
+                var factorisation = Factorisation(yy, primes);
                 if (factorisation != null)
                     relations.Add((x, yy, factorisation));
             }
-            return DLib.Math.Factoring.General.GetFactor(n, relations.ToArray());
+            return GetFactor(n, relations.ToArray());
         }
 
         public static int[] Factorisation(int n, int[] primes)

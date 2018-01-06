@@ -199,10 +199,9 @@ namespace DLib.Math.Factoring
             return d;
         }
 
-        public static ulong SNFS(ulong n) => throw new NotImplementedException();
-
-        public static ulong[] Euler(ulong n)//funktiniert nicht
+        public static ulong[] Euler(ulong n)
         {
+            throw new NotImplementedException();
             ulong[] x = new ulong[2], y = new ulong[2];
             x[0] = (ulong)System.Math.Floor(System.Math.Sqrt(n));
             for (int i = 0; i < 2; i++, x[1] = x[0] - 1)
@@ -222,6 +221,8 @@ namespace DLib.Math.Factoring
             ulong a = Math.GCD.Standard(x[0] + x[1], y[1] + y[0]), b = Math.GCD.Standard(x[0] - x[1], y[1] - y[0]), c = Math.GCD.Standard(x[0] - x[1], y[1] + y[0]), d = Math.GCD.Standard(x[0] + x[1], y[1] - y[0]), e = Math.GCD.Standard(b * b + a * a, n), f = Math.GCD.Standard(c * c + d * d, n);
             return n / e == f ? new ulong[] { n / e, e } : new ulong[] { n / e, e, n / f, f };
         }
+
+        public static ulong SNFS(ulong n) => throw new NotImplementedException();
 
         public static ulong ECM(ulong n) => throw new NotImplementedException();
     }

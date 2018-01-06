@@ -1,4 +1,5 @@
 ﻿using DLib.Math.Number;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,6 +46,18 @@ namespace DLib.Math
             Rational rational = 0;
             for (; i >= 0; rational = (rational + this[i]).Reciprocal(), i--) ;
             return rational.Reciprocal();
+        }
+
+        public (int numerator, int denominator) ToIthConvergentFrac(int i)
+        {
+            int numerator = 0, denominator = 1;
+            for (; i >= 0; i--)
+            {
+                int tmp = (numerator + this[i] * denominator);
+                numerator = denominator;
+                denominator = tmp;
+            }
+            return (denominator, numerator);
         }
 
         public void Add(int item) => nonP.Add(item);
