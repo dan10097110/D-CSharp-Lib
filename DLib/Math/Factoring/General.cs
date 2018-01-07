@@ -53,7 +53,7 @@ namespace DLib.Math.Factoring
                 {
                     double y = System.Math.Sqrt(yy);
                     if (y % 1 == 0)
-                    {
+                    {       
                         int gcd = (int)GCD.Standard((ulong)n, (ulong)(x - (int)y));
                         gcd = System.Math.Min(gcd, n / gcd);
                         if (gcd != 1)

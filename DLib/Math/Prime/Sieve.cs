@@ -18,37 +18,59 @@ namespace DLib.Math.Prime
         /// </summary>
         /// <param name="exclusiveMax"></param>
         /// <returns></returns>
-        public static IEnumerable<ulong> Eratosthenes(ulong exclusiveMax)
-        {
-            yield return 2;
-            uint fsqrt = (uint)System.Math.Sqrt(exclusiveMax);
-            BitArray sieve = new BitArray((int)exclusiveMax, true);
-            for (uint i = 3; i <= fsqrt; i += 2)
-                if (sieve[(int)i])
-                {
-                    yield return i;
-                    for (ulong j = i * i, k = i << 1; j < exclusiveMax; sieve[(int)j] = false, j += k) ;
-                }
-            for (ulong i = fsqrt + 1 + (fsqrt & 1); i < exclusiveMax; i += 2)
-                if (sieve[(int)i])
-                    yield return i;
-        }
+        public static IEnumerable<ulong> Eratosthenes(ulong exclusiveMax) => Eratosthenes(exclusiveMax, p => true);
 
         public static IEnumerable<ulong> Eratosthenes(ulong exclusiveMax, Func<ulong, bool> condition)
         {
             yield return 2;
             uint fsqrt = (uint)System.Math.Sqrt(exclusiveMax);
-            BitArray sieve = new BitArray((int)exclusiveMax, true);
+            var sieve = new BitArray((int)exclusiveMax, true);
             for (uint i = 3; i <= fsqrt; i += 2)
                 if (sieve[(int)i])
                 {
                     if (condition(i))
                         yield return i;
-                    for (ulong j = i * i; j < exclusiveMax; sieve[(int)j] = false, j += i) ;
+                    for (ulong j = i * i, k = i << 1; j < exclusiveMax; sieve[(int)j] = false, j += k) ;
                 }
             for (ulong i = fsqrt + 1 + (fsqrt & 1); i < exclusiveMax; i += 2)
                 if (sieve[(int)i] && condition(i))
                     yield return i;
+        }
+
+        public static IEnumerable<int> Segmented(int inclusive)
+        {
+            int size = (int)System.Math.Sqrt(inclusive), sqrt = (int)System.Math.Sqrt(size);
+            var primes = new List<int>() { 2 };
+            var seg = new BitArray(size, true);
+            for (int i = 3; i <= sqrt; i += 2)
+                if (seg[i])
+                {
+                    primes.Add(i);
+                    for (int j = i * i, k = i << 1; j < seg.Length; seg[j] = false, j += k) ;
+                }
+            for (int i = sqrt + 2 - ((sqrt + 1) & 1); i < seg.Length; i += 2)
+                if (seg[i])
+                    primes.Add(i);
+            for (int offset = size; offset < inclusive; offset += size)
+            {
+                seg.SetAll(true);
+                for (int i = 1, j; (j = primes[i] * primes[i]) < offset + size; i++)
+                {
+                    j = Mod((j - offset), primes[i]);
+                    j = j + ((offset + j & 1) == 0 ? primes[i] : 0);
+                    for (int k = primes[i] << 1; j < size; seg[j] = false, j += k) ;
+                }
+                for (int i = (offset + 1) & 1; i < seg.Length; i += 2)
+                    if (seg[i])
+                        primes.Add(i + offset);
+            }
+            return primes;
+
+            int Mod(int x, int m)
+            {
+                int r = x % m;
+                return r < 0 ? r + m : r;
+            }
         }
 
         public static IEnumerable<ulong> Atkin(ulong exclusiveMax)
@@ -113,9 +135,7 @@ namespace DLib.Math.Prime
             static Stopwatch sw = new Stopwatch();
 
             public static ulong Count => primes.Count;
-
             public static TimeSpan Time => sw.Elapsed;
-
             public static bool Failed { get; private set; }
 
             public static void BeginAsync()
