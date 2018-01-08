@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace DLib.Math.Seeker
+namespace DLib.Math.Seeker.MersennePrime
 {
-    public class MPNetworkServer : IDisposable
+    public class NetworkServer : IDisposable
     {
         Networking.ServerNew3 server;
         List<(uint exponent, TimeSpan time, IPAddress ipAdresse)> mersennePrimes = new List<(uint, TimeSpan, IPAddress)>();
@@ -25,7 +25,7 @@ namespace DLib.Math.Seeker
 
         const uint packageSize = 1024;
 
-        ~MPNetworkServer() => Dispose();
+        ~NetworkServer() => Dispose();
 
         public void Start(int port, uint startExponent)
         {

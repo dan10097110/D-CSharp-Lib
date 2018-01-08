@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 
-namespace DLib.Math.Seeker
+namespace DLib.Math.Seeker.MersennePrime
 {
-    public class MPNetworkMember : IDisposable
+    public class NetworkMember : IDisposable
     {
         bool threadRunning;
 
@@ -13,7 +13,7 @@ namespace DLib.Math.Seeker
         public int Port { get; private set; }
         public byte ThreadCount { get; set; }
 
-        ~MPNetworkMember() => Dispose();
+        ~NetworkMember() => Dispose();
 
         public void Dispose()
         {

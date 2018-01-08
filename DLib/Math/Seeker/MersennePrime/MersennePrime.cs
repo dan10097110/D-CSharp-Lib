@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace DLib.Math.Seeker
+namespace DLib.Math.Seeker.MersennePrime
 {
-    public class MersennePrime
+    public class Local
     {
         public const string version = "180101";
 

@@ -118,9 +118,9 @@
     <Compile Include="Math\Prime\Test\Heuristic.cs" />
     <Compile Include="Math\Prime\Test\Probabilistic.cs" />
     <Compile Include="Math\Number\Rational.cs" />
-    <Compile Include="Math\Seeker\MersennePrime.cs" />
-    <Compile Include="Math\Seeker\MersennePrimeNetworkMember.cs" />
-    <Compile Include="Math\Seeker\MersennePrimeNetworkServer.cs" />
+    <Compile Include="Math\Seeker\MersennePrime\MersennePrime.cs" />
+    <Compile Include="Math\Seeker\MersennePrime\NetworkMember.cs" />
+    <Compile Include="Math\Seeker\MersennePrime\NetworkServer.cs" />
     <Compile Include="Math\Sequence\Catalan.cs" />
     <Compile Include="Math\Sequence\Fib.cs" />
     <Compile Include="Math\Sequence\Lucas.cs" />
