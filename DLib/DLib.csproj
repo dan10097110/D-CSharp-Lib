@@ -91,8 +91,9 @@
     <Compile Include="Math\Function\Quotient.cs" />
     <Compile Include="Math\Function\Square.cs" />
     <Compile Include="Math\Function\Sum.cs" />
-    <Compile Include="Math\Number\Complex.cs" />
-    <Compile Include="Math\Number\INumber.cs" />
+    <Compile Include="Math\Number\Big\Complex.cs" />
+    <Compile Include="Math\Number\Big\INumber.cs" />
+    <Compile Include="Math\Number\UInt128.cs" />
     <Compile Include="Math\Number\MersenneNumber.cs" />
     <Compile Include="Math\Operator\Div.cs" />
     <Compile Include="Math\Operator\Mod.cs" />
@@ -103,11 +104,11 @@
     <Compile Include="Math\Calculator.cs" />
     <Compile Include="Math\CFrac.cs" />
     <Compile Include="Math\GCD.cs" />
-    <Compile Include="Math\Number\Integer.cs" />
+    <Compile Include="Math\Number\Big\Integer.cs" />
     <Compile Include="Math\LCM.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Operator\Mul.cs" />
-    <Compile Include="Math\Number\Natural.cs" />
+    <Compile Include="Math\Number\Big\Natural.cs" />
     <Compile Include="Math\Function\Polynomial.cs" />
     <Compile Include="Math\Operator\Power.cs" />
     <Compile Include="Math\Prime\Factorise.cs" />
@@ -117,8 +118,8 @@
     <Compile Include="Math\Prime\Test\Deterministic.cs" />
     <Compile Include="Math\Prime\Test\Heuristic.cs" />
     <Compile Include="Math\Prime\Test\Probabilistic.cs" />
-    <Compile Include="Math\Number\Rational.cs" />
-    <Compile Include="Math\Seeker\MersennePrime\MersennePrime.cs" />
+    <Compile Include="Math\Number\Big\Rational.cs" />
+    <Compile Include="Math\Seeker\MersennePrime\Local.cs" />
     <Compile Include="Math\Seeker\MersennePrime\NetworkMember.cs" />
     <Compile Include="Math\Seeker\MersennePrime\NetworkServer.cs" />
     <Compile Include="Math\Sequence\Catalan.cs" />

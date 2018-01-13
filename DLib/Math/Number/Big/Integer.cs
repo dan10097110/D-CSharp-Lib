@@ -1,4 +1,4 @@
-﻿namespace DLib.Math.Number
+﻿namespace DLib.Math.Number.Big
 {
     public class Integer
     {

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DLib.Math.Number
+namespace DLib.Math.Number.Big
 {
     public class Natural : ParallelExecutionObject, INumber
     {

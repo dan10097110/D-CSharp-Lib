@@ -1,4 +1,4 @@
-﻿using DLib.Math.Number;
+﻿using DLib.Math.Number.Big;
 using System.Collections.Generic;
 using System.Linq;
 
