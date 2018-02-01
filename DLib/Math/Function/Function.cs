@@ -1,5 +1,4 @@
-﻿using DLib.Math;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace DLib.Math.Function
