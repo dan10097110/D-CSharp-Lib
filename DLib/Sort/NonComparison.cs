@@ -124,5 +124,31 @@
             }
             return Exchanging.Cocktail(a);
         }
+
+        public static int[] Bead(int[] a)
+        {
+            int max = 0;
+            for (int i = 0; i < a.Length;)
+                if (a[i] > max)
+                    max = a[i];
+            var v = new bool[max, a.Length];
+            for (int i = 0; i < a.Length; i++)
+                for (int j = 0; j < a[i]; v[j, i] = true, j++) ;
+            for(int i = 0; i < max; i++)
+                for(int j = 0, c = 0; j < a.Length; j++)
+                    if(v[j, i])
+                    {
+                        v[j, i] = false;
+                        v[c, i] = true;
+                        c++;
+                    }
+            for (int i = 0; i < a.Length; i++)
+            {
+                int j = 0;
+                for (; v[j, i]; j++) ;
+                a[i] = j;
+            }
+            return a;
+        }
     }
 }

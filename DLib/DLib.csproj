@@ -137,6 +137,7 @@
     <Compile Include="Pathfinding\Map.cs" />
     <Compile Include="Pathfinding\Vertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="Secured.cs" />
     <Compile Include="Sort\Insertion.cs" />
     <Compile Include="Sort\Merging.cs" />
