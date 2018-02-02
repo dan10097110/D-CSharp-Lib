@@ -137,7 +137,14 @@
     <Compile Include="Pathfinding\Map.cs" />
     <Compile Include="Pathfinding\Vertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sort.cs" />
+    <Compile Include="Secured.cs" />
+    <Compile Include="Sort\Insertion.cs" />
+    <Compile Include="Sort\Merging.cs" />
+    <Compile Include="Sort\NonComparison.cs" />
+    <Compile Include="Sort\Partitioning.cs" />
+    <Compile Include="Sort\Random.cs" />
+    <Compile Include="Sort\Selection.cs" />
+    <Compile Include="Sort\Exchanging.cs" />
     <Compile Include="ThreadQueue.cs" />
   </ItemGroup>
   <ItemGroup>
