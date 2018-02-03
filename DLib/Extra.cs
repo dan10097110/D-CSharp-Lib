@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DLib
@@ -105,6 +106,14 @@ namespace DLib
                     return (0, 0);
             }
             return (R, p - R);
+        }
+
+        public static Stack<int> ToBinaryStack(int i)
+        {
+            var v = new Stack<int>();
+            for (; i > 0; i >>= 1)
+                v.Push(i & 1);
+            return v;
         }
     }
 }
