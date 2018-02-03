@@ -16,7 +16,7 @@ namespace DLib.Math.Factoring
         public static ulong Shor(ulong n)
         {
             throw new NotImplementedException();
-            Random random = new Random();
+            var random = new System.Random();
             ulong a = (ulong)random.Next(2, (int)n), gcd = Math.GCD.Standard(a, n);
             if (gcd > 1)
                 return gcd;

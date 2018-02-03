@@ -6,7 +6,7 @@ namespace DLib.Math.Factoring
 {
     public static class General
     {
-        static Random ranGen = new Random();
+        static System.Random ranGen = new System.Random();
 
         public static int Standard(int n) => Dixon(n);
 

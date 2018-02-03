@@ -125,10 +125,10 @@
             return Exchanging.Cocktail(a);
         }
 
-        public static int[] Bead(int[] a)
+        public static void Bead(int[] a)
         {
             int max = 0;
-            for (int i = 0; i < a.Length;)
+            for (int i = 0; i < a.Length; i++)
                 if (a[i] > max)
                     max = a[i];
             var v = new bool[max, a.Length];
@@ -136,19 +136,18 @@
                 for (int j = 0; j < a[i]; v[j, i] = true, j++) ;
             for(int i = 0; i < max; i++)
                 for(int j = 0, c = 0; j < a.Length; j++)
-                    if(v[j, i])
+                    if(v[i, j])
                     {
-                        v[j, i] = false;
-                        v[c, i] = true;
+                        v[i, j] = false;
+                        v[i, c] = true;
                         c++;
                     }
             for (int i = 0; i < a.Length; i++)
             {
                 int j = 0;
-                for (; v[j, i]; j++) ;
+                for (; j < max && v[j, i]; j++) ;
                 a[i] = j;
             }
-            return a;
         }
     }
 }

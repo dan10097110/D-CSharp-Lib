@@ -61,7 +61,7 @@ namespace DLib.Math
             }
         }
 
-        static Random r = new Random();
+        static System.Random r = new System.Random();
 
         public static double? NewtonMethod(Function.Function p, double a)
         {

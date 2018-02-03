@@ -6,7 +6,7 @@ namespace DLib.Math.Prime.Test
 {
     public static class Probabilistic
     {
-        static Random random = new Random();
+        static System.Random random = new System.Random();
 
         public static bool Division(ulong n, IEnumerable<ulong> dividends) => Division(n, dividends, 2, n);
 

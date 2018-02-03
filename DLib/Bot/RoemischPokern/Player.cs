@@ -109,7 +109,7 @@ namespace DLib.Bot.RoemischPokern
                     {
                         if (action.RemoveDices)
                             Dices[action.dice] -= action.diceCount;
-                        var random = new Random();
+                        var random = new System.Random();
                         for (int i = 0; i < action.diceCount; i++)
                         {
                             int r = random.Next(6);

@@ -56,7 +56,7 @@ namespace DLib.Math.Prime.Test
                 }
             }
             g:
-            ulong[] factors = Factorise.Standard(f, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
+            var factors = Factorise.Standard(f, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
             for (uint i = 2; i < n; i++)
                 if (Power.BinaryMod(i, n - 1, n) == 1)
                 {
@@ -75,8 +75,8 @@ namespace DLib.Math.Prime.Test
 
         public static bool Lucas(ulong n)
         {
-            Random random = new Random();
-            ulong[] factorisation = Factorise.Standard(n - 1, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
+            var random = new System.Random();
+            var factorisation = Factorise.Standard(n - 1, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
             for (ulong a = 2; a < n;)
             {
                 c:

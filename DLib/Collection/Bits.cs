@@ -211,7 +211,7 @@ namespace DLib.Collection
 
         public static Bits Random(int length)
         {
-            Random random = new Random();
+            var random = new System.Random();
             bool[] array = new bool[length << 1];
             Loop(0, length - 1, i => array[i] = random.Next(2) == 0 ? false : true);
             array[length - 1] = true;
