@@ -74,6 +74,7 @@
     <Compile Include="Collection\Long\BitArray.cs" />
     <Compile Include="Collection\Long\List.cs" />
     <Compile Include="Collection\Primes.cs" />
+    <Compile Include="Collection\Primes2.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="Coordinates.cs" />
     <Compile Include="Extra.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Math\Function\Sum.cs" />
     <Compile Include="Math\Number\Big\Complex.cs" />
     <Compile Include="Math\Number\Big\INumber.cs" />
+    <Compile Include="Math\Number\Int96.cs" />
     <Compile Include="Math\Number\UInt128.cs" />
     <Compile Include="Math\Number\MersenneNumber.cs" />
     <Compile Include="Math\Operator\Div.cs" />

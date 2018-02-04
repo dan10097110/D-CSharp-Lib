@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DLib.Collection
 {
-    public static class Primes
+    public static class Primes2
     {
         static List<int> primes = new List<int>() { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 };
         static int nextCand = primes.Last() + 2;
@@ -29,7 +29,7 @@ namespace DLib.Collection
             else if (n < nextCand * nextCand)
             {
                 CalcUntilI(n);
-                b = primes.Last() == n;
+                b = Contain(n);
             }
             else
             {
@@ -53,7 +53,6 @@ namespace DLib.Collection
                 b = Contain(n);
             else
             {
-                //CalcUntilI((int)System.Math.Sqrt(System.Math.Sqrt(n)));
                 CalcUntilI((int)System.Math.Log(n));
                 for (int i = 0; i < primes.Count; i++)
                     if (n % primes[i] == 0)
@@ -69,15 +68,14 @@ namespace DLib.Collection
         static void CalcUntilIthPrime(int exclusiveI)
         {
             while (primes.Count < exclusiveI)
-                TestNextCand();
+                SieveSquare();
         }
 
         public static void CalcUntilI(int inclusiveI)
         {
             threadQueue.Wait();
-            if (inclusiveI < (nextCand << 1))
-                while (primes.Last() < inclusiveI)
-                    TestNextCand();
+            if (inclusiveI < nextCand * nextCand)
+                SieveSquare();
             else
                 Sieve(inclusiveI + 1);
             threadQueue.Next();
@@ -97,18 +95,6 @@ namespace DLib.Collection
             return primes[u] == n;
         }
 
-        static void TestNextCand()
-        {
-            for (int i = 1; primes[i] * primes[i] <= nextCand; i++)
-                if (nextCand % primes[i] == 0)
-                {
-                    nextCand += 2;
-                    return;
-                }
-            primes.Add(nextCand);
-            nextCand += 2;
-        }
-
         static void Sieve(int exclusive)
         {
             var sieve = new BitArray(exclusive, true);
@@ -124,6 +110,17 @@ namespace DLib.Collection
                 if (sieve[i])
                     primes.Add(i);
             nextCand = sieve.Count + ((sieve.Count + 1) & 1);
+        }
+
+        static void SieveSquare()
+        {
+            var sieve = new BitArray(nextCand * nextCand, true);
+            for (int i = 1; i < primes.Count; i++)
+                for (int j = primes[i] * primes[i], k = primes[i] << 1; j < sieve.Count; sieve[j] = false, j += k) ;
+            for (int i = nextCand; i < sieve.Count; i += 2)
+                if (sieve[i])
+                    primes.Add(i);
+            nextCand = nextCand * nextCand;
         }
     }
 }

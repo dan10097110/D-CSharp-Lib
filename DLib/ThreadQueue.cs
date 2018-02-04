@@ -7,20 +7,29 @@ namespace DLib
     {
         Queue<string> queue = new Queue<string>();
         static int threadNumber = 0;
+        static int calls = 0;
 
         public void Wait()
         {
             if (Thread.CurrentThread.Name == null)
                 Thread.CurrentThread.Name = (threadNumber++).ToString();
-            lock (queue)
-                queue.Enqueue(Thread.CurrentThread.Name);
-            while (queue.Peek() != Thread.CurrentThread.Name) ;
+            if (!queue.Contains(Thread.CurrentThread.Name))
+            {
+                lock (queue)
+                    queue.Enqueue(Thread.CurrentThread.Name);
+                while (queue.Peek() != Thread.CurrentThread.Name) ;
+            }
+            else
+                calls++;
         }
 
         public void Next()
         {
-            lock (queue)
-                queue.Dequeue();
+            if(calls == 0)
+                lock (queue)
+                    queue.Dequeue();
+            if (calls > 0)
+                calls--;
         }
     }
 }

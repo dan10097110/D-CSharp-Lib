@@ -1,5 +1,4 @@
 ﻿using Mpir.NET;
-using System.Collections.Generic;
 
 namespace DLib.Math.Operator
 {
@@ -19,10 +18,10 @@ namespace DLib.Math.Operator
             return r;
         }
 
-        public static int PowerOfTwoModM(Stack<int> exponent, int m)
+        public static int PowerOfTwoModM(int[] exponent, int m)
         {
             int r = 1;
-            for (exponent = new Stack<int>(exponent); exponent.Count > 0; r = ((r * r) << exponent.Pop()) % m) ;
+            for (int i = exponent.Length - 1; i >= 0; r = ((r * r) << exponent[i]) % m, i--) ;
             return r;
         }
     }
