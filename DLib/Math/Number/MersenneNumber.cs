@@ -26,6 +26,8 @@ namespace DLib.Math.Number
             m = mpz_t.One.ShiftLeft(exponent) - 1;
         }
 
+        bool Divisible(int d) => Operator.Mod.PowerOfTwoModM(Exponent, d) == 1;
+
         bool LucasLehmerTest()
         {
             int i = (int)(System.Math.Log(Exponent) / log2);// + c);
@@ -35,9 +37,7 @@ namespace DLib.Math.Number
             return s == m - 3;
         }
 
-        bool Divisible(int d) => Operator.Mod.PowerOfTwoModM(Exponent, d) == 1;
-
-        bool TrialDivision1()
+        bool TrialDivision()
         {
             int i = 0;
             switch (Exponent % 60)
@@ -67,7 +67,7 @@ namespace DLib.Math.Number
             return true;
         }
 
-        bool TrialDivision2()
+        bool TrialDivision1()
         {
             Primes2.CalcUntilI(Exponent * Exponent);
             for (int i = 2, prime; (prime = Primes2.GetIth(i)) < Exponent * Exponent; i++)
@@ -79,7 +79,7 @@ namespace DLib.Math.Number
             return true;
         }
 
-        bool TrialDivision()
+        bool TrialDivision2()
         {
             var sieve = new BitArray(Exponent * Exponent, true);
             for (int i = 3; i <= Exponent; i += 2)
