@@ -27,5 +27,7 @@ namespace DLib.Math.Function
         public override string ToString() => "(" + a.ToString() + "*" + b.ToString() + ")";
 
         public override Function Clone() => new Product(a.Clone(), b.Clone());
+
+        public override Function Inverse() => throw new System.NotImplementedException();
     }
 }

@@ -48,5 +48,7 @@ namespace DLib.Math.Function
         public override string ToString() => Factor + "*" + "x^" + Exponent;
 
         public static implicit operator string(Power a) => a.ToString();
+
+        public override Function Inverse() => new Power(1 / Factor, 1 / Exponent);
     }
 }

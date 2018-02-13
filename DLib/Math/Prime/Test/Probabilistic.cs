@@ -30,7 +30,11 @@ namespace DLib.Math.Prime.Test
 
         public static bool MillerRabin(ulong n, ulong iterations)
         {
-            ulong d = n - 1, r = 0;
+            if (n == 2)
+                return true;
+            if (n < 2 || (n & 1) == 0)
+                return false;
+            ulong d = (n - 1) >> 1, r = 1;
             for (; (d & 1) == 0; d >>= 1, r++) ;
             for (ulong i = 0; i < iterations; i++)
             {
@@ -59,7 +63,7 @@ namespace DLib.Math.Prime.Test
         /// <returns>true if n is prime, false if n is possibly composite</returns>
         public static bool Lucas(ulong n, ulong iterations)
         {
-            ulong[] factorisation = Factorise.Standard(n - 1, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
+            ulong[] factorisation = Factorise.Optimised(n - 1);
             for (ulong i = 0; i < iterations; i++)
             {
                 c:

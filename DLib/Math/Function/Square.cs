@@ -23,5 +23,7 @@ namespace DLib.Math.Function
             double d = a.Y(x);
             return d * d;
         }
+
+        public override Function Inverse() => throw new System.NotImplementedException();
     }
 }

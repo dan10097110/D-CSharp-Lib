@@ -22,5 +22,7 @@
         public override string ToString() => "(" + f + "*" + a.ToString() + ")";
 
         public override double Y(double x) => a.Y(x) * f;
+
+        public override Function Inverse() => throw new System.NotImplementedException();
     }
 }

@@ -19,5 +19,7 @@
         public override string ToString() => "(" + a.ToString() + "+" + b.ToString() + ")";
 
         public override Function Clone() => new Sum(a.Clone(), b.Clone());
+
+        public override Function Inverse() => throw new System.NotImplementedException();
     }
 }

@@ -76,7 +76,7 @@ namespace DLib.Math.Prime.Test
         public static bool Lucas(ulong n)
         {
             var random = new System.Random();
-            var factorisation = Factorise.Standard(n - 1, (z) => (ulong)Factoring.Special.TrialDivision((int)z));
+            var factorisation = Factorise.Optimised(n - 1);
             for (ulong a = 2; a < n;)
             {
                 c:
@@ -97,6 +97,10 @@ namespace DLib.Math.Prime.Test
             }
             return false;
         }
+
+        public static bool BinomialCoefficient(int p, int k) => Extra.BinomialCoefficientModM(p, k, p) == 0;
+
+        public static bool BinomialTheorem(int p, int a, int b) => (int)Power.BinaryMod((ulong)(a + b), (ulong)p, (ulong)p) == (int)(Power.BinaryMod((ulong)a, (ulong)p, (ulong)p) + Power.BinaryMod((ulong)b, (ulong)p, (ulong)p)) % p;
 
         /// <summary>
         /// Applies Miller test to n. 

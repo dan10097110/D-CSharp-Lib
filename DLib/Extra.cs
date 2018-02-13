@@ -115,5 +115,27 @@ namespace DLib
                 v.Push(i & 1);
             return v;
         }
+
+        public static int BinomialCoefficient(int n, int k)
+        {
+            if (k == 0)
+                return 1;
+            if (k << 1 > n)
+                k = n - k;
+            int c = 1;
+            for (int i = 1; i <= k; c *= ((n - k + i) / i), i++) ;
+            return c;
+        }
+
+        public static int BinomialCoefficientModM(int n, int k, int m)
+        {
+            if (k == 0)
+                return 1;
+            if (k << 1 > n)
+                k = n - k;
+            int c = 1;
+            for (int i = 1; i <= k; c = (c * (n - k + i) / i) % m, i++) ;
+            return c;
+        }
     }
 }

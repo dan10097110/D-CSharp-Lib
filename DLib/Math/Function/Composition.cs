@@ -21,5 +21,7 @@ namespace DLib.Math.Function
         public override string ToString() => "(" + a.ToString() + "Verkettung" + b.ToString() + ")";
 
         public override Function Clone() => new Composition(a.Clone(), b.Clone());
+
+        public override Function Inverse() => throw new System.NotImplementedException();
     }
 }

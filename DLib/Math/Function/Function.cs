@@ -11,6 +11,8 @@ namespace DLib.Math.Function
 
         public abstract Function Integrate();
 
+        public abstract Function Inverse();
+
         public Function Derivate(int i)
         {
             if (i < 0)
@@ -36,7 +38,7 @@ namespace DLib.Math.Function
         public virtual double[] Roots()
         {
             var roots = new List<double>();
-            Polynomial p = new Polynomial(1);
+            var p = new Polynomial(1);
             while (true)
             {
                 var root = NonlinearEquations.NewtonMethod(new Quotient(this, p), 0);

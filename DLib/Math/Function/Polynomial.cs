@@ -1,8 +1,6 @@
-﻿using DLib;
-using DLib.Math;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DLib.Math.Function
 {
@@ -162,5 +160,7 @@ namespace DLib.Math.Function
         }
 
         public static implicit operator string(Polynomial p) => p.ToString();
+
+        public override Function Inverse() => throw new System.NotImplementedException();
     }
 }
