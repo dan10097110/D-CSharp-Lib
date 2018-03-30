@@ -6,8 +6,7 @@ namespace DLib
     public class ThreadQueue
     {
         Queue<string> queue = new Queue<string>();
-        static int threadNumber = 0;
-        static int calls = 0;
+        static int threadNumber = 0, calls = 0;
 
         public void Wait()
         {
@@ -28,7 +27,7 @@ namespace DLib
             if(calls == 0)
                 lock (queue)
                     queue.Dequeue();
-            if (calls > 0)
+            else if (calls > 0)
                 calls--;
         }
     }

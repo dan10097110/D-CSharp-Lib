@@ -21,9 +21,9 @@ namespace DLib
 
         public static ulong Factorial(ulong n)
         {
-            ulong result = 1;
-            for (ulong i = 2; i <= n; result *= i++) ;
-            return result;
+            ulong r = 1;
+            for (ulong i = 2; i <= n; r *= i++) ;
+            return r;
         }
 
         public static int Min(params int[] n)
