@@ -150,6 +150,7 @@
     <Compile Include="Sort\Selection.cs" />
     <Compile Include="Sort\Exchanging.cs" />
     <Compile Include="ThreadQueue.cs" />
+    <Compile Include="Threads.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="xmpir32.dll">

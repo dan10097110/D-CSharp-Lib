@@ -2,7 +2,7 @@
 {
     public static class Selection
     {
-        public static int[] Start(int[] a)
+        public static void Start(int[] a)
         {
             for (int k = 0; k < a.Length - 1; k++)
             {
@@ -12,10 +12,9 @@
                         i = j;
                 Extra.Swap(ref a[k], ref a[i]);
             }
-            return a;
         }
 
-        public static int[] Start2(int[] a)
+        public static void Start2(int[] a)
         {
             for (int i = 0; i << 1 < a.Length; i++)
             {
@@ -34,12 +33,11 @@
                 a[a.Length - 1 - i] = a[x];
                 a[x] = tmp;
             }
-            return a;
         }
         
         public static class Heap
         {
-            public static int[] Start(int[] a)
+            public static void Start(int[] a)
             {
                 for (int start = (a.Length - 2) >> 1; start >= 0; start--)
                     ShiftDown(a, start, a.Length - 1);
@@ -48,10 +46,9 @@
                     Extra.Swap(ref a[0], ref a[end]);
                     ShiftDown(a, 0, --end);
                 }
-                return a;
             }
 
-            public static int[] Start2(int[] a)
+            public static void Start2(int[] a)
             {
                 for (int end = 1; end < a.Length; end++)
                     ShiftUp(a, 0, end);
@@ -60,7 +57,6 @@
                     Extra.Swap(ref a[0], ref a[end]);
                     ShiftDown(a, 0, --end);
                 }
-                return a;
             }
 
             static void ShiftDown(int[] a, int start, int end)

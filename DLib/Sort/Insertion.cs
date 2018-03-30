@@ -2,7 +2,7 @@
 {
     public static class Insertion
     {
-        public static int[] Start(int[] a)
+        public static void Sequential(int[] a)
         {
             for (int i = 1; i < a.Length; i++)
             {
@@ -10,10 +10,9 @@
                 for (; j > 0 && a[j - 1] > tmp; a[j] = a[--j]) ;
                 a[j] = tmp;
             }
-            return a;
         }
 
-        public static int[] StartBinary(int[] a)
+        public static void Binary(int[] a)
         {
             for (int i = 1; i < a.Length; i++)
             {
@@ -29,7 +28,6 @@
                 for (int k = i; k > j; a[k] = a[--k]) ;
                 a[j] = tmp;
             }
-            return a;
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public static class Exchanging
     {
-        public static int[] Bubble(int[] a)
+        public static void Bubble(int[] a)
         {
             bool b = true;
             for (int i = 0; b; i++)
@@ -15,10 +15,9 @@
                         b = true;
                     }
             }
-            return a;
         }
 
-        public static int[] Cocktail(int[] a)
+        public static void Cocktail(int[] a)
         {
             for (int i = 0; ; i++)
             {
@@ -30,7 +29,7 @@
                         b = true;
                     }
                 if (!b)
-                    return a;
+                    return;
                 b = false;
                 for (int j = a.Length - i - 2; j - 1 >= i; j--)
                     if (a[j] < a[j - 1])
@@ -39,25 +38,23 @@
                         b = true;
                     }
                 if (!b)
-                    return a;
+                    return;
             }
         }
 
-        public static int[] Gnome(int[] a)
+        public static void Gnome(int[] a)
         {
             for (int i = 0, j = 0; i < a.Length;)
                 if (i == 0 || a[i] >= a[i - 1])
                     i = ++j;
                 else
                 {
-                    int tmp = a[i];
-                    a[i] = a[i - 1];
-                    a[--i] = tmp;
+                    Extra.Swap(ref a[i], ref a[i - 1]);
+                    i--;
                 }
-            return a;
         }
 
-        public static int[] Shell(int[] a)
+        public static void Shell(int[] a)
         {
             int[] gapps = new int[(int)System.Math.Log(a.Length + 1, 2)];
             gapps[gapps.Length - 1] = 1;
@@ -70,37 +67,9 @@
                     for (; k >= gap && a[k - gap] > tmp; a[k] = a[k -= gap]) ;
                     a[k] = tmp;
                 }
-            return a;
         }
 
-        public static int[] Comb(int[] a)
-        {
-            for (int gap = a.Length - 1; gap > 1; gap = (int)(gap / 1.3))
-                for (int i = 0; i + gap < a.Length; i++)
-                    if (a[i] > a[i + gap])
-                        Extra.Swap(ref a[i], ref a[i + gap]);
-            for (int i = 0; ; i++)
-            {
-                bool b = false;
-                for (int j = i; j + 1 < a.Length - i; j++)
-                    if (a[j] > a[j + 1])
-                    {
-                        Extra.Swap(ref a[j], ref a[j + 1]);
-                        b = true;
-                    }
-                if (!b)
-                    return a;
-                b = false;
-                for (int j = a.Length - i - 2; j - 1 >= i; j--)
-                    if (a[j] < a[j - 1])
-                    {
-                        Extra.Swap(ref a[j], ref a[j - 1]);
-                        b = true;
-                    }
-                if (!b)
-                    return a;
-            }
-        }
+        public static void Comb(int[] a) => Comb(a, 0, a.Length);
 
         public static void Comb(int[] a, int start, int count)
         {

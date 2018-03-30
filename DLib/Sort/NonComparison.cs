@@ -2,19 +2,15 @@
 {
     public static class NonComparison
     {
-        public static class Bucket
+        public static void Bucket(int[] a)
         {
-            public static int[] Start(int[] a)
-            {
-                int j = 0;
-                for (int i = 1; i < a.Length; i++)
-                    if (a[i] > a[j])
-                        j = i;
-                Intern(a, (int)System.Math.Log10(a[j]), 0, a.Length);
-                return a;
-            }
+            int j = 0;
+            for (int i = 1; i < a.Length; i++)
+                if (a[i] > a[j])
+                    j = i;
+            Intern((int)System.Math.Log10(a[j]), 0, a.Length);
 
-            public static void Intern(int[] a, int n, int u, int o)
+            void Intern(int n, int u, int o)
             {
                 if (n >= 0 && o > 1 + u)
                     for (int digit = 0, i1 = u, i2 = o - 1; digit < 5; o = i2 + 1, u = i1, digit++)
@@ -39,13 +35,13 @@
                             }
                             i++;
                         }
-                        Intern(a, n - 1, u, i1);
-                        Intern(a, n - 1, i2 + 1, o);
+                        Intern(n - 1, u, i1);
+                        Intern(n - 1, i2 + 1, o);
                     }
             }
         }
 
-        public static int[] Radix(int[] a)
+        public static void Radix(int[] a)
         {
             int m = a[0];
             for (int i = 1; i < a.Length; i++)
@@ -63,10 +59,9 @@
                 for (int i = 0; i < a.Length; i++)
                     a[i] = output[i];
             }
-            return a;
         }
 
-        public static int[] Counting(int[] a)
+        public static void Counting(int[] a)
         {
             int min = a[0], max = a[0];
             for (int i = 1; i < a.Length; i++)
@@ -80,10 +75,9 @@
             for (int i = 0, j = 0; i < b.Length; i++)
                 for (int k = 0; k < b[i]; k++)
                     a[j++] = i + min;
-            return a;
         }
 
-        public static int[] Flash(int[] a)
+        public static void Flash(int[] a)
         {
             int min = a[0], max = a[0];
             for (int i = 1; i < a.Length; i++)
@@ -122,7 +116,7 @@
                         }
                     }
             }
-            return Exchanging.Cocktail(a);
+            Exchanging.Cocktail(a);
         }
 
         public static void Bead(int[] a)
