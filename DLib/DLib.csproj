@@ -76,7 +76,6 @@
     <Compile Include="Collection\Primes.cs" />
     <Compile Include="Collection\Primes2.cs" />
     <Compile Include="Combinatorics.cs" />
-    <Compile Include="Coordinates.cs" />
     <Compile Include="Extra.cs" />
     <Compile Include="Linguistics.cs" />
     <Compile Include="Math\ArithmeticFunction.cs" />

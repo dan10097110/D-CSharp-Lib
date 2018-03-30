@@ -12,14 +12,14 @@ namespace DLib.Math.Function
 
         public Polynomial() { }
 
-        public Polynomial(params Coord[] coords)
+        public Polynomial(params (double x, double y)[] coords)
         {
             var matrix = new Matrix(coords.Length, coords.Length);
             for (int i = 0; i < matrix.Width; i++)
-                for (int j = 0; j < matrix.Height; matrix[j, i] = System.Math.Pow(coords[i].X, matrix.Height - 1 - j), j++) ;
+                for (int j = 0; j < matrix.Height; matrix[j, i] = System.Math.Pow(coords[i].x, matrix.Height - 1 - j), j++) ;
             var matrix1 = new Matrix(1, coords.Length);
             for (int i = 0; i < matrix1.Height; i++)
-                matrix1[0, i] = coords[i].Y;
+                matrix1[0, i] = coords[i].y;
             var vector = (matrix.Inverse() * matrix1).GetColumn(0);
             factorss = new double[vector.Length];
             for (int i = 0; i < factorss.Length; i++)
