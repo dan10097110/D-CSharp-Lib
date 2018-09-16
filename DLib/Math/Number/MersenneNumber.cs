@@ -3,6 +3,7 @@ using Mpir.NET;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Math.Gmp.Native;
 
 namespace DLib.Math.Number
 {
@@ -10,7 +11,7 @@ namespace DLib.Math.Number
     {
         const double log2 = 0.693147180559945309417232121458176568075500134360255254120, c = -0.66444870745388938334802927784457284837943064347344078207;
         public int Exponent { get; private set; }
-        mpz_t m;
+        Mpir.NET.mpz_t m;
         bool? isPrime = null;
         public bool IsPrime
         {
@@ -25,7 +26,7 @@ namespace DLib.Math.Number
         public MersenneNumber(int exponent)
         {
             Exponent = exponent;
-            m = mpz_t.One.ShiftLeft(exponent) - 1;
+            m = Mpir.NET.mpz_t.One.ShiftLeft(exponent) - 1;
         }
 
         bool Divisible(int d) => Operator.Mod.PowerOfTwoModM(Exponent, d) == 1;
@@ -33,7 +34,7 @@ namespace DLib.Math.Number
         bool LucasLehmerTest()
         {
             int i = (int)(System.Math.Log(Exponent) / log2);// + c);
-            var s = mpz_t.Power(3, (int)System.Math.Pow(2, i - 1));
+            var s = Mpir.NET.mpz_t.Power(3, (int)System.Math.Pow(2, i - 1));
             for (; i < Exponent; i++)
                 mpir.mpz_powm_ui(s, s, 2, m);
             return s == m - 3;
@@ -117,7 +118,7 @@ namespace DLib.Math.Number
     public class MersenneNumber2
     {
         static List<int> primes = new List<int>() { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59 };
-        static mpz_t prod = 2;
+        static Mpir.NET.mpz_t prod = 2;
         static int untilIndex = 0;
         static ThreadQueue tq = new ThreadQueue(), tq2 = new ThreadQueue();
 
@@ -148,7 +149,7 @@ namespace DLib.Math.Number
 
         const double log2 = 0.693147180559945309417232121458176568075500134360255254120, c = -0.66444870745388938334802927784457284837943064347344078207;
         public int Exponent { get; private set; }
-        mpz_t m;
+        Mpir.NET.mpz_t m;
         bool? isPrime = null;
         public bool IsPrime
         {
@@ -163,7 +164,7 @@ namespace DLib.Math.Number
         public MersenneNumber2(int exponent)
         {
             Exponent = exponent;
-            m = mpz_t.One.ShiftLeft(exponent) - 1;
+            m = Mpir.NET.mpz_t.One.ShiftLeft(exponent) - 1;
         }
 
         bool Divisible(int d) => Operator.Mod.PowerOfTwoModM(Exponent, d) == 1;
@@ -171,7 +172,7 @@ namespace DLib.Math.Number
         bool LucasLehmerTest()
         {
             int i = (int)(System.Math.Log(Exponent) / log2);// + c);
-            var s = mpz_t.Power(3, (int)System.Math.Pow(2, i - 1));
+            var s = Mpir.NET.mpz_t.Power(3, (int)System.Math.Pow(2, i - 1));
             for (; i < Exponent; i++)
                 mpir.mpz_powm_ui(s, s, 2, m);
             return s == m - 3;
@@ -211,10 +212,10 @@ namespace DLib.Math.Number
         {
             GenPrime();
             CalcProd();
-            var v = mpz_t.Three;
+            var v = Mpir.NET.mpz_t.Three;
             mpir.mpz_powm(v, v, (prod * Exponent) << 1, m);
-            var gcd = mpz_t.Gcd(v - 1, m);
-            if (gcd > mpz_t.One && gcd != m)
+            var gcd = Mpir.NET.mpz_t.Gcd(v - 1, m);
+            if (gcd > Mpir.NET.mpz_t.One && gcd != m)
                 return false;
             return true;
         }

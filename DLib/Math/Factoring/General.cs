@@ -155,10 +155,10 @@ namespace DLib.Math.Factoring
             return 1;
         }
 
-        public static ulong GNFS(ulong n) => throw new NotImplementedException();
+        public static int GNFS(int n) => throw new NotImplementedException();
 
-        public static ulong RS(ulong n) => throw new NotImplementedException();
+        public static int RS(int n) => throw new NotImplementedException();
 
-        public static ulong SQUFOF(ulong n) => throw new NotImplementedException();
+        public static int SQUFOF(int n) => throw new NotImplementedException();
     }
 }
