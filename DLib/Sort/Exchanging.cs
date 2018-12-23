@@ -4,6 +4,21 @@
     {
         public static void Bubble(int[] a)
         {
+            for (int i = 0; i < a.Length - 1;)
+            {
+                if (a[i] > a[i + 1])
+                {
+                    Swap(ref a[i], ref a[i + 1]);
+                    if (i > 0)
+                        i--;
+                }
+                else
+                    i++;
+            }
+        }
+
+        public static void Bubble1(int[] a)
+        {
             bool b = true;
             for (int i = 0; b; i++)
             {
