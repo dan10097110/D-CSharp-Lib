@@ -8,7 +8,7 @@
             {
                 if (a[i] > a[i + 1])
                 {
-                    Swap(ref a[i], ref a[i + 1]);
+                    Extra.Swap(ref a[i], ref a[i + 1]);
                     if (i > 0)
                         i--;
                 }
