@@ -17,7 +17,7 @@
             }
         }
 
-        public static void Bubble1(int[] a)
+        public static void BubbleClassical(int[] a)
         {
             bool b = true;
             for (int i = 0; b; i++)
