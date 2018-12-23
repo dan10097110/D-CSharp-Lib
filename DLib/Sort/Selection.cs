@@ -14,27 +14,26 @@
             }
         }
 
-        public static void Start2(int[] a)
+        public static void Start1(int[] a)
         {
             for (int i = 0; i << 1 < a.Length; i++)
             {
-                int tmp = a[i], x = i;
+                int indexMin = i, indexMax = i;
                 for (int j = i + 1; j < a.Length - i; j++)
-                    if (a[j] < a[x])
-                        x = j;
-                a[i] = a[x];
-                a[x] = tmp;
+                {
+                    if (a[j] < a[indexMin])
+                        indexMin = j;
+                    else if (a[j] > a[indexMax])
+                        indexMax = j;
+                }
+                Extra.Swap(ref a[i], ref a[indexMin]);
+                if (indexMax == i)
+                    indexMax = indexMin;
+                Extra.Swap(ref a[a.Length - 1 - i], ref a[indexMax]);
 
-                tmp = a[a.Length - 1 - i];
-                x = i + 1;
-                for (int j = i + 2; j < a.Length - i; j++)
-                    if (a[j] > a[x])
-                        x = j;
-                a[a.Length - 1 - i] = a[x];
-                a[x] = tmp;
             }
         }
-        
+
         public static class Heap
         {
             public static void Start(int[] a)
