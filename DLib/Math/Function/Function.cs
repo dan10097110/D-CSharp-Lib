@@ -52,7 +52,7 @@ namespace DLib.Math.Function
         }
 
         //evt aus vorzeichenwechsel betrachten
-        public double[] Extrema()
+        public double[] Extrema()//Extremstellen
         {
             Function d1 = Derivate(), d2 = d1.Derivate();
             return Roots().Where(d => d2.Y(d) != 0).ToArray();
@@ -70,13 +70,13 @@ namespace DLib.Math.Function
             return Roots().Where(d => d2.Y(d) > 0).ToArray();
         }
 
-        public double[] Inflections()
+        public double[] Inflections()//Wendestelle
         {
             Function d2 = Derivate(2), d3 = d2.Derivate();
             return d2.Roots().Where(d => d3.Y(d) != 0).ToArray();
         }
 
-        public double[] Saddles()
+        public double[] Saddles()//Sattelpunkte
         {
             Function d1 = Derivate(), d2 = d1.Derivate(), d3 = d2.Derivate();
             return Roots().Where(d => d2.Y(d) == 0 && d3.Y(d) != 0).ToArray();
@@ -85,5 +85,7 @@ namespace DLib.Math.Function
         public abstract override string ToString();
 
         public abstract Function Clone();
+
+        public abstract double Limit(double p);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DLib.Math.Function
+﻿using System.Linq;
+
+namespace DLib.Math.Function
 {
     public class Sum : Function
     {
@@ -21,5 +23,7 @@
         public override Function Clone() => new Sum(a.Clone(), b.Clone());
 
         public override Function Inverse() => throw new System.NotImplementedException();
+
+        public override double Limit(double p) => a.Limit(p) + b.Limit(p);
     }
 }
