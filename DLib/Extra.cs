@@ -137,5 +137,14 @@ namespace DLib
             for (int i = 1; i <= k; c = (c * (n - k + i) / i) % m, i++) ;
             return c;
         }
+
+        public static int DivisorSum(int n)
+        {
+            int t = 0;
+            for (int d = 1; d <= n; d++)
+                if (n % d == 0)
+                    t += d;
+            return t;
+        }
     }
 }
