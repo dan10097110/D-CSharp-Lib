@@ -146,5 +146,13 @@ namespace DLib
                     t += d;
             return t;
         }
+
+        public static bool Sorted(int[] array)
+        {
+            for (int i = 1; i < array.Length; i++)
+                if (array[i - 1] > array[i])
+                    return false;
+            return true;
+        }
     }
 }
