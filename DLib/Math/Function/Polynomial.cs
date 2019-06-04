@@ -162,5 +162,10 @@ namespace DLib.Math.Function
         public static implicit operator string(Polynomial p) => p.ToString();
 
         public override Function Inverse() => throw new System.NotImplementedException();
+
+        public override double Limit(double p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -24,6 +24,11 @@ namespace DLib.Math.Function
             throw new NotImplementedException();
         }
 
+        public override double Limit(double p)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             throw new NotImplementedException();

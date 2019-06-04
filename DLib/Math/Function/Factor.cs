@@ -24,5 +24,10 @@
         public override double Y(double x) => a.Y(x) * f;
 
         public override Function Inverse() => throw new System.NotImplementedException();
+
+        public override double Limit(double p)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

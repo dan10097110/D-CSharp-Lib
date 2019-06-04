@@ -23,5 +23,10 @@ namespace DLib.Math.Function
         public override Function Clone() => new Composition(a.Clone(), b.Clone());
 
         public override Function Inverse() => throw new System.NotImplementedException();
+
+        public override double Limit(double p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -21,5 +21,10 @@
         public override Function Clone() => new Difference(a.Clone(), b.Clone());
 
         public override Function Inverse() => throw new System.NotImplementedException();
+
+        public override double Limit(double p)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
